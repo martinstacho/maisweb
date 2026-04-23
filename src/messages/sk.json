@@ -1,0 +1,88 @@
+{
+  "nav": {
+    "schools": "Školy",
+    "forInstitutions": "Pre inštitúcie",
+    "support": "Podpora",
+    "contact": "Kontakt",
+    "cta": "Mám záujem"
+  },
+  "hero": {
+    "badge": "Od roku 2004 · 8 slovenských inštitúcií",
+    "title1": "Akademický informačný systém,",
+    "title2": "ktorý poháňa slovenské univerzity",
+    "subtitle": "MAIS je komplexný modulárny systém pre správu akademickej agendy. Spoľahlivý, bezpečný a kompatibilný so všetkými požiadavkami slovenského vysokého školstva.",
+    "ctaPrimary": "Nájdi svoju školu",
+    "ctaSecondary": "Pre inštitúcie"
+  },
+  "stats": {
+    "years": "rokov na trhu",
+    "yearsSub": "od roku 2004",
+    "institutions": "inštitúcií",
+    "institutionsSub": "5 univerzít + 3 VŠ",
+    "users": "aktívnych používateľov",
+    "usersSub": "každý semester",
+    "compatible": "kompatibilný",
+    "compatibleSub": "s Bolonským procesom"
+  },
+  "features": {
+    "title": "Čo MAIS ponúka",
+    "subtitle": "Komplexné riešenie pre všetky oblasti akademickej správy",
+    "studyAgenda": "Študijná agenda",
+    "studyAgendaDesc": "Kompletná správa štúdia od prijímacieho konania po promociu. Harmonogramy, rozvrhy, zápisné listy.",
+    "eApplication": "E-prihláška",
+    "eApplicationDesc": "Online podanie prihlášky na štúdium. Uchádzači môžu sledovať stav prihlášky v reálnom čase.",
+    "security": "Bezpečnosť a GDPR",
+    "securityDesc": "Splnenie všetkých zákonných požiadaviek. Audit trail, šifrovanie, zálohovanie a obnova dát.",
+    "performance": "Výkon a spoľahlivosť",
+    "performanceDesc": "Systém zvláda záťažové špičky počas zápisov. SLA 99,9% dostupnosť počas semestra.",
+    "integrations": "Integrácie",
+    "integrationsDesc": "Napojenie na SIMUS, CVTI, ISSP, ekonomické a knižničné systémy. Open API pre vlastné integrácie.",
+    "modular": "Modularita",
+    "modularDesc": "Nasaďte len to, čo potrebujete. Systém rastie s vašou inštitúciou — žiadne zbytočné funkcie."
+  },
+  "partners": {
+    "title": "Inštitúcie používajúce MAIS",
+    "subtitle": "Pridajte sa k špičkovým slovenským univerzitám a vysokým školám",
+    "showAll": "Zobraziť všetky školy",
+    "website": "Web školy",
+    "login": "Prihlásenie do MAIS",
+    "application": "Podať e-prihlášku"
+  },
+  "cta": {
+    "title": "Zaujal vás MAIS pre vašu inštitúciu?",
+    "subtitle": "Kontaktujte nás pre demo a individuálnu ponuku nasadenia.",
+    "button": "Kontaktovať ITernal"
+  },
+  "footer": {
+    "tagline": "Modulárny akademický informačný systém od ITernal s.r.o.",
+    "navigation": "Navigácia",
+    "rights": "Všetky práva vyhradené"
+  },
+  "schools": {
+    "title": "Školy využívajúce MAIS",
+    "subtitle": "Nájdite svoju inštitúciu a pristúpte k systému",
+    "back": "Späť na hlavnú stránku"
+  },
+  "support": {
+    "title": "Podpora",
+    "subtitle": "Táto sekcia je pripravovaná",
+    "back": "Späť",
+    "comingSoon": "Pripravujeme"
+  },
+  "institutions": {
+    "title": "Pre inštitúcie",
+    "subtitle": "Táto sekcia je pripravovaná",
+    "back": "Späť",
+    "comingSoon": "Pripravujeme",
+    "contactUs": "Kontaktovať nás"
+  },
+  "contact": {
+    "title": "Kontakt",
+    "name": "Meno",
+    "email": "E-mail",
+    "message": "Správa",
+    "send": "Odoslať správu",
+    "supportLine": "MAIS Linka podpory",
+    "supportHours": "pracovné dni 9:00 – 15:00"
+  }
+}

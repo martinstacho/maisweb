@@ -1,0 +1,88 @@
+{
+  "nav": {
+    "schools": "Schools",
+    "forInstitutions": "For Institutions",
+    "support": "Support",
+    "contact": "Contact",
+    "cta": "Get in Touch"
+  },
+  "hero": {
+    "badge": "Since 2004 · 8 Slovak institutions",
+    "title1": "The Academic Information System",
+    "title2": "powering Slovak universities",
+    "subtitle": "MAIS is a comprehensive modular system for academic administration. Reliable, secure, and fully compliant with all Slovak higher education requirements.",
+    "ctaPrimary": "Find your school",
+    "ctaSecondary": "For institutions"
+  },
+  "stats": {
+    "years": "years on the market",
+    "yearsSub": "since 2004",
+    "institutions": "institutions",
+    "institutionsSub": "5 universities + 3 colleges",
+    "users": "active users",
+    "usersSub": "every semester",
+    "compatible": "compatible",
+    "compatibleSub": "with the Bologna Process"
+  },
+  "features": {
+    "title": "What MAIS offers",
+    "subtitle": "A comprehensive solution for all areas of academic administration",
+    "studyAgenda": "Study agenda",
+    "studyAgendaDesc": "Complete study management from admission to graduation. Schedules, timetables, and enrollment sheets.",
+    "eApplication": "E-application",
+    "eApplicationDesc": "Online application for study. Applicants can track the status of their application in real time.",
+    "security": "Security & GDPR",
+    "securityDesc": "Compliance with all legal requirements. Audit trail, encryption, backup and data recovery.",
+    "performance": "Performance & reliability",
+    "performanceDesc": "The system handles peak loads during enrollment. SLA 99.9% uptime during the semester.",
+    "integrations": "Integrations",
+    "integrationsDesc": "Connected to SIMUS, CVTI, ISSP, financial and library systems. Open API for custom integrations.",
+    "modular": "Modularity",
+    "modularDesc": "Deploy only what you need. The system grows with your institution — no unnecessary features."
+  },
+  "partners": {
+    "title": "Institutions using MAIS",
+    "subtitle": "Join the leading Slovak universities and colleges",
+    "showAll": "Show all schools",
+    "website": "School website",
+    "login": "Log in to MAIS",
+    "application": "Submit e-application"
+  },
+  "cta": {
+    "title": "Interested in MAIS for your institution?",
+    "subtitle": "Contact us for a demo and a personalised deployment offer.",
+    "button": "Contact ITernal"
+  },
+  "footer": {
+    "tagline": "Modular Academic Information System by ITernal s.r.o.",
+    "navigation": "Navigation",
+    "rights": "All rights reserved"
+  },
+  "schools": {
+    "title": "Schools using MAIS",
+    "subtitle": "Find your institution and access the system",
+    "back": "Back to home"
+  },
+  "support": {
+    "title": "Support",
+    "subtitle": "This section is being prepared",
+    "back": "Back",
+    "comingSoon": "Coming soon"
+  },
+  "institutions": {
+    "title": "For institutions",
+    "subtitle": "This section is being prepared",
+    "back": "Back",
+    "comingSoon": "Coming soon",
+    "contactUs": "Contact us"
+  },
+  "contact": {
+    "title": "Contact",
+    "name": "Name",
+    "email": "E-mail",
+    "message": "Message",
+    "send": "Send message",
+    "supportLine": "MAIS Support Line",
+    "supportHours": "working days 9:00 – 15:00"
+  }
+}
