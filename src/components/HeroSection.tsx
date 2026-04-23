@@ -1,7 +1,7 @@
 'use client'
 import { useRef, useEffect } from 'react'
 import Link from 'next/link'
-import { FadeIn } from '@/components/FadeIn'
+import { Reveal } from '@/components/ui/Reveal'
 
 interface HeroSectionProps {
   locale: string
@@ -29,13 +29,11 @@ export function HeroSection({ locale, badge, title1, title2, subtitle, ctaPrimar
   }, [])
 
   return (
-    <section ref={heroRef} className="relative min-h-[92vh] flex items-center overflow-hidden noise" style={{ background: 'var(--bg)' }}>
+    <section ref={heroRef} className="relative min-h-[92vh] flex items-center overflow-hidden noise">
       <div className="absolute inset-0 hero-grid pointer-events-none" />
       <div className="absolute inset-0 spotlight pointer-events-none" />
-      <div className="absolute -top-32 -left-20 h-[520px] w-[520px] rounded-full blob-a pointer-events-none"
-        style={{ background: 'radial-gradient(circle at 30% 30%, oklch(0.65 0.24 38 / 0.55), transparent 60%)' }} />
-      <div className="absolute -bottom-32 -right-20 h-[520px] w-[520px] rounded-full blob-b pointer-events-none"
-        style={{ background: 'radial-gradient(circle at 70% 70%, oklch(0.58 0.22 25 / 0.4), transparent 60%)' }} />
+      <div className="absolute -top-32 -left-20 h-[520px] w-[520px] rounded-full blob-gradient-a blob-a pointer-events-none" />
+      <div className="absolute -bottom-32 -right-20 h-[520px] w-[520px] rounded-full blob-gradient-b blob-b pointer-events-none" />
 
       <div className="hidden lg:flex absolute left-6 top-1/2 -translate-y-1/2 flex-col mono text-[10px] tracking-[0.2em]" style={{ color: 'var(--fg-4)' }}>
         <span className="rotate-180" style={{ writingMode: 'vertical-rl' }}>ITERNAL.SK / MAIS / 2004 — 2026</span>
@@ -45,53 +43,61 @@ export function HeroSection({ locale, badge, title1, title2, subtitle, ctaPrimar
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 w-full py-24">
-        <FadeIn delay={0} className="flex justify-center">
-          <div className="glass rounded-full pl-1 pr-4 py-1 flex items-center gap-2.5 text-[12.5px]">
-            <span className="rounded-full px-2.5 py-0.5 mono text-[10px] tracking-wider uppercase"
-              style={{ background: 'oklch(0.72 0.2 40 / 0.18)', border: '1px solid oklch(0.72 0.2 40 / 0.4)', color: 'var(--orange)' }}>
-              22 rokov
-            </span>
-            <span style={{ color: 'var(--fg-2)' }}>{badge}</span>
+        <Reveal>
+          <div className="flex justify-center">
+            <div className="glass rounded-full pl-1 pr-4 py-1 flex items-center gap-2.5 text-[12.5px]">
+              <span
+                className="rounded-full px-2.5 py-0.5 mono text-[10px] tracking-wider uppercase"
+                style={{ background: 'oklch(0.72 0.2 40 / 0.18)', border: '1px solid oklch(0.72 0.2 40 / 0.4)', color: 'var(--orange)' }}
+              >
+                22 rokov
+              </span>
+              <span style={{ color: 'var(--fg-2)' }}>{badge}</span>
+            </div>
           </div>
-        </FadeIn>
+        </Reveal>
 
-        <FadeIn delay={0.1}>
+        <Reveal delay={100}>
           <h1 className="font-display text-center mt-8 text-[48px] md:text-[84px] leading-[0.95]">
             <span className="gradient-text">{title1}</span>
             <br />
             <span className="text-white">{title2}</span>
           </h1>
-        </FadeIn>
+        </Reveal>
 
-        <FadeIn delay={0.22}>
+        <Reveal delay={220}>
           <p className="mt-8 text-center text-[17px] md:text-[19px] leading-relaxed max-w-2xl mx-auto" style={{ color: 'var(--fg-2)' }}>
             {subtitle}
           </p>
-        </FadeIn>
+        </Reveal>
 
-        <FadeIn delay={0.34}>
+        <Reveal delay={340}>
           <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center items-center">
-            <Link href={`/${locale}/podpora`}
-              className="btn-primary rounded-xl px-6 py-3.5 text-[14px] font-medium inline-flex items-center gap-2 transition-all">
+            <Link
+              href={`/${locale}/podpora`}
+              className="btn-primary rounded-xl px-6 py-3.5 text-[14px] font-medium inline-flex items-center gap-2 group"
+            >
               {ctaPrimary}
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-hover:translate-x-0.5">
                 <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
               </svg>
             </Link>
-            <Link href={`/${locale}/pre-institucie`}
-              className="btn-ghost rounded-xl px-6 py-3.5 text-[14px] font-medium inline-flex items-center gap-2 backdrop-blur-md transition-all">
+            <Link
+              href={`/${locale}/pre-institucie`}
+              className="btn-ghost rounded-xl px-6 py-3.5 text-[14px] font-medium inline-flex items-center gap-2 backdrop-blur-md"
+            >
               {ctaSecondary}
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="m6 9 6 6 6-6" />
               </svg>
             </Link>
           </div>
-        </FadeIn>
+        </Reveal>
 
-        <FadeIn delay={0.46}>
+        <Reveal delay={460}>
           <div className="mt-14 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-[12.5px]" style={{ color: 'var(--fg-3)' }}>
-            <span className="flex items-center gap-2">
-              <span className="live-dot flex-shrink-0" />
+            <span className="live-dot-wrap flex items-center gap-2">
+              <span className="live-dot" />
               SLA 99,9% uptime
             </span>
             <span className="flex items-center gap-2">
@@ -107,16 +113,16 @@ export function HeroSection({ locale, badge, title1, title2, subtitle, ctaPrimar
               Open API
             </span>
           </div>
-        </FadeIn>
+        </Reveal>
 
-        <FadeIn delay={0.64}>
+        <Reveal delay={640}>
           <div className="mt-16 flex justify-center">
             <div className="mono text-[10px] tracking-[0.25em] flex flex-col items-center gap-2" style={{ color: 'var(--fg-4)' }}>
               SCROLL
               <div className="w-px h-8" style={{ background: 'linear-gradient(to bottom, var(--fg-4), transparent)' }} />
             </div>
           </div>
-        </FadeIn>
+        </Reveal>
       </div>
     </section>
   )

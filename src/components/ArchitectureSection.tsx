@@ -1,5 +1,5 @@
 'use client'
-import { FadeIn } from '@/components/FadeIn'
+import { Reveal } from '@/components/ui/Reveal'
 
 const techCards = [
   { label: 'Single sign-on', value: 'LDAP / OAuth2' },
@@ -21,133 +21,100 @@ const satellites = [
 
 function polarToPercent(angleDeg: number, r: number) {
   const rad = (angleDeg * Math.PI) / 180
-  return {
-    left: 50 + r * Math.cos(rad),
-    top: 50 + r * Math.sin(rad),
-  }
+  return { left: 50 + r * Math.cos(rad), top: 50 + r * Math.sin(rad) }
 }
 
 export function ArchitectureSection() {
   return (
-    <section className="mx-auto max-w-7xl px-6 py-24">
-      <div className="grid md:grid-cols-2 gap-16 items-center">
+    <section className="relative py-28 overflow-hidden">
+      <div className="absolute inset-0 dots opacity-40 pointer-events-none" />
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="grid md:grid-cols-2 gap-16 items-center">
 
-        {/* Left column */}
-        <FadeIn>
-          <div className="kicker mb-5">Architektúra</div>
-          <h2 className="font-display text-[36px] md:text-[52px] leading-[1.0] mb-6 text-white">
-            Jedno jadro.<br />
-            <span className="gradient-text">Osem modulov.</span><br />
-            Nekonečné možnosti.
-          </h2>
-          <p className="text-[15px] leading-relaxed mb-8" style={{ color: 'var(--fg-3)' }}>
-            Modulárna architektúra umožňuje nasadiť presne to, čo vaša inštitúcia potrebuje.
-            Každý modul komunikuje cez spoločné jadro — bez duplicít, bez silov.
-          </p>
+          <Reveal>
+            <div>
+              <div className="kicker">Architektúra</div>
+              <h2 className="font-display text-[40px] md:text-[56px] mt-5 text-white leading-[0.98]">
+                Jedno jadro.<br />
+                <span className="gradient-text">Osem modulov.</span><br />
+                Nekonečné možnosti.
+              </h2>
+              <p className="mt-6 text-[16px] leading-relaxed max-w-lg" style={{ color: 'var(--fg-2)' }}>
+                MAIS je postavený modulárne — každá inštitúcia si vyberá len funkcie, ktoré reálne potrebuje. Systém rastie s vami, bez technického dlhu a bez zbytočného kódu.
+              </p>
+              <div className="mt-8 grid grid-cols-2 gap-3 max-w-md">
+                {techCards.map(({ label, value }) => (
+                  <div key={label} className="glass rounded-lg px-4 py-3">
+                    <div className="mono text-[10px] tracking-[0.2em] uppercase" style={{ color: 'var(--fg-4)' }}>{label}</div>
+                    <div className="mt-1 text-[13px] text-white mono">{value}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Reveal>
 
-          <div className="grid grid-cols-2 gap-3">
-            {techCards.map((c) => (
-              <div key={c.label} className="glass rounded-xl p-4" style={{ borderColor: 'var(--line)' }}>
-                <div className="mono text-[10px] tracking-[0.18em] mb-1.5" style={{ color: 'var(--fg-4)' }}>
-                  {c.label.toUpperCase()}
-                </div>
-                <div className="mono text-[12px] font-semibold" style={{ color: 'var(--orange)' }}>
-                  {c.value}
+          <Reveal delay={150}>
+            <div className="relative aspect-square max-w-[520px] mx-auto">
+              {[0.45, 0.68, 0.92].map((s, i) => (
+                <div
+                  key={i}
+                  className="absolute inset-0 rounded-full"
+                  style={{ margin: `${(1 - s) * 50}%`, border: '1px solid var(--line-strong)' }}
+                />
+              ))}
+              <div
+                className="orbit-ring absolute inset-0 rounded-full border border-dashed pointer-events-none"
+                style={{ margin: '6%', borderColor: 'oklch(0.6 0.15 40 / 0.25)' }}
+              />
+              <div
+                className="orbit-ring rev absolute inset-0 rounded-full border border-dashed pointer-events-none"
+                style={{ margin: '20%', borderColor: 'oklch(0.7 0.14 70 / 0.2)' }}
+              />
+
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div
+                  className="relative rounded-2xl node flex flex-col items-center justify-center text-center"
+                  style={{ width: '30%', aspectRatio: '1/1' }}
+                >
+                  <div className="beam always rounded-2xl" />
+                  <div className="font-display text-[22px] text-white">MAIS</div>
+                  <div className="mono text-[10px] mt-1" style={{ color: 'var(--fg-3)' }}>core engine</div>
                 </div>
               </div>
-            ))}
-          </div>
-        </FadeIn>
 
-        {/* Right column — orbit diagram */}
-        <FadeIn delay={0.15}>
-          <div className="relative mx-auto" style={{ aspectRatio: '1/1', maxWidth: 520 }}>
-
-            {/* Static concentric rings */}
-            {[27, 16, 4].map((margin) => (
-              <div
-                key={margin}
-                className="absolute rounded-full"
-                style={{
-                  inset: `${margin}%`,
-                  border: '1px solid var(--line-strong)',
-                }}
-              />
-            ))}
-
-            {/* Dashed orbit ring 1 */}
-            <div
-              className="orbit-ring absolute rounded-full pointer-events-none"
-              style={{
-                inset: '16%',
-                border: '1px dashed oklch(0.72 0.2 40 / 0.3)',
-              }}
-            />
-
-            {/* Dashed orbit ring 2 */}
-            <div
-              className="orbit-ring rev absolute rounded-full pointer-events-none"
-              style={{
-                inset: '27%',
-                border: '1px dashed oklch(0.82 0.17 70 / 0.2)',
-              }}
-            />
-
-            {/* SVG lines from center to each satellite */}
-            <svg
-              className="absolute inset-0 w-full h-full pointer-events-none"
-              viewBox="0 0 100 100"
-              preserveAspectRatio="none"
-            >
-              {satellites.map((s) => {
-                const pos = polarToPercent(s.angle, 46)
+              {satellites.map((m, i) => {
+                const pos = polarToPercent(m.angle, 46)
                 return (
-                  <line
-                    key={s.label}
-                    x1="50" y1="50"
-                    x2={pos.left} y2={pos.top}
-                    stroke="oklch(0.72 0.2 40 / 0.15)"
-                    strokeWidth="0.4"
-                  />
+                  <div
+                    key={i}
+                    className="absolute"
+                    style={{ left: `${pos.left}%`, top: `${pos.top}%`, transform: 'translate(-50%,-50%)' }}
+                  >
+                    <div className="node rounded-lg px-3 py-1.5 text-[12px] mono whitespace-nowrap shadow-lg" style={{ color: 'var(--fg)' }}>
+                      {m.label}
+                    </div>
+                  </div>
                 )
               })}
-            </svg>
 
-            {/* Satellite nodes */}
-            {satellites.map((s) => {
-              const pos = polarToPercent(s.angle, 46)
-              return (
-                <div
-                  key={s.label}
-                  className="glass absolute mono text-[12px] rounded-lg px-3 py-1.5 whitespace-nowrap -translate-x-1/2 -translate-y-1/2"
-                  style={{
-                    left: `${pos.left}%`,
-                    top: `${pos.top}%`,
-                    color: 'var(--fg-2)',
-                    borderColor: 'var(--line)',
-                    fontSize: 11,
-                  }}
-                >
-                  {s.label}
-                </div>
-              )
-            })}
-
-            {/* MAIS core center */}
-            <div
-              className="glass absolute -translate-x-1/2 -translate-y-1/2 rounded-2xl flex flex-col items-center justify-center gap-1"
-              style={{
-                left: '50%', top: '50%',
-                width: '22%', height: '22%',
-                borderColor: 'oklch(0.72 0.2 40 / 0.5)',
-                background: 'linear-gradient(180deg, oklch(0.25 0.02 40 / 0.9), oklch(0.18 0.016 40 / 0.9))',
-              }}
-            >
-              <div className="font-display text-[13px] gradient-text">MAIS</div>
-              <div className="mono text-[9px]" style={{ color: 'var(--fg-4)' }}>core</div>
+              <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none">
+                {satellites.map((m, i) => {
+                  const pos = polarToPercent(m.angle, 46)
+                  return (
+                    <line
+                      key={i}
+                      x1="50" y1="50"
+                      x2={pos.left} y2={pos.top}
+                      stroke="oklch(0.7 0.12 40 / 0.22)"
+                      strokeWidth="0.2"
+                      strokeDasharray="0.8 0.6"
+                    />
+                  )
+                })}
+              </svg>
             </div>
-          </div>
-        </FadeIn>
+          </Reveal>
+        </div>
       </div>
     </section>
   )

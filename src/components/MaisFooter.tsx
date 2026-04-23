@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 interface MaisFooterProps {
   locale: string
@@ -14,57 +15,75 @@ interface MaisFooterProps {
 }
 
 export function MaisFooter({ locale, labels }: MaisFooterProps) {
+  const year = new Date().getFullYear()
+  const build = new Date().toISOString().slice(0, 10).replace(/-/g, '')
+
   return (
-    <footer id="contact" className="relative overflow-hidden border-t" style={{ borderColor: 'var(--line)', background: 'var(--bg)' }}>
-      <div className="pointer-events-none absolute inset-0 hero-grid opacity-30" />
-
-      <div className="relative z-10 mx-auto max-w-7xl px-6 pt-16 pb-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-14">
-          <div>
-            <div className="font-display text-[28px] gradient-text mb-3 w-fit">MAIS</div>
-            <p className="text-[13px] leading-relaxed max-w-[260px]" style={{ color: 'var(--fg-3)' }}>{labels.tagline}</p>
-            <div className="mt-5 flex flex-col gap-1.5 text-[13px]" style={{ color: 'var(--fg-3)' }}>
-              <span>ITernal s.r.o.</span>
-              <span>Sládkovičova 533/20, 018 41 Dubnica nad Váhom</span>
-              <a href="tel:+421915724757" className="ln hover:text-white transition-colors w-fit" style={{ color: 'var(--fg-2)' }}>+421 915 724 757</a>
-              <a href="mailto:podpora@mais.sk" className="ln hover:text-white transition-colors w-fit" style={{ color: 'var(--fg-2)' }}>podpora@mais.sk</a>
-            </div>
+    <footer className="border-t relative" style={{ borderColor: 'var(--line)' }}>
+      {/* Giant wordmark */}
+      <div className="relative overflow-hidden border-b" style={{ borderColor: 'var(--line)' }}>
+        <div className="mx-auto max-w-7xl px-6 py-14">
+          <div
+            className="font-display tracking-tighter leading-none text-[14vw] md:text-[11vw] text-center select-none"
+            style={{
+              background: 'linear-gradient(180deg, oklch(0.35 0.06 40 / 0.5), oklch(0.14 0.012 40 / 0))',
+              WebkitBackgroundClip: 'text', backgroundClip: 'text',
+              WebkitTextFillColor: 'transparent', color: 'transparent',
+            }}
+          >
+            MAIS
           </div>
+        </div>
+      </div>
 
-          <div>
-            <div className="mono text-[10px] tracking-[0.2em] uppercase mb-4" style={{ color: 'var(--fg-4)' }}>{labels.navigation}</div>
-            <div className="flex flex-col gap-2.5">
-              {[
-                { href: `/${locale}/skoly`, label: labels.schools },
-                { href: `/${locale}/pre-institucie`, label: labels.forInstitutions },
-                { href: `/${locale}/podpora`, label: labels.support },
-                { href: `/${locale}/kontakt`, label: labels.contact },
-              ].map(({ href, label }) => (
-                <Link key={href} href={href}
-                  className="ln text-[13px] transition-colors hover:text-white w-fit"
-                  style={{ color: 'var(--fg-3)' }}>
-                  {label}
-                </Link>
-              ))}
+      {/* Main grid */}
+      <div className="mx-auto max-w-7xl px-6 py-14 grid grid-cols-1 md:grid-cols-4 gap-10 text-[13.5px]" style={{ color: 'var(--fg-3)' }}>
+        <div className="md:col-span-2">
+          <div className="flex items-center gap-2.5">
+            <div className="relative h-8 w-8 overflow-hidden" style={{ filter: 'drop-shadow(0 4px 14px oklch(0.65 0.22 40 / 0.4))' }}>
+              <Image src="/logo-mais.png" alt="MAIS" width={32} height={32} className="w-full h-full object-contain" />
             </div>
+            <span className="font-display text-white text-[17px]">MAIS</span>
           </div>
-
-          <div>
-            <div className="mono text-[10px] tracking-[0.2em] uppercase mb-4" style={{ color: 'var(--fg-4)' }}>MAIS Moduly</div>
-            <div className="flex flex-col gap-2.5 text-[13px]" style={{ color: 'var(--fg-3)' }}>
-              {['Študijná agenda', 'E-prihláška', 'Harmonogramy', 'SIMUS / CVTI', 'Knižnica', 'Ekonomika'].map(m => (
-                <span key={m}>{m}</span>
-              ))}
+          <p className="mt-4 max-w-sm" style={{ textWrap: 'pretty' } as React.CSSProperties}>{labels.tagline}</p>
+          <div className="mt-6">
+            <div className="chip-mono inline-flex items-center gap-1.5">
+              <span className="live-dot" style={{ width: 6, height: 6 }} /> Všetky systémy online
             </div>
           </div>
         </div>
 
-        <div className="border-t pt-6 flex flex-col sm:flex-row items-center justify-between gap-3" style={{ borderColor: 'var(--line)' }}>
-          <div className="mono text-[10px] tracking-[0.2em]" style={{ color: 'var(--fg-4)' }}>
-            © {new Date().getFullYear()} ITERNAL S.R.O.
+        <div>
+          <div className="mono text-[10.5px] tracking-[0.2em] uppercase mb-4" style={{ color: 'var(--fg-4)' }}>{labels.navigation}</div>
+          <div className="flex flex-col gap-2.5">
+            {[
+              { href: `/${locale}#schools`, label: labels.schools },
+              { href: `/${locale}/pre-institucie`, label: labels.forInstitutions },
+              { href: `/${locale}/podpora`, label: labels.support },
+              { href: `/${locale}#contact`, label: labels.contact },
+            ].map(({ href, label }) => (
+              <Link key={href} href={href} className="hover:text-white transition-colors">{label}</Link>
+            ))}
           </div>
-          <div className="mono text-[10px] tracking-[0.2em]" style={{ color: 'var(--fg-4)' }}>
-            {labels.rights}
+        </div>
+
+        <div>
+          <div className="mono text-[10.5px] tracking-[0.2em] uppercase mb-4" style={{ color: 'var(--fg-4)' }}>ITernal s.r.o.</div>
+          <div className="text-white/90">Sládkovičova 533/20</div>
+          <div>018 41 Dubnica nad Váhom</div>
+          <a href="tel:+421915724757" className="mt-3 block hover:text-white transition-colors mono">+421 915 724 757</a>
+          <a href="mailto:podpora@mais.sk" className="hover:text-white transition-colors mono">podpora@mais.sk</a>
+        </div>
+      </div>
+
+      {/* Bottom bar */}
+      <div className="border-t" style={{ borderColor: 'var(--line)' }}>
+        <div className="mx-auto max-w-7xl px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-[12px]" style={{ color: 'var(--fg-4)' }}>
+          <div>© {year} ITernal s.r.o. · {labels.rights}</div>
+          <div className="flex items-center gap-4 mono">
+            <span>v2026.4.1</span>
+            <span>·</span>
+            <span>Build {build}</span>
           </div>
         </div>
       </div>
