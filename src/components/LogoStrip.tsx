@@ -24,9 +24,9 @@ export function LogoStrip() {
       <div className="mais-marquee flex items-center gap-12 w-max">
         {items.map((inst, i) => (
           <div key={i} className="flex items-center gap-3 flex-shrink-0">
-            <div className="mono text-[13px] font-semibold" style={{ color: 'var(--mais-orange)' }}>{inst.short}</div>
-            <div className="text-[12px]" style={{ color: 'var(--mais-fg-4)' }}>{inst.name}</div>
-            <div className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: 'var(--mais-line-strong)' }} />
+            <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: 'var(--mais-orange)' }} />
+            <div className="mono text-[12px] font-semibold tracking-wider" style={{ color: 'var(--mais-fg)' }}>{inst.short}</div>
+            <div className="text-[12px]" style={{ color: 'var(--mais-fg-3)' }}>{inst.name}</div>
           </div>
         ))}
       </div>

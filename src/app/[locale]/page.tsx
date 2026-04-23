@@ -76,9 +76,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           {stats.map((s, i) => (
             <FadeIn key={s.label} delay={i * 0.08}>
               <div className="mais-bento-card p-6 text-center">
-                <div className="mais-stripe" />
-                <div className="font-display text-[44px] leading-none mb-1.5 mais-gradient-text">
-                  <NumberTicker value={s.value} className="mais-gradient-text" />{s.suffix}
+                <div className="mais-stripe" style={{ opacity: 1 }} />
+                <div className="font-display text-[44px] leading-none mb-1.5" style={{ color: 'var(--mais-fg)' }}>
+                  <NumberTicker value={s.value} />{s.suffix}
                 </div>
                 <div className="text-[13px] font-medium mb-0.5" style={{ color: 'var(--mais-fg-2)' }}>{s.label}</div>
                 <div className="mono text-[10px] tracking-wider" style={{ color: 'var(--mais-fg-4)' }}>{s.sub}</div>
