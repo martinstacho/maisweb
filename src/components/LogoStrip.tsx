@@ -1,32 +1,73 @@
 'use client'
 
 const INSTITUTIONS = [
-  { short: 'TUKE', name: 'Technická univerzita v Košiciach' },
-  { short: 'TRUNI', name: 'Trnavská univerzita v Trnave' },
-  { short: 'SZU', name: 'Slovenská zdravotnícka univerzita' },
-  { short: 'UNIPO', name: 'Prešovská univerzita v Prešove' },
-  { short: 'AOS', name: 'Akadémia ozbrojených síl' },
-  { short: 'APZ', name: 'Akadémia policajného zboru' },
-  { short: 'BISLA', name: 'BISLA Slovak International School of Liberal Arts' },
-  { short: 'DTI', name: 'Dubnica Institute of Technology' },
-  { short: 'VŠBM', name: 'Vysoká škola bezpečnostného manažérstva' },
+  { short: 'TUKE',  city: 'Košice',              accent: 'oklch(0.72 0.2 40)' },
+  { short: 'TRUNI', city: 'Trnava',              accent: 'oklch(0.68 0.21 25)' },
+  { short: 'SZU',   city: 'Bratislava',          accent: 'oklch(0.82 0.17 70)' },
+  { short: 'UNIPO', city: 'Prešov',              accent: 'oklch(0.72 0.2 40)' },
+  { short: 'AOS',   city: 'Liptovský Mikuláš',  accent: 'oklch(0.68 0.21 25)' },
+  { short: 'APZ',   city: 'Bratislava',          accent: 'oklch(0.78 0.13 145)' },
+  { short: 'BISLA', city: 'Bratislava',          accent: 'oklch(0.82 0.17 70)' },
+  { short: 'DTI',   city: 'Dubnica nad Váhom',  accent: 'oklch(0.72 0.2 40)' },
+  { short: 'VŠBM',  city: 'Košice',              accent: 'oklch(0.68 0.21 25)' },
 ]
 
 const items = [...INSTITUTIONS, ...INSTITUTIONS]
 
+const monoStyle: React.CSSProperties = {
+  fontFamily: 'var(--font-jetbrains-mono), JetBrains Mono, monospace',
+}
+
 export function LogoStrip() {
   return (
-    <div className="relative border-y overflow-hidden py-6" style={{ borderColor: 'var(--mais-line)', background: 'var(--mais-bg-2)' }}>
+    <div
+      className="relative overflow-hidden py-8"
+      style={{ borderTop: '1px solid var(--mais-line)', borderBottom: '1px solid var(--mais-line)', background: 'var(--mais-bg-2)' }}
+    >
+      {/* Header text */}
+      <div className="mb-6 text-center" style={{ ...monoStyle, fontSize: '11px', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'var(--mais-fg-4)' }}>
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '12px' }}>
+          <span style={{ height: '1px', width: '40px', background: 'oklch(0.45 0.03 40 / 0.55)', display: 'inline-block' }} />
+          Dôverujú nám · 4 univerzity + 5 VŠ · 30 000+ študentov
+          <span style={{ height: '1px', width: '40px', background: 'oklch(0.45 0.03 40 / 0.55)', display: 'inline-block' }} />
+        </span>
+      </div>
+
+      {/* Fade edges */}
       <div className="absolute left-0 top-0 bottom-0 w-24 pointer-events-none z-10"
         style={{ background: 'linear-gradient(to right, var(--mais-bg-2), transparent)' }} />
       <div className="absolute right-0 top-0 bottom-0 w-24 pointer-events-none z-10"
         style={{ background: 'linear-gradient(to left, var(--mais-bg-2), transparent)' }} />
-      <div className="mais-marquee flex items-center gap-12 w-max">
+
+      {/* Marquee */}
+      <div className="mais-marquee flex items-center w-max" style={{ gap: '40px' }}>
         {items.map((inst, i) => (
-          <div key={i} className="flex items-center gap-3 flex-shrink-0">
-            <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: 'var(--mais-orange)' }} />
-            <div className="mono text-[12px] font-semibold tracking-wider" style={{ color: 'var(--mais-fg)' }}>{inst.short}</div>
-            <div className="text-[12px]" style={{ color: 'var(--mais-fg-3)' }}>{inst.name}</div>
+          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', flexShrink: 0 }}>
+            {/* Glow dot */}
+            <span style={{
+              display: 'inline-block', width: '10px', height: '10px', borderRadius: '9999px',
+              background: inst.accent,
+              boxShadow: `0 0 14px ${inst.accent}`,
+              flexShrink: 0,
+            }} />
+            {/* Short name */}
+            <span style={{
+              fontFamily: 'var(--font-geist-sans), Geist, sans-serif',
+              fontWeight: 800, fontSize: '22px',
+              letterSpacing: '-0.025em', whiteSpace: 'nowrap',
+              color: 'oklch(0.68 0.01 40)',
+            }}>
+              {inst.short}
+            </span>
+            {/* City */}
+            <span style={{
+              ...monoStyle,
+              fontSize: '10px', letterSpacing: '0.18em', textTransform: 'uppercase',
+              color: 'var(--mais-fg-4)',
+              whiteSpace: 'nowrap',
+            }}>
+              {inst.city}
+            </span>
           </div>
         ))}
       </div>

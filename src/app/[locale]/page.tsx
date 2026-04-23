@@ -23,10 +23,10 @@ async function getPartners() {
 }
 
 const stats = [
-  { value: 22, suffix: '', label: 'rokov na trhu', sub: 'od roku 2004' },
-  { value: 9, suffix: '', label: 'inštitúcií', sub: '3 verejné · 3 štátne · 3 súkromné' },
-  { value: 50000, suffix: '+', label: 'aktívnych používateľov', sub: 'každý semester' },
-  { value: 100, suffix: '%', label: 'kompatibilný', sub: 's Bolonským procesom' },
+  { value: 22,    suffix: '',  label: 'rokov na trhu',          sub: 'od roku 2004',                     accent: 'oklch(0.72 0.2 40)' },
+  { value: 9,     suffix: '',  label: 'inštitúcií',             sub: '3 verejné · 3 štátne · 3 súkromné', accent: 'oklch(0.68 0.21 25)' },
+  { value: 50000, suffix: '+', label: 'aktívnych používateľov', sub: 'každý semester',                    accent: 'oklch(0.82 0.17 70)' },
+  { value: 100,   suffix: '%', label: 'kompatibilný',           sub: 's Bolonským procesom',              accent: 'oklch(0.78 0.13 145)' },
 ] as const
 
 const features = [
@@ -72,12 +72,21 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
       {/* Stats */}
       <section className="mx-auto max-w-7xl px-6 py-20">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div
+          className="grid grid-cols-2 md:grid-cols-4 rounded-2xl overflow-hidden"
+          style={{ background: 'var(--mais-line)', gap: '1px' }}
+        >
           {stats.map((s, i) => (
             <FadeIn key={s.label} delay={i * 0.08}>
-              <div className="mais-bento-card p-6 text-center">
-                <div className="mais-stripe" style={{ opacity: 1 }} />
-                <div className="font-display text-[44px] leading-none mb-1.5" style={{ color: 'var(--mais-fg)' }}>
+              <div className="relative overflow-hidden p-6 text-center h-full" style={{ background: 'oklch(0.16 0.014 40)' }}>
+                {/* Accent bar */}
+                <div style={{
+                  position: 'absolute', top: 0, left: 0,
+                  height: '2px', width: '48px',
+                  background: s.accent,
+                  boxShadow: `0 0 20px ${s.accent}`,
+                }} />
+                <div className="font-display text-[44px] leading-none mb-1.5 pt-3" style={{ color: 'var(--mais-fg)' }}>
                   <NumberTicker value={s.value} />{s.suffix}
                 </div>
                 <div className="text-[13px] font-medium mb-0.5" style={{ color: 'var(--mais-fg-2)' }}>{s.label}</div>
