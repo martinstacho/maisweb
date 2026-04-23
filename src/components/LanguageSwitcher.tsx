@@ -31,14 +31,14 @@ export function LanguageSwitcher() {
             onClick={() => switchLocale(l.code)}
             className="mono text-[11px] px-1.5 py-0.5 rounded transition-all"
             style={{
-              color: currentLocale === l.code ? 'var(--mais-fg)' : 'var(--mais-fg-4)',
+              color: currentLocale === l.code ? 'var(--fg)' : 'var(--fg-4)',
               fontWeight: currentLocale === l.code ? 600 : 400,
             }}
           >
             {l.label}
           </button>
           {i < locales.length - 1 && (
-            <span className="mono text-[11px]" style={{ color: 'var(--mais-fg-4)' }}>·</span>
+            <span className="mono text-[11px]" style={{ color: 'var(--fg-4)' }}>·</span>
           )}
         </span>
       ))}

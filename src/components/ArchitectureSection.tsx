@@ -34,13 +34,13 @@ export function ArchitectureSection() {
 
         {/* Left column */}
         <FadeIn>
-          <div className="mais-kicker mb-5">Architektúra</div>
-          <h2 className="font-display text-[36px] md:text-[52px] leading-[1.0] mb-6" style={{ color: 'var(--mais-fg)' }}>
+          <div className="kicker mb-5">Architektúra</div>
+          <h2 className="font-display text-[36px] md:text-[52px] leading-[1.0] mb-6" style={{ color: 'var(--fg)' }}>
             Jedno jadro.<br />
-            <span className="mais-gradient-text">Osem modulov.</span><br />
+            <span className="gradient-text">Osem modulov.</span><br />
             Nekonečné možnosti.
           </h2>
-          <p className="text-[15px] leading-relaxed mb-8" style={{ color: 'var(--mais-fg-3)' }}>
+          <p className="text-[15px] leading-relaxed mb-8" style={{ color: 'var(--fg-3)' }}>
             Modulárna architektúra umožňuje nasadiť presne to, čo vaša inštitúcia potrebuje.
             Každý modul komunikuje cez spoločné jadro — bez duplicít, bez silov.
           </p>
@@ -48,10 +48,10 @@ export function ArchitectureSection() {
           <div className="grid grid-cols-2 gap-3">
             {techCards.map((c) => (
               <div key={c.label} className="glass rounded-xl p-4" style={{ borderColor: 'var(--line)' }}>
-                <div className="mono text-[10px] tracking-[0.18em] mb-1.5" style={{ color: 'var(--mais-fg-4)' }}>
+                <div className="mono text-[10px] tracking-[0.18em] mb-1.5" style={{ color: 'var(--fg-4)' }}>
                   {c.label.toUpperCase()}
                 </div>
-                <div className="mono text-[12px] font-semibold" style={{ color: 'var(--mais-orange)' }}>
+                <div className="mono text-[12px] font-semibold" style={{ color: 'var(--orange)' }}>
                   {c.value}
                 </div>
               </div>
@@ -123,7 +123,7 @@ export function ArchitectureSection() {
                   style={{
                     left: `${pos.left}%`,
                     top: `${pos.top}%`,
-                    color: 'var(--mais-fg-2)',
+                    color: 'var(--fg-2)',
                     borderColor: 'var(--line)',
                     fontSize: 11,
                   }}
@@ -143,8 +143,8 @@ export function ArchitectureSection() {
                 background: 'linear-gradient(180deg, oklch(0.25 0.02 40 / 0.9), oklch(0.18 0.016 40 / 0.9))',
               }}
             >
-              <div className="font-display text-[13px] mais-gradient-text">MAIS</div>
-              <div className="mono text-[9px]" style={{ color: 'var(--mais-fg-4)' }}>core</div>
+              <div className="font-display text-[13px] gradient-text">MAIS</div>
+              <div className="mono text-[9px]" style={{ color: 'var(--fg-4)' }}>core</div>
             </div>
           </div>
         </FadeIn>

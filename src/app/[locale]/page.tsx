@@ -48,7 +48,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   ])
 
   return (
-    <div className="min-h-screen" style={{ background: 'var(--mais-bg)', color: 'var(--mais-fg)' }}>
+    <div className="min-h-screen" style={{ background: 'var(--bg)', color: 'var(--fg)' }}>
       <Navbar locale={locale} labels={{
         features: t('features'),
         schools: t('schools'),
@@ -74,7 +74,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <section className="mx-auto max-w-7xl px-6 py-20">
         <div
           className="grid grid-cols-2 md:grid-cols-4 rounded-2xl overflow-hidden"
-          style={{ background: 'var(--mais-line)', gap: '1px' }}
+          style={{ background: 'var(--line)', gap: '1px', border: '1px solid var(--line)' }}
         >
           {stats.map((s, i) => (
             <FadeIn key={s.label} delay={i * 0.08}>
@@ -86,11 +86,18 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                   background: s.accent,
                   boxShadow: `0 0 20px ${s.accent}`,
                 }} />
-                <div className="font-display text-[44px] leading-none mb-1.5 pt-3" style={{ color: 'var(--mais-fg)' }}>
+                {/* Index */}
+                <div className="mono text-[10px] tracking-[0.25em] uppercase pt-3" style={{ color: 'var(--fg-4)' }}>
+                  /{String(i + 1).padStart(2, '0')}
+                </div>
+                {/* Number */}
+                <div className="font-display text-[44px] md:text-[56px] leading-none text-white mt-2">
                   <NumberTicker value={s.value} />{s.suffix}
                 </div>
-                <div className="text-[13px] font-medium mb-0.5" style={{ color: 'var(--mais-fg-2)' }}>{s.label}</div>
-                <div className="mono text-[10px] tracking-wider" style={{ color: 'var(--mais-fg-4)' }}>{s.sub}</div>
+                {/* Label */}
+                <div className="text-[14px] font-medium mt-3" style={{ color: 'var(--fg)' }}>{s.label}</div>
+                {/* Sub */}
+                <div className="mono text-[12.5px] mt-1" style={{ color: 'var(--fg-3)' }}>{s.sub}</div>
               </div>
             </FadeIn>
           ))}
@@ -100,10 +107,10 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       {/* Features */}
       <section id="features" className="mx-auto max-w-7xl px-6 pb-24">
         <FadeIn className="mb-12 text-center">
-          <div className="mais-kicker mb-4">Čo MAIS ponúka</div>
-          <h2 className="font-display text-[36px] md:text-[52px] leading-tight" style={{ color: 'var(--mais-fg)' }}>
+          <div className="kicker mb-4">Čo MAIS ponúka</div>
+          <h2 className="font-display text-[36px] md:text-[52px] leading-tight" style={{ color: 'var(--fg)' }}>
             Komplexná správa<br />
-            <span className="mais-gradient-text">akademickej agendy</span>
+            <span className="gradient-text">akademickej agendy</span>
           </h2>
         </FadeIn>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -118,14 +125,14 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <ArchitectureSection />
 
       {/* Partners */}
-      <section className="border-t py-24 px-6" style={{ borderColor: 'var(--mais-line)', background: 'var(--mais-bg-2)' }}>
+      <section className="border-t py-24 px-6" style={{ borderColor: 'var(--line)', background: 'var(--bg-2)' }}>
         <div className="mx-auto max-w-7xl">
           <FadeIn className="mb-12 text-center">
-            <div className="mais-kicker mb-4">Inštitúcie</div>
-            <h2 className="font-display text-[36px] md:text-[52px] leading-tight" style={{ color: 'var(--mais-fg)' }}>
-              Inštitúcie <span className="mais-gradient-text">používajúce MAIS</span>
+            <div className="kicker mb-4">Inštitúcie</div>
+            <h2 className="font-display text-[36px] md:text-[52px] leading-tight" style={{ color: 'var(--fg)' }}>
+              Inštitúcie <span className="gradient-text">používajúce MAIS</span>
             </h2>
-            <p className="mt-4 text-[15px]" style={{ color: 'var(--mais-fg-3)' }}>
+            <p className="mt-4 text-[15px]" style={{ color: 'var(--fg-3)' }}>
               Pridajte sa k špičkovým slovenským univerzitám a vysokým školám
             </p>
           </FadeIn>
@@ -142,16 +149,16 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         <FadeIn>
           <div className="mx-auto max-w-3xl rounded-3xl p-px" style={{ background: 'linear-gradient(135deg, oklch(0.55 0.22 40 / 0.5), oklch(0.4 0.15 40 / 0.2) 50%, oklch(0.55 0.22 40 / 0.5))' }}>
             <div className="relative overflow-hidden rounded-3xl p-12 text-center" style={{ background: 'linear-gradient(180deg, oklch(0.22 0.018 40 / 0.95), oklch(0.16 0.014 40 / 0.95))' }}>
-              <div className="mais-cta-conic absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-32 opacity-25 pointer-events-none" />
-              <div className="mais-kicker justify-center mb-6">Záujem o MAIS?</div>
-              <h2 className="font-display text-[32px] md:text-[44px] leading-tight mb-4" style={{ color: 'var(--mais-fg)' }}>
-                Zaujal vás MAIS<br /><span className="mais-gradient-text">pre vašu inštitúciu?</span>
+              <div className="cta-conic absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-32 opacity-25 pointer-events-none" />
+              <div className="kicker justify-center mb-6">Záujem o MAIS?</div>
+              <h2 className="font-display text-[32px] md:text-[44px] leading-tight mb-4" style={{ color: 'var(--fg)' }}>
+                Zaujal vás MAIS<br /><span className="gradient-text">pre vašu inštitúciu?</span>
               </h2>
-              <p className="mb-8 text-[15px]" style={{ color: 'var(--mais-fg-3)' }}>
+              <p className="mb-8 text-[15px]" style={{ color: 'var(--fg-3)' }}>
                 Kontaktujte nás pre demo a individuálnu ponuku nasadenia.
               </p>
               <Link href={`/${locale}/kontakt`}
-                className="mais-btn-primary rounded-xl px-8 py-3.5 text-[14px] font-medium inline-flex items-center gap-2">
+                className="btn-primary rounded-xl px-8 py-3.5 text-[14px] font-medium inline-flex items-center gap-2">
                 Kontaktovať ITernal
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />

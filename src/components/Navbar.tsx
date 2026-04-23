@@ -38,7 +38,7 @@ export function Navbar({ locale, labels }: NavbarProps) {
       className={`sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'shadow-lg' : ''}`}
       style={{
         background: scrolled ? 'oklch(0.14 0.012 40 / 0.97)' : 'oklch(0.14 0.012 40 / 0.82)',
-        borderBottom: '1px solid var(--mais-line)',
+        borderBottom: '1px solid var(--line)',
         backdropFilter: 'blur(16px)',
         WebkitBackdropFilter: 'blur(16px)',
       }}
@@ -47,8 +47,8 @@ export function Navbar({ locale, labels }: NavbarProps) {
         {/* Logo */}
         <Link href={`/${locale}`} className="flex items-center gap-2.5">
           <Image src="/logo-mais.png" alt="MAIS logo" width={32} height={32} className="rounded-lg" />
-          <span className="font-display text-[17px] tracking-tight" style={{ color: 'var(--mais-fg)' }}>MAIS</span>
-          <span className="mais-chip">v2026</span>
+          <span className="font-display text-[17px] tracking-tight" style={{ color: 'var(--fg)' }}>MAIS</span>
+          <span className="chip-mono">v2026</span>
         </Link>
 
         {/* Nav links */}
@@ -57,10 +57,10 @@ export function Navbar({ locale, labels }: NavbarProps) {
             <Link
               key={href}
               href={href}
-              className="mais-ln transition-colors"
-              style={{ color: 'var(--mais-fg-3)' }}
-              onMouseEnter={e => (e.currentTarget.style.color = 'var(--mais-fg)')}
-              onMouseLeave={e => (e.currentTarget.style.color = 'var(--mais-fg-3)')}
+              className="ln transition-colors"
+              style={{ color: 'var(--fg-3)' }}
+              onMouseEnter={e => (e.currentTarget.style.color = 'var(--fg)')}
+              onMouseLeave={e => (e.currentTarget.style.color = 'var(--fg-3)')}
             >
               {label}
             </Link>
@@ -70,12 +70,12 @@ export function Navbar({ locale, labels }: NavbarProps) {
         {/* Right side */}
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
-            <span className="mais-live-dot flex-shrink-0" />
+            <span className="live-dot flex-shrink-0" />
             <LanguageSwitcher />
           </div>
           <Link
             href={`/${locale}/pre-institucie`}
-            className="mais-btn-primary rounded-lg px-4 py-2 text-[13px] font-medium inline-flex items-center gap-1.5"
+            className="btn-primary rounded-lg px-4 py-2 text-[13px] font-medium inline-flex items-center gap-1.5"
           >
             {labels.cta}
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">

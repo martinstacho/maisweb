@@ -73,7 +73,7 @@ function LoginLink({ loginUrl }: { loginUrl: string }) {
   const rel = isMailto ? undefined : 'noopener noreferrer'
 
   return (
-    <a href={loginUrl} target={target} rel={rel} className="mais-action-row primary">
+    <a href={loginUrl} target={target} rel={rel} className="action-row primary">
       <span className="flex items-center gap-2.5">{icon}{label}</span>
       {isPdf || isMailto ? <ExtLinkIcon /> : <ArrowIcon />}
     </a>
@@ -84,12 +84,12 @@ export function SchoolSupportCard({ partner }: { partner: SupportPartner }) {
   return (
     <div
       className="glass rounded-2xl p-6 flex flex-col gap-4"
-      style={{ borderColor: 'var(--mais-line)' }}
+      style={{ borderColor: 'var(--line)' }}
     >
       {/* Header */}
       <div className="flex items-center justify-between">
         <span className="chip-mono">{padIndex(partner.displayOrder ?? 1)}</span>
-        <span className="mono text-[10px] tracking-[0.18em]" style={{ color: 'var(--mais-fg-4)' }}>
+        <span className="mono text-[10px] tracking-[0.18em]" style={{ color: 'var(--fg-4)' }}>
           {partner.city ?? partner.shortName}
         </span>
       </div>
@@ -97,7 +97,7 @@ export function SchoolSupportCard({ partner }: { partner: SupportPartner }) {
       {/* Monogram tile */}
       <div className="flex justify-center">
         <div
-          className="mais-mono-tile relative flex items-center justify-center overflow-hidden"
+          className="mono-tile relative flex items-center justify-center overflow-hidden"
           style={{ width: 104, height: 104, borderRadius: 16 }}
         >
           <span
@@ -108,7 +108,7 @@ export function SchoolSupportCard({ partner }: { partner: SupportPartner }) {
           </span>
           <div
             className="absolute"
-            style={{ left: 10, right: 10, bottom: 10, height: 3, borderRadius: 3, background: 'linear-gradient(90deg, var(--mais-orange), var(--mais-amber))' }}
+            style={{ left: 10, right: 10, bottom: 10, height: 3, borderRadius: 3, background: 'linear-gradient(90deg, var(--orange), var(--amber))' }}
           />
         </div>
       </div>
@@ -120,8 +120,8 @@ export function SchoolSupportCard({ partner }: { partner: SupportPartner }) {
 
       {/* Shortname · city */}
       <div className="flex items-center justify-center gap-2">
-        <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: 'var(--mais-orange)' }} />
-        <span className="mono text-[10.5px] tracking-[0.18em]" style={{ color: 'var(--mais-fg-3)' }}>
+        <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: 'var(--orange)' }} />
+        <span className="mono text-[10.5px] tracking-[0.18em]" style={{ color: 'var(--fg-3)' }}>
           {partner.shortName}{partner.city ? ` · ${partner.city}` : ''}
         </span>
       </div>
@@ -131,7 +131,7 @@ export function SchoolSupportCard({ partner }: { partner: SupportPartner }) {
 
       {/* Action rows */}
       <div className="flex flex-col gap-2">
-        <a href={partner.websiteUrl} target="_blank" rel="noopener noreferrer" className="mais-action-row">
+        <a href={partner.websiteUrl} target="_blank" rel="noopener noreferrer" className="action-row">
           <span className="flex items-center gap-2.5"><GlobeIcon />Oficiálny web</span>
           <ExtLinkIcon />
         </a>
@@ -139,7 +139,7 @@ export function SchoolSupportCard({ partner }: { partner: SupportPartner }) {
         {partner.loginUrl && <LoginLink loginUrl={partner.loginUrl} />}
 
         {partner.applicationUrl && (
-          <a href={partner.applicationUrl} target="_blank" rel="noopener noreferrer" className="mais-action-row">
+          <a href={partner.applicationUrl} target="_blank" rel="noopener noreferrer" className="action-row">
             <span className="flex items-center gap-2.5"><FileUploadIcon />Podať e-prihlášku</span>
             <ExtLinkIcon />
           </a>
