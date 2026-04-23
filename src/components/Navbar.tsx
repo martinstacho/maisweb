@@ -46,7 +46,7 @@ export function Navbar({ locale, labels }: NavbarProps) {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
         {/* Logo */}
         <Link href={`/${locale}`} className="flex items-center gap-2.5">
-          <Image src="/logo-mais.svg" alt="MAIS logo" width={32} height={32} className="rounded-lg" />
+          <Image src="/logo-mais.png" alt="MAIS logo" width={32} height={32} className="rounded-lg" />
           <span className="font-display text-[17px] tracking-tight" style={{ color: 'var(--mais-fg)' }}>MAIS</span>
           <span className="mais-chip">v2026</span>
         </Link>
