@@ -167,7 +167,43 @@
   --mais-amber: oklch(0.82 0.17 70);
   --mais-coral: oklch(0.68 0.21 25);
   --mais-mint: oklch(0.78 0.13 145);
+  /* shorthand aliases (same values, shorter names for inline styles) */
+  --orange: oklch(0.78 0.2 45);
+  --amber: oklch(0.82 0.18 70);
+  --orange-2: oklch(0.72 0.2 40);
+  --fg: oklch(0.98 0.008 40);
+  --fg-2: oklch(0.78 0.015 40);
+  --fg-3: oklch(0.72 0.018 40);
+  --fg-4: oklch(0.55 0.02 40);
+  --line: oklch(0.35 0.02 40 / 0.4);
 }
+
+.glass {
+  background: oklch(0.18 0.014 40 / 0.6);
+  border: 1px solid oklch(0.35 0.025 40 / 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.chip-mono {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 11px; padding: 3px 8px; border-radius: 6px;
+  background: oklch(0.22 0.014 40 / 0.7); border: 1px solid oklch(0.4 0.025 40 / 0.5);
+  color: var(--mais-fg-3);
+}
+
+.beam {
+  position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: linear-gradient(135deg, oklch(0.9 0.01 40 / 0.04), transparent 40%);
+}
+
+.kicker {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: oklch(0.78 0.16 50);
+}
+.kicker::before { content: ""; width: 24px; height: 1px; background: currentColor; opacity: .6; }
 
 .mono { font-family: var(--font-jetbrains-mono), ui-monospace, monospace; }
 .font-display { font-family: var(--font-geist-sans), sans-serif; font-weight: 800; letter-spacing: -0.035em; }
@@ -325,7 +361,8 @@
   border: 1px solid oklch(0.35 0.02 40 / 0.45);
   background: oklch(0.18 0.014 40 / 0.55);
   color: oklch(0.78 0.015 40); font-size: 13px;
-  transition: all .2s; cursor: pointer; text-decoration: none; width: 100%; font-family: inherit;
+  transition: all .2s; cursor: pointer; text-decoration: none; width: 100%;
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
 }
 .mais-action-row:hover { color: #fff; border-color: oklch(0.72 0.2 40 / 0.55); background: oklch(0.22 0.03 40 / 0.6); transform: translateX(2px); }
 .mais-action-row.primary {

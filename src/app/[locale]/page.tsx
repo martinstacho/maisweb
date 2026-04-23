@@ -118,7 +118,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           </FadeIn>
           <FadeIn delay={0.1}>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {partners.map((p) => <PartnerCard key={p.id} partner={p} locale={locale} />)}
+              {partners.map((p, i) => <PartnerCard key={p.id} partner={p} locale={locale} index={i} />)}
             </div>
           </FadeIn>
         </div>
