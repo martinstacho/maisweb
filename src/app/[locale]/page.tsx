@@ -81,14 +81,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg)', color: 'var(--fg)' }}>
-      <Navbar locale={locale} labels={{
-        features: t('features'),
-        schools: t('schools'),
-        forInstitutions: t('forInstitutions'),
-        support: t('support'),
-        contact: t('contact'),
-        cta: t('cta'),
-      }} />
+      <Navbar />
 
       <HeroSection
         locale={locale}

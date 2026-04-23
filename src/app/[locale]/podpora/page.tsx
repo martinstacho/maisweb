@@ -5,12 +5,7 @@ import Image from 'next/image'
 import { Reveal } from '@/components/ui/Reveal'
 import { PARTNERS_STATIC, monoLetterSize, type PartnerStatic } from '@/lib/partners-data'
 import { useRouter, usePathname } from '@/i18n/navigation'
-
-const LOCALES = [
-  { code: 'sk', label: 'SK' },
-  { code: 'en', label: 'EN' },
-  { code: 'uk', label: 'UK' },
-] as const
+import { useLocale } from 'next-intl'
 
 const PhoneIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
@@ -243,6 +238,7 @@ function Navbar({ locale }: { locale: string }) {
   const [scrolled, setScrolled] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
+  const currentLocale = useLocale()
   useEffect(() => {
     const onS = () => setScrolled(window.scrollY > 12)
     onS(); window.addEventListener('scroll', onS, { passive: true })
@@ -269,16 +265,16 @@ function Navbar({ locale }: { locale: string }) {
           <a href={`/${locale}#contact`} className="ln hover:text-white transition-colors">Kontakt</a>
         </div>
         <div className="flex items-center gap-2">
-          <div className="hidden md:flex items-center gap-1.5 chip-mono">
-            <span className="inline-block w-1.5 h-1.5 rounded-full mr-0.5" style={{ background: 'var(--mint)' }} />
-            {LOCALES.map(({ code, label }, i) => (
-              <span key={code} className="inline-flex items-center gap-1.5">
-                {i > 0 && <span style={{ color: 'var(--fg-4)' }}>·</span>}
+          <div className="hidden md:flex items-center gap-1 chip-mono">
+            {(['sk', 'en', 'uk'] as const).map((l) => (
+              <span key={l} className="flex items-center gap-1">
+                {l === currentLocale && <span className="live-dot" style={{ width: 6, height: 6 }} />}
                 <button
-                  onClick={() => router.replace(pathname, { locale: code })}
-                  className={`transition-colors cursor-pointer ${code === locale ? 'text-white' : 'hover:text-white'}`}
-                  style={code === locale ? {} : { color: 'var(--fg-3)' }}
-                >{label}</button>
+                  onClick={() => router.replace(pathname, { locale: l })}
+                  className={`transition-colors cursor-pointer ${l === currentLocale ? 'text-white font-medium' : 'hover:text-white'}`}
+                  style={l === currentLocale ? {} : { color: 'var(--fg-3)' }}
+                >{l.toUpperCase()}</button>
+                {l !== 'uk' && <span style={{ color: 'var(--fg-4)' }}>·</span>}
               </span>
             ))}
           </div>
