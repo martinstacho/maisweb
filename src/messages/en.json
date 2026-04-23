@@ -1,29 +1,29 @@
 {
   "nav": {
     "schools": "Schools",
-    "forInstitutions": "For Institutions",
+    "forInstitutions": "For institutions",
     "support": "Support",
     "contact": "Contact",
-    "cta": "Get in Touch",
+    "cta": "Get in touch",
     "features": "Features"
   },
   "hero": {
-    "badge": "Since 2004 · 8 Slovak institutions",
-    "title1": "The Academic Information System",
+    "badge": "Since 2004 · 4 universities + 5 colleges",
+    "title1": "The academic information system,",
     "title2": "powering Slovak universities",
     "subtitle": "MAIS is a comprehensive modular system for academic administration. Reliable, secure, and fully compliant with all Slovak higher education requirements.",
     "ctaPrimary": "Find your school",
     "ctaSecondary": "For institutions"
   },
   "stats": {
-    "years": "years on the market",
+    "years": "years on market",
     "yearsSub": "since 2004",
     "institutions": "institutions",
     "institutionsSub": "3 public · 3 state · 3 private",
     "users": "active users",
     "usersSub": "every semester",
     "compatible": "compatible",
-    "compatibleSub": "with the Bologna Process"
+    "compatibleSub": "with Bologna process"
   },
   "features": {
     "title": "What MAIS offers",
@@ -45,9 +45,9 @@
     "title": "Institutions using MAIS",
     "subtitle": "Join the leading Slovak universities and colleges",
     "showAll": "Show all schools",
-    "website": "School website",
+    "website": "Official website",
     "login": "Log in to MAIS",
-    "application": "Submit e-application"
+    "application": "Apply online"
   },
   "cta": {
     "title": "Interested in MAIS for your institution?",
@@ -55,14 +55,14 @@
     "button": "Contact ITernal"
   },
   "footer": {
-    "tagline": "Modular Academic Information System by ITernal s.r.o.",
+    "tagline": "Modular academic information system by ITernal s.r.o.",
     "navigation": "Navigation",
     "rights": "All rights reserved"
   },
   "schools": {
     "title": "Schools using MAIS",
     "subtitle": "Find your institution and access the system",
-    "back": "Back to home"
+    "back": "Back to homepage"
   },
   "support": {
     "title": "Support",
@@ -83,7 +83,7 @@
     "email": "E-mail",
     "message": "Message",
     "send": "Send message",
-    "supportLine": "MAIS Support Line",
+    "supportLine": "MAIS Support line",
     "supportHours": "working days 9:00 – 15:00"
   }
 }
