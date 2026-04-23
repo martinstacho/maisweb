@@ -94,11 +94,11 @@ const quotes = [
 ]
 
 
-function Navbar({ locale }: { locale: string }) {
+function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
-  const currentLocale = useLocale()
+  const locale = useLocale()
   useEffect(() => {
     const onS = () => setScrolled(window.scrollY > 12)
     onS(); window.addEventListener('scroll', onS, { passive: true })
@@ -126,11 +126,11 @@ function Navbar({ locale }: { locale: string }) {
           <div className="hidden md:flex items-center gap-1 chip-mono">
             {(['sk', 'en', 'uk'] as const).map((l) => (
               <span key={l} className="flex items-center gap-1">
-                {l === currentLocale && <span className="live-dot" style={{ width: 6, height: 6 }} />}
+                {l === locale && <span className="live-dot" style={{ width: 6, height: 6 }} />}
                 <button
                   onClick={() => router.replace(pathname, { locale: l })}
-                  className={`transition-colors cursor-pointer ${l === currentLocale ? 'text-white font-medium' : 'hover:text-white'}`}
-                  style={l === currentLocale ? {} : { color: 'var(--fg-3)' }}
+                  className={`transition-colors cursor-pointer ${l === locale ? 'text-white font-medium' : 'hover:text-white'}`}
+                  style={l === locale ? {} : { color: 'var(--fg-3)' }}
                 >{l.toUpperCase()}</button>
                 {l !== 'uk' && <span style={{ color: 'var(--fg-4)' }}>·</span>}
               </span>
@@ -145,7 +145,7 @@ function Navbar({ locale }: { locale: string }) {
   )
 }
 
-function Hero({ locale }: { locale: string }) {
+function Hero() {
   const heroRef = useRef<HTMLElement>(null)
   useEffect(() => {
     const el = heroRef.current; if (!el) return
@@ -449,7 +449,8 @@ function CTA() {
   )
 }
 
-function Footer({ locale }: { locale: string }) {
+function Footer() {
+  const locale = useLocale()
   const year = new Date().getFullYear()
   const build = new Date().toISOString().slice(0, 10).replace(/-/g, '')
   return (
@@ -504,17 +505,16 @@ function Footer({ locale }: { locale: string }) {
   )
 }
 
-export default function PreInstituciePage({ params }: { params: { locale: string } }) {
-  const locale = params.locale
+export default function PreInstituciePage() {
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg)', color: 'var(--fg)' }}>
-      <Navbar locale={locale} />
-      <Hero locale={locale} />
+      <Navbar />
+      <Hero />
       <WhyMAIS />
       <BentoGrid />
       <References />
       <CTA />
-      <Footer locale={locale} />
+      <Footer />
     </div>
   )
 }
