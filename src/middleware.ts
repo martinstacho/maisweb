@@ -1,3 +1,5 @@
+export const runtime = 'nodejs'
+
 import createMiddleware from 'next-intl/middleware'
 import { routing } from './i18n/routing'
 import { auth } from './auth'
@@ -8,7 +10,6 @@ const intlMiddleware = createMiddleware(routing)
 export default async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
 
-  // Admin routes — Auth.js chráni, intl sa neaplikuje
   if (pathname.startsWith('/admin')) {
     const isLoginPage = pathname === '/admin/login'
     const session = await auth()
@@ -21,7 +22,6 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.next()
   }
 
-  // API routes — preskočiť
   if (pathname.startsWith('/api')) {
     return NextResponse.next()
   }
@@ -30,5 +30,5 @@ export default async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!_next|_vercel|.*\\..*).*)'],
+  matcher: ['/((?!api|_next|_vercel|.*\\..*).*)'],
 }
