@@ -56,7 +56,21 @@ const XIcon = () => (
   </svg>
 )
 
-function SchoolCard({ p, i, onOpen }: { p: PartnerStatic; i: number; onOpen: (p: PartnerStatic) => void }) {
+function LoginLink({ loginUrl }: { loginUrl: string }) {
+  const isMail = loginUrl.startsWith('mailto:')
+  const isPdf = loginUrl.endsWith('.pdf')
+  const icon = isPdf ? <FileIcon /> : isMail ? <MailIcon /> : <LockIcon />
+  const target = isMail ? undefined : '_blank'
+  const rel = isMail ? undefined : 'noopener noreferrer'
+  return (
+    <a href={loginUrl} target={target} rel={rel} className="action-row primary w-full text-left">
+      <span className="leading flex items-center gap-2.5">{icon} Neviem sa prihlásiť do MAIS</span>
+      <ArrowIcon />
+    </a>
+  )
+}
+
+function SchoolCard({ p, i }: { p: PartnerStatic; i: number }) {
   return (
     <Reveal delay={Math.min(i * 40, 240)}>
       <div className="school-card relative glass rounded-2xl p-6 h-full overflow-hidden transition-all duration-300">
@@ -89,10 +103,7 @@ function SchoolCard({ p, i, onOpen }: { p: PartnerStatic; i: number; onOpen: (p:
             <span className="leading flex items-center gap-2.5"><GlobeIcon /> Oficiálny web</span>
             <ExtLinkIcon />
           </a>
-          <button type="button" onClick={() => onOpen(p)} className="action-row primary w-full text-left">
-            <span className="leading flex items-center gap-2.5"><LockIcon /> Neviem sa prihlásiť do MAIS</span>
-            <ArrowIcon />
-          </button>
+          <LoginLink loginUrl={p.loginUrl} />
           <a href={p.apply} target="_blank" rel="noopener noreferrer" className="action-row">
             <span className="leading flex items-center gap-2.5"><FileIcon /> Podať e-prihlášku</span>
             <ExtLinkIcon />
@@ -319,7 +330,6 @@ function Footer({ locale }: { locale: string }) {
 
 export default function PodporaPage({ params }: { params: { locale: string } }) {
   const locale = params.locale
-  const [openSchool, setOpenSchool] = useState<PartnerStatic | null>(null)
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg)', color: 'var(--fg)' }}>
@@ -380,7 +390,7 @@ export default function PodporaPage({ params }: { params: { locale: string } }) 
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {PARTNERS_STATIC.map((p, i) => (
-              <SchoolCard key={p.short} p={p} i={i} onOpen={setOpenSchool} />
+              <SchoolCard key={p.short} p={p} i={i} />
             ))}
           </div>
         </div>
@@ -417,7 +427,6 @@ export default function PodporaPage({ params }: { params: { locale: string } }) 
       </section>
 
       <Footer locale={locale} />
-      <SupportModal school={openSchool} onClose={() => setOpenSchool(null)} />
     </div>
   )
 }
