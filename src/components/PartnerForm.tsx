@@ -17,6 +17,15 @@ interface Partner {
   isActive: boolean
 }
 
+function normalizeUrl(url: string): string {
+  if (!url) return url
+  url = url.trim()
+  if (url && !url.startsWith('http://') && !url.startsWith('https://')) {
+    return 'https://' + url
+  }
+  return url
+}
+
 export function PartnerForm({ initial }: { initial?: Partner }) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
@@ -54,10 +63,16 @@ export function PartnerForm({ initial }: { initial?: Partner }) {
     setLoading(true)
     try {
       const logoUrl = (await uploadLogo()) ?? form.logoUrl
-      const body = { ...form, logoUrl }
+      const payload = {
+        ...form,
+        logoUrl,
+        websiteUrl: normalizeUrl(form.websiteUrl),
+        loginUrl: normalizeUrl(form.loginUrl ?? ''),
+        applicationUrl: normalizeUrl(form.applicationUrl ?? ''),
+      }
       const url = initial?.id ? `/api/partners/${initial.id}` : '/api/partners'
       const method = initial?.id ? 'PUT' : 'POST'
-      const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+      const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
       if (!res.ok) throw new Error('Chyba pri ukladaní')
       router.push('/admin/partners')
       router.refresh()
@@ -69,6 +84,7 @@ export function PartnerForm({ initial }: { initial?: Partner }) {
   }
 
   const fieldClass = 'bg-slate-800 border-slate-700 text-slate-100 placeholder:text-slate-500'
+  const hintClass = 'text-xs text-slate-500 mt-1'
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -87,15 +103,18 @@ export function PartnerForm({ initial }: { initial?: Partner }) {
         </div>
         <div className="space-y-2 sm:col-span-2">
           <Label className="text-slate-300">Web školy *</Label>
-          <Input required type="url" value={form.websiteUrl} onChange={e => set('websiteUrl', e.target.value)} placeholder="https://www.unipo.sk" className={fieldClass} />
+          <Input required type="text" value={form.websiteUrl} onChange={e => set('websiteUrl', e.target.value)} placeholder="https://www.unipo.sk" className={fieldClass} />
+          <p className={hintClass}>Napr. www.unipo.sk alebo https://unipo.sk</p>
         </div>
         <div className="space-y-2 sm:col-span-2">
           <Label className="text-slate-300">Prihlásenie do MAIS (URL)</Label>
-          <Input type="url" value={form.loginUrl ?? ''} onChange={e => set('loginUrl', e.target.value)} placeholder="https://mais.unipo.sk/login" className={fieldClass} />
+          <Input type="text" value={form.loginUrl ?? ''} onChange={e => set('loginUrl', e.target.value)} placeholder="https://mais.unipo.sk/login" className={fieldClass} />
+          <p className={hintClass}>Napr. www.mais.unipo.sk alebo https://mais.unipo.sk</p>
         </div>
         <div className="space-y-2 sm:col-span-2">
           <Label className="text-slate-300">E-prihláška (URL)</Label>
-          <Input type="url" value={form.applicationUrl ?? ''} onChange={e => set('applicationUrl', e.target.value)} placeholder="https://eprihlaska.unipo.sk" className={fieldClass} />
+          <Input type="text" value={form.applicationUrl ?? ''} onChange={e => set('applicationUrl', e.target.value)} placeholder="https://eprihlaska.unipo.sk" className={fieldClass} />
+          <p className={hintClass}>Napr. www.eprihlaska.sk alebo https://eprihlaska.sk</p>
         </div>
         <div className="space-y-2 sm:col-span-2">
           <Label className="text-slate-300">Logo (URL priamo)</Label>
