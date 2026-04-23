@@ -30,12 +30,12 @@ const stats = [
 ] as const
 
 const features = [
-  { icon: GraduationCap, title: 'Študijná agenda', desc: 'Kompletná správa štúdia od prijímacieho konania po promociu. Harmonogramy, rozvrhy, zápisné listy.' },
-  { icon: FileText, title: 'E-prihláška', desc: 'Online podanie prihlášky na štúdium. Uchádzači môžu sledovať stav prihlášky v reálnom čase.' },
-  { icon: Shield, title: 'Bezpečnosť a GDPR', desc: 'Splnenie všetkých zákonných požiadaviek. Audit trail, šifrovanie, zálohovanie a obnova dát.' },
-  { icon: Zap, title: 'Výkon a spoľahlivosť', desc: 'Systém zvláda záťažové špičky počas zápisov. SLA 99,9% dostupnosť počas semestra.' },
-  { icon: Globe, title: 'Integrácie', desc: 'Napojenie na SIMUS, CVTI, ISSP, ekonomické a knižničné systémy. Open API pre vlastné integrácie.' },
-  { icon: CheckCircle, title: 'Modularita', desc: 'Nasaďte len to, čo potrebujete. Systém rastie s vašou inštitúciou — žiadne zbytočné funkcie.' },
+  { icon: GraduationCap, title: 'Študijná agenda', desc: 'Kompletná správa štúdia od prijímacieho konania po promociu. Harmonogramy, rozvrhy, zápisné listy.', code: '01 / agenda' },
+  { icon: FileText, title: 'E-prihláška', desc: 'Online podanie prihlášky na štúdium. Uchádzači môžu sledovať stav prihlášky v reálnom čase.', code: '02 / prihláška' },
+  { icon: Shield, title: 'Bezpečnosť a GDPR', desc: 'Splnenie všetkých zákonných požiadaviek. Audit trail, šifrovanie, zálohovanie a obnova dát.', code: '03 / bezpečnosť' },
+  { icon: Zap, title: 'Výkon a spoľahlivosť', desc: 'Systém zvláda záťažové špičky počas zápisov. SLA 99,9% dostupnosť počas semestra.', code: '04 / výkon' },
+  { icon: Globe, title: 'Integrácie', desc: 'Napojenie na SIMUS, CVTI, ISSP, ekonomické a knižničné systémy. Open API pre vlastné integrácie.', code: '05 / integrácie' },
+  { icon: CheckCircle, title: 'Modularita', desc: 'Nasaďte len to, čo potrebujete. Systém rastie s vašou inštitúciou — žiadne zbytočné funkcie.', code: '06 / modularita' },
 ] as const
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
@@ -116,7 +116,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {features.map((f, i) => (
             <FadeIn key={f.title} delay={i * 0.07}>
-              <FeatureCard icon={<f.icon size={22} />} title={f.title} desc={f.desc} />
+              <FeatureCard icon={<f.icon size={22} />} title={f.title} desc={f.desc} code={f.code} />
             </FadeIn>
           ))}
         </div>
@@ -128,7 +128,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <section className="border-t py-24 px-6" style={{ borderColor: 'var(--line)', background: 'var(--bg-2)' }}>
         <div className="mx-auto max-w-7xl">
           <FadeIn className="mb-12 text-center">
-            <div className="kicker mb-4">Inštitúcie</div>
+            <div className="kicker mb-4">Klienti · 9 aktívnych</div>
             <h2 className="font-display text-[36px] md:text-[52px] leading-tight" style={{ color: 'var(--fg)' }}>
               Inštitúcie <span className="gradient-text">používajúce MAIS</span>
             </h2>

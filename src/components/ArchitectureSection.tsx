@@ -35,7 +35,7 @@ export function ArchitectureSection() {
         {/* Left column */}
         <FadeIn>
           <div className="kicker mb-5">Architektúra</div>
-          <h2 className="font-display text-[36px] md:text-[52px] leading-[1.0] mb-6" style={{ color: 'var(--fg)' }}>
+          <h2 className="font-display text-[36px] md:text-[52px] leading-[1.0] mb-6 text-white">
             Jedno jadro.<br />
             <span className="gradient-text">Osem modulov.</span><br />
             Nekonečné možnosti.
