@@ -4,6 +4,13 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Reveal } from '@/components/ui/Reveal'
 import { PARTNERS_STATIC, monoLetterSize, type PartnerStatic } from '@/lib/partners-data'
+import { useRouter, usePathname } from '@/i18n/navigation'
+
+const LOCALES = [
+  { code: 'sk', label: 'SK' },
+  { code: 'en', label: 'EN' },
+  { code: 'uk', label: 'UK' },
+] as const
 
 const PhoneIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
@@ -234,6 +241,8 @@ function SupportModal({ school, onClose }: { school: PartnerStatic | null; onClo
 
 function Navbar({ locale }: { locale: string }) {
   const [scrolled, setScrolled] = useState(false)
+  const router = useRouter()
+  const pathname = usePathname()
   useEffect(() => {
     const onS = () => setScrolled(window.scrollY > 12)
     onS(); window.addEventListener('scroll', onS, { passive: true })
@@ -253,20 +262,29 @@ function Navbar({ locale }: { locale: string }) {
           <span className="chip-mono hidden sm:inline-flex">v2026</span>
         </Link>
         <div className="hidden md:flex items-center gap-7 text-[13.5px]" style={{ color: 'var(--fg-2)' }}>
-          <Link href={`/${locale}#features`} className="ln hover:text-white transition-colors">Funkcie</Link>
-          <Link href={`/${locale}#schools`} className="ln hover:text-white transition-colors">Školy</Link>
+          <a href={`/${locale}#features`} className="ln hover:text-white transition-colors">Funkcie</a>
+          <a href={`/${locale}#schools`} className="ln hover:text-white transition-colors">Školy</a>
           <Link href={`/${locale}/pre-institucie`} className="ln hover:text-white transition-colors">Pre inštitúcie</Link>
           <Link href={`/${locale}/podpora`} className="ln text-white" aria-current="page">Podpora</Link>
-          <Link href={`/${locale}#contact`} className="ln hover:text-white transition-colors">Kontakt</Link>
+          <a href={`/${locale}#contact`} className="ln hover:text-white transition-colors">Kontakt</a>
         </div>
         <div className="flex items-center gap-2">
           <div className="hidden md:flex items-center gap-1.5 chip-mono">
-            <span className="inline-block w-1.5 h-1.5 rounded-full" style={{ background: 'var(--mint)' }} />
-            SK · EN · UK
+            <span className="inline-block w-1.5 h-1.5 rounded-full mr-0.5" style={{ background: 'var(--mint)' }} />
+            {LOCALES.map(({ code, label }, i) => (
+              <span key={code} className="inline-flex items-center gap-1.5">
+                {i > 0 && <span style={{ color: 'var(--fg-4)' }}>·</span>}
+                <button
+                  onClick={() => router.replace(pathname, { locale: code })}
+                  className={`transition-colors cursor-pointer ${code === locale ? 'text-white' : 'hover:text-white'}`}
+                  style={code === locale ? {} : { color: 'var(--fg-3)' }}
+                >{label}</button>
+              </span>
+            ))}
           </div>
-          <Link href={`/${locale}#contact`} className="btn-primary rounded-lg px-4 py-2 text-[13px] font-medium inline-flex items-center gap-1.5">
+          <a href={`/${locale}#contact`} className="btn-primary rounded-lg px-4 py-2 text-[13px] font-medium inline-flex items-center gap-1.5">
             Mám záujem <ArrowIcon />
-          </Link>
+          </a>
         </div>
       </div>
     </nav>

@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useRouter, usePathname } from '@/i18n/navigation'
 
 interface NavbarProps {
   locale: string
@@ -16,8 +17,17 @@ interface NavbarProps {
   activePage?: string
 }
 
+const LOCALES = [
+  { code: 'sk', label: 'SK' },
+  { code: 'en', label: 'EN' },
+  { code: 'uk', label: 'UK' },
+] as const
+
 export function Navbar({ locale, labels, activePage }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false)
+  const router = useRouter()
+  const pathname = usePathname()     // locale-agnostic path, e.g. '/', '/podpora'
+  const isHome = pathname === '/'
 
   useEffect(() => {
     const onS = () => setScrolled(window.scrollY > 12)
@@ -26,25 +36,12 @@ export function Navbar({ locale, labels, activePage }: NavbarProps) {
     return () => window.removeEventListener('scroll', onS)
   }, [])
 
-  const navLinks = [
-    { href: `/${locale}#features`, label: 'Funkcie' },
-    { href: `/${locale}#schools`, label: labels.schools },
-    { href: `/${locale}/pre-institucie`, label: labels.forInstitutions },
-    { href: `/${locale}/podpora`, label: labels.support },
-    { href: `/${locale}#contact`, label: labels.contact },
-  ]
-
   return (
     <nav
       className={`sticky top-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? 'border-b backdrop-blur-xl'
-          : 'bg-transparent'
+        scrolled ? 'border-b backdrop-blur-xl' : 'bg-transparent'
       }`}
-      style={scrolled ? {
-        borderColor: 'var(--line)',
-        background: 'oklch(0.14 0.012 40 / 0.8)',
-      } : undefined}
+      style={scrolled ? { borderColor: 'var(--line)', background: 'oklch(0.14 0.012 40 / 0.8)' } : undefined}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         <Link href={`/${locale}`} className="flex items-center gap-2.5 group">
@@ -59,31 +56,59 @@ export function Navbar({ locale, labels, activePage }: NavbarProps) {
         </Link>
 
         <div className="hidden md:flex items-center gap-7 text-[13.5px]" style={{ color: 'var(--fg-2)' }}>
-          {navLinks.map(({ href, label }) => (
-            <Link
-              key={href}
-              href={href}
-              className="ln hover:text-white transition-colors"
-            >
-              {label}
-            </Link>
-          ))}
+          <a
+            href={isHome ? '#features' : `/${locale}#features`}
+            className="ln hover:text-white transition-colors"
+          >
+            {labels.features}
+          </a>
+          <a
+            href={isHome ? '#schools' : `/${locale}#schools`}
+            className="ln hover:text-white transition-colors"
+          >
+            {labels.schools}
+          </a>
+          <Link href={`/${locale}/pre-institucie`} className={`ln hover:text-white transition-colors ${activePage === 'pre-institucie' ? 'text-white' : ''}`}>
+            {labels.forInstitutions}
+          </Link>
+          <Link href={`/${locale}/podpora`} className={`ln hover:text-white transition-colors ${activePage === 'podpora' ? 'text-white' : ''}`}>
+            {labels.support}
+          </Link>
+          <a
+            href={isHome ? '#contact' : `/${locale}#contact`}
+            className="ln hover:text-white transition-colors"
+          >
+            {labels.contact}
+          </a>
         </div>
 
         <div className="flex items-center gap-2">
+          {/* Language switcher */}
           <div className="hidden md:flex items-center gap-1.5 chip-mono">
-            <span className="inline-block w-1.5 h-1.5 rounded-full" style={{ background: 'var(--mint)' }} />
-            SK · EN · UK
+            <span className="inline-block w-1.5 h-1.5 rounded-full mr-0.5" style={{ background: 'var(--mint)' }} />
+            {LOCALES.map(({ code, label }, i) => (
+              <span key={code} className="inline-flex items-center gap-1.5">
+                {i > 0 && <span style={{ color: 'var(--fg-4)' }}>·</span>}
+                <button
+                  onClick={() => router.replace(pathname, { locale: code })}
+                  className={`transition-colors cursor-pointer ${code === locale ? 'text-white' : 'hover:text-white'}`}
+                  style={code === locale ? {} : { color: 'var(--fg-3)' }}
+                >
+                  {label}
+                </button>
+              </span>
+            ))}
           </div>
-          <Link
-            href={`/${locale}#contact`}
+
+          <a
+            href={isHome ? '#contact' : `/${locale}#contact`}
             className="btn-primary rounded-lg px-4 py-2 text-[13px] font-medium inline-flex items-center gap-1.5"
           >
             {labels.cta}
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
             </svg>
-          </Link>
+          </a>
         </div>
       </div>
     </nav>
