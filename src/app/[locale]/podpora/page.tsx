@@ -26,6 +26,7 @@ export default async function PodporaPage({ params }: { params: Promise<{ locale
   return (
     <div className="min-h-screen" style={{ background: 'var(--mais-bg)', color: 'var(--mais-fg)' }}>
       <Navbar locale={locale} labels={{
+        features: t('features'),
         schools: t('schools'),
         forInstitutions: t('forInstitutions'),
         support: t('support'),

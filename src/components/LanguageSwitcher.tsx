@@ -1,6 +1,5 @@
 'use client'
-import { usePathname, useRouter } from 'next/navigation'
-import { useParams } from 'next/navigation'
+import { usePathname, useRouter, useParams } from 'next/navigation'
 
 const locales = [
   { code: 'sk', label: 'SK' },
@@ -15,9 +14,7 @@ export function LanguageSwitcher() {
   const currentLocale = (params?.locale as string) ?? 'sk'
 
   function switchLocale(locale: string) {
-    // Replace current locale segment in pathname
     const segments = pathname.split('/')
-    // segments[1] is the locale (e.g. 'sk', 'en', 'uk')
     if (['sk', 'en', 'uk'].includes(segments[1])) {
       segments[1] = locale
     } else {
@@ -27,19 +24,23 @@ export function LanguageSwitcher() {
   }
 
   return (
-    <div className="flex items-center gap-1">
-      {locales.map((l) => (
-        <button
-          key={l.code}
-          onClick={() => switchLocale(l.code)}
-          className={`px-2 py-1 rounded text-xs font-bold transition-colors ${
-            currentLocale === l.code
-              ? 'bg-indigo-600 text-white'
-              : 'border border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-200'
-          }`}
-        >
-          {l.label}
-        </button>
+    <div className="flex items-center gap-0.5">
+      {locales.map((l, i) => (
+        <span key={l.code} className="flex items-center">
+          <button
+            onClick={() => switchLocale(l.code)}
+            className="mono text-[11px] px-1.5 py-0.5 rounded transition-all"
+            style={{
+              color: currentLocale === l.code ? 'var(--mais-fg)' : 'var(--mais-fg-4)',
+              fontWeight: currentLocale === l.code ? 600 : 400,
+            }}
+          >
+            {l.label}
+          </button>
+          {i < locales.length - 1 && (
+            <span className="mono text-[11px]" style={{ color: 'var(--mais-fg-4)' }}>·</span>
+          )}
+        </span>
       ))}
     </div>
   )

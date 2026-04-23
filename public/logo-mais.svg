@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="oklch(0.78 0.2 45)"/>
+      <stop offset="100%" stop-color="oklch(0.58 0.23 32)"/>
+    </linearGradient>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#c2410c"/>
+    </linearGradient>
+  </defs>
+  <rect width="36" height="36" rx="9" fill="url(#bg)"/>
+  <text x="18" y="24" font-family="system-ui,sans-serif" font-weight="900" font-size="13" fill="white" text-anchor="middle" letter-spacing="-0.5">MAIS</text>
+</svg>

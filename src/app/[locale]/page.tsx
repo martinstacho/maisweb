@@ -10,6 +10,7 @@ import { FeatureCard } from '@/components/FeatureCard'
 import { HeroSection } from '@/components/HeroSection'
 import { LogoStrip } from '@/components/LogoStrip'
 import { MaisFooter } from '@/components/MaisFooter'
+import { ArchitectureSection } from '@/components/ArchitectureSection'
 
 export const dynamic = 'force-dynamic'
 
@@ -49,6 +50,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   return (
     <div className="min-h-screen" style={{ background: 'var(--mais-bg)', color: 'var(--mais-fg)' }}>
       <Navbar locale={locale} labels={{
+        features: t('features'),
         schools: t('schools'),
         forInstitutions: t('forInstitutions'),
         support: t('support'),
@@ -87,7 +89,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       </section>
 
       {/* Features */}
-      <section className="mx-auto max-w-7xl px-6 pb-24">
+      <section id="features" className="mx-auto max-w-7xl px-6 pb-24">
         <FadeIn className="mb-12 text-center">
           <div className="mais-kicker mb-4">Čo MAIS ponúka</div>
           <h2 className="font-display text-[36px] md:text-[52px] leading-tight" style={{ color: 'var(--mais-fg)' }}>
@@ -103,6 +105,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           ))}
         </div>
       </section>
+
+      <ArchitectureSection />
 
       {/* Partners */}
       <section className="border-t py-24 px-6" style={{ borderColor: 'var(--mais-line)', background: 'var(--mais-bg-2)' }}>

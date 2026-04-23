@@ -167,15 +167,22 @@
   --mais-amber: oklch(0.82 0.17 70);
   --mais-coral: oklch(0.68 0.21 25);
   --mais-mint: oklch(0.78 0.13 145);
-  /* shorthand aliases (same values, shorter names for inline styles) */
-  --orange: oklch(0.78 0.2 45);
-  --amber: oklch(0.82 0.18 70);
-  --orange-2: oklch(0.72 0.2 40);
+  /* shorthand aliases — exact handoff values */
+  --bg: oklch(0.14 0.012 40);
+  --bg-2: oklch(0.17 0.014 40);
+  --bg-elev: oklch(0.20 0.016 40);
+  --line: oklch(0.35 0.02 40 / 0.4);
+  --line-strong: oklch(0.45 0.03 40 / 0.55);
   --fg: oklch(0.98 0.008 40);
   --fg-2: oklch(0.78 0.015 40);
   --fg-3: oklch(0.72 0.018 40);
   --fg-4: oklch(0.55 0.02 40);
-  --line: oklch(0.35 0.02 40 / 0.4);
+  --orange: oklch(0.72 0.2 40);
+  --orange-2: oklch(0.65 0.22 38);
+  --orange-3: oklch(0.58 0.23 35);
+  --amber: oklch(0.82 0.17 70);
+  --coral: oklch(0.68 0.21 25);
+  --mint: oklch(0.78 0.13 145);
 }
 
 .glass {
@@ -207,6 +214,34 @@
 
 .mono { font-family: var(--font-jetbrains-mono), ui-monospace, monospace; }
 .font-display { font-family: var(--font-geist-sans), sans-serif; font-weight: 800; letter-spacing: -0.035em; }
+
+@keyframes shine { to { background-position: 200% center; } }
+.gradient-text {
+  background: linear-gradient(90deg, oklch(0.98 0.02 40) 0%, oklch(0.82 0.17 70) 25%, oklch(0.72 0.2 40) 55%, oklch(0.6 0.22 28) 80%, oklch(0.98 0.02 40) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+  animation: shine 6s linear infinite;
+}
+
+.dots { background-image: radial-gradient(oklch(0.6 0.1 40 / 0.22) 1px, transparent 1px); background-size: 22px 22px; }
+
+.ln { position: relative; }
+.ln::after { content: ""; position: absolute; left: 0; bottom: -3px; width: 0; height: 1px; background: currentColor; transition: width .3s; }
+.ln:hover::after { width: 100%; }
+
+.btn-primary {
+  background: linear-gradient(180deg, oklch(0.78 0.2 45), oklch(0.6 0.23 32));
+  box-shadow: 0 1px 0 0 oklch(0.92 0.18 60 / 0.4) inset, 0 0 0 1px oklch(0.5 0.22 38 / 0.65), 0 12px 32px -8px oklch(0.55 0.24 35 / 0.55);
+  color: #fff; cursor: pointer;
+}
+.btn-primary:hover { filter: brightness(1.08); }
+.btn-ghost { border: 1px solid oklch(0.4 0.025 40 / 0.5); color: var(--fg-2); background: oklch(0.2 0.014 40 / 0.4); cursor: pointer; }
+.btn-ghost:hover { color: var(--fg); border-color: oklch(0.6 0.18 40 / 0.7); }
+
+@keyframes orbit { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.orbit-ring { animation: orbit 32s linear infinite; transform-origin: 50% 50%; }
+.orbit-ring.rev { animation-direction: reverse; animation-duration: 44s; }
 
 .noise::before {
   content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .04; mix-blend-mode: overlay;

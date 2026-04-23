@@ -15,7 +15,7 @@ interface MaisFooterProps {
 
 export function MaisFooter({ locale, labels }: MaisFooterProps) {
   return (
-    <footer className="relative overflow-hidden border-t" style={{ borderColor: 'var(--mais-line)', background: 'var(--mais-bg)' }}>
+    <footer id="contact" className="relative overflow-hidden border-t" style={{ borderColor: 'var(--mais-line)', background: 'var(--mais-bg)' }}>
       <div className="pointer-events-none absolute inset-0 mais-hero-grid opacity-30" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6 pt-16 pb-10">
