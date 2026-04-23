@@ -1,27 +1,141 @@
 import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
+import { prisma } from '@/lib/prisma'
 import { getTranslations } from 'next-intl/server'
-import { LanguageSwitcher } from '@/components/LanguageSwitcher'
+import { Navbar } from '@/components/Navbar'
+import { FadeIn } from '@/components/FadeIn'
+import { MaisFooter } from '@/components/MaisFooter'
+
+export const dynamic = 'force-dynamic'
+
+async function getPartners() {
+  return prisma.partner.findMany({
+    where: { isActive: true },
+    orderBy: { displayOrder: 'asc' },
+  })
+}
 
 export default async function PodporaPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
-  const t = await getTranslations('support')
+  const [t, tn, tfoot] = await Promise.all([
+    getTranslations('nav'),
+    getTranslations('support'),
+    getTranslations('footer'),
+  ])
+  const partners = await getPartners()
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col items-center justify-center px-6">
-      <nav className="fixed top-0 left-0 right-0 border-b border-slate-800/60 bg-slate-950/80 backdrop-blur-md z-50">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <Link href={`/${locale}`} className="flex items-center gap-2 text-sm text-slate-400 hover:text-slate-100 transition-colors">
-            <ArrowLeft size={16} /> {t('back')}
-          </Link>
-          <LanguageSwitcher />
+    <div className="min-h-screen" style={{ background: 'var(--mais-bg)', color: 'var(--mais-fg)' }}>
+      <Navbar locale={locale} labels={{
+        schools: t('schools'),
+        forInstitutions: t('forInstitutions'),
+        support: t('support'),
+        contact: t('contact'),
+        cta: t('cta'),
+      }} />
+
+      {/* Hero */}
+      <section className="relative overflow-hidden py-24 px-6">
+        <div className="absolute inset-0 mais-hero-grid-sm pointer-events-none opacity-60" />
+        <div className="relative z-10 mx-auto max-w-4xl text-center">
+          <FadeIn>
+            <div className="mais-kicker justify-center mb-6">Podpora MAIS</div>
+            <h1 className="font-display text-[48px] md:text-[72px] leading-[0.95] mb-6">
+              <span className="mais-gradient-text">Sme tu</span>
+              <br />
+              <span style={{ color: 'var(--mais-fg)' }}>pre vás</span>
+            </h1>
+            <p className="text-[17px] leading-relaxed max-w-xl mx-auto" style={{ color: 'var(--mais-fg-2)' }}>
+              Technická podpora pre používateľov systému MAIS. Kontaktujte helpdesk vašej inštitúcie.
+            </p>
+          </FadeIn>
         </div>
-      </nav>
-      <div className="text-center max-w-2xl">
-        <div className="mb-4 inline-flex items-center rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-1.5 text-sm text-indigo-300">{t('comingSoon')}</div>
-        <h1 className="text-4xl font-black md:text-6xl mb-6">{t('title')}</h1>
-        <p className="text-slate-400 text-lg">{t('subtitle')} · <a href="mailto:podpora@mais.sk" className="text-indigo-400 hover:underline">podpora@mais.sk</a></p>
-      </div>
+      </section>
+
+      {/* General contact */}
+      <section className="px-6 pb-16">
+        <FadeIn>
+          <div className="mx-auto max-w-2xl mais-bento-card p-8 mb-8">
+            <div className="mais-stripe" />
+            <div className="mais-kicker mb-4">ITernal s.r.o. — Hlavná podpora</div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <div className="mono text-[10px] tracking-wider mb-1.5" style={{ color: 'var(--mais-fg-4)' }}>TELEFÓN</div>
+                <a href="tel:+421915724757" className="text-[15px] font-medium mais-ln" style={{ color: 'var(--mais-fg)' }}>+421 915 724 757</a>
+                <div className="mono text-[10px] mt-1" style={{ color: 'var(--mais-fg-4)' }}>Po–Pia 9:00 – 15:00</div>
+              </div>
+              <div>
+                <div className="mono text-[10px] tracking-wider mb-1.5" style={{ color: 'var(--mais-fg-4)' }}>E-MAIL</div>
+                <a href="mailto:podpora@mais.sk" className="text-[15px] font-medium mais-ln" style={{ color: 'var(--mais-fg)' }}>podpora@mais.sk</a>
+              </div>
+            </div>
+          </div>
+        </FadeIn>
+      </section>
+
+      {/* Institution cards */}
+      <section className="border-t px-6 py-20" style={{ borderColor: 'var(--mais-line)', background: 'var(--mais-bg-2)' }}>
+        <div className="mx-auto max-w-7xl">
+          <FadeIn className="mb-10 text-center">
+            <div className="mais-kicker justify-center mb-3">Kontakty podľa školy</div>
+            <h2 className="font-display text-[30px] md:text-[42px]" style={{ color: 'var(--mais-fg)' }}>
+              Helpdesk vašej <span className="mais-gradient-text">inštitúcie</span>
+            </h2>
+          </FadeIn>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {partners.map((p, i) => (
+              <FadeIn key={p.id} delay={i * 0.05}>
+                <div className="mais-bento-card p-6 flex flex-col gap-3">
+                  <div className="mais-stripe" />
+                  <div className="flex items-center gap-3">
+                    <div className="mais-mono-tile flex-shrink-0" style={{ width: 48, height: 48 }}>
+                      <span className="mono font-semibold text-[12px]" style={{ color: 'var(--mais-orange)' }}>{p.shortName.slice(0, 4)}</span>
+                    </div>
+                    <div>
+                      <div className="font-semibold text-[13px] leading-snug" style={{ color: 'var(--mais-fg)' }}>{p.name}</div>
+                      {p.city && <div className="mono text-[10px]" style={{ color: 'var(--mais-fg-4)' }}>{p.city}</div>}
+                    </div>
+                  </div>
+                  {(p.supportPhone || p.supportEmail) && (
+                    <div className="flex flex-col gap-1 pt-1 border-t" style={{ borderColor: 'var(--mais-line)' }}>
+                      {p.supportPhone && (
+                        <a href={`tel:${p.supportPhone.replace(/\s/g, '')}`} className="mais-action-row text-left text-[12px]">
+                          <span>{p.supportPhone}</span>
+                          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13 19.79 19.79 0 0 1 1.61 4.4 2 2 0 0 1 3.6 2.2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.16 6.16l.91-.91a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 17z"/>
+                          </svg>
+                        </a>
+                      )}
+                      {p.supportEmail && (
+                        <a href={`mailto:${p.supportEmail}`} className="mais-action-row primary text-left text-[12px]">
+                          <span>{p.supportEmail}</span>
+                          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+                          </svg>
+                        </a>
+                      )}
+                    </div>
+                  )}
+                  {!p.supportPhone && !p.supportEmail && (
+                    <p className="text-[12px]" style={{ color: 'var(--mais-fg-4)' }}>
+                      Kontaktujte správcu systému na vašej inštitúcii.
+                    </p>
+                  )}
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <MaisFooter locale={locale} labels={{
+        tagline: 'Modulárny akademický informačný systém od ITernal s.r.o.',
+        navigation: 'Navigácia',
+        rights: 'Všetky práva vyhradené',
+        schools: t('schools'),
+        forInstitutions: t('forInstitutions'),
+        support: t('support'),
+        contact: t('contact'),
+      }} />
     </div>
   )
 }

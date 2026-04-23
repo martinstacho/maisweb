@@ -16,6 +16,9 @@ model Partner {
   websiteUrl     String
   loginUrl       String?
   applicationUrl String?
+  city           String?
+  supportPhone   String?
+  supportEmail   String?
   displayOrder   Int      @default(0)
   isActive       Boolean  @default(true)
   createdAt      DateTime @default(now())

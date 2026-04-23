@@ -151,3 +151,205 @@
     @apply font-sans;
   }
 }
+
+/* ===== MAIS Design System ===== */
+:root {
+  --mais-bg: oklch(0.14 0.012 40);
+  --mais-bg-2: oklch(0.17 0.014 40);
+  --mais-line: oklch(0.35 0.02 40 / 0.4);
+  --mais-line-strong: oklch(0.45 0.03 40 / 0.55);
+  --mais-fg: oklch(0.98 0.008 40);
+  --mais-fg-2: oklch(0.78 0.015 40);
+  --mais-fg-3: oklch(0.72 0.018 40);
+  --mais-fg-4: oklch(0.55 0.02 40);
+  --mais-orange: oklch(0.72 0.2 40);
+  --mais-orange-2: oklch(0.65 0.22 38);
+  --mais-amber: oklch(0.82 0.17 70);
+  --mais-coral: oklch(0.68 0.21 25);
+  --mais-mint: oklch(0.78 0.13 145);
+}
+
+.mono { font-family: var(--font-jetbrains-mono), ui-monospace, monospace; }
+.font-display { font-family: var(--font-geist-sans), sans-serif; font-weight: 800; letter-spacing: -0.035em; }
+
+.noise::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .04; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+.mais-hero-grid {
+  background-image: linear-gradient(to right, oklch(0.6 0.18 40 / 0.08) 1px, transparent 1px), linear-gradient(to bottom, oklch(0.6 0.18 40 / 0.08) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 100%);
+}
+.mais-hero-grid-sm {
+  background-image: linear-gradient(to right, oklch(0.6 0.18 40 / 0.08) 1px, transparent 1px), linear-gradient(to bottom, oklch(0.6 0.18 40 / 0.08) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 60% 80% at 50% 30%, black 20%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 60% 80% at 50% 30%, black 20%, transparent 100%);
+}
+
+.mais-spotlight {
+  background: radial-gradient(600px 400px at var(--mx, 50%) var(--my, 30%), oklch(0.7 0.22 40 / 0.2), transparent 60%);
+  transition: background .2s ease;
+}
+
+@keyframes mais-floaty { 0%,100%{transform:translate3d(0,0,0) scale(1)} 50%{transform:translate3d(20px,-30px,0) scale(1.08)} }
+@keyframes mais-floaty2 { 0%,100%{transform:translate3d(0,0,0) scale(1)} 50%{transform:translate3d(-40px,20px,0) scale(0.92)} }
+.mais-blob-a { animation: mais-floaty 14s ease-in-out infinite; }
+.mais-blob-b { animation: mais-floaty2 18s ease-in-out infinite; }
+
+@property --mais-a { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+@keyframes mais-rot { to { --mais-a: 360deg; } }
+.mais-beam {
+  position: absolute; inset: -1px; border-radius: inherit; padding: 1px; pointer-events: none;
+  background: conic-gradient(from var(--mais-a, 0deg), transparent 0 70%, oklch(0.72 0.2 40) 80%, oklch(0.82 0.17 70) 90%, transparent 100%);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  opacity: 0; transition: opacity .3s;
+  animation: mais-rot 6s linear infinite;
+}
+.mais-beam.always { opacity: 1 !important; }
+.group:hover .mais-beam { opacity: 1; }
+.school-card:hover .mais-beam { opacity: 1; }
+
+@keyframes mais-marquee { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+.mais-marquee { animation: mais-marquee 40s linear infinite; }
+
+@keyframes mais-shine { to { background-position: 200% center; } }
+.mais-gradient-text {
+  background: linear-gradient(90deg, oklch(0.98 0.02 40) 0%, oklch(0.82 0.17 70) 25%, oklch(0.72 0.2 40) 55%, oklch(0.6 0.22 28) 80%, oklch(0.98 0.02 40) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+  animation: mais-shine 6s linear infinite;
+}
+
+.mais-glass {
+  background: linear-gradient(180deg, oklch(0.22 0.015 40 / 0.6), oklch(0.17 0.013 40 / 0.45));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid oklch(0.4 0.025 40 / 0.4);
+}
+
+.mais-kicker {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: oklch(0.78 0.16 50);
+}
+.mais-kicker::before { content: ""; width: 24px; height: 1px; background: currentColor; opacity: .6; }
+
+.mais-chip {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 11px; padding: 3px 8px; border-radius: 6px;
+  background: oklch(0.22 0.014 40 / 0.7); border: 1px solid oklch(0.4 0.025 40 / 0.5);
+  color: oklch(0.78 0.015 40);
+}
+
+.mais-btn-primary {
+  background: linear-gradient(180deg, oklch(0.78 0.2 45), oklch(0.6 0.23 32));
+  box-shadow: 0 1px 0 0 oklch(0.92 0.18 60 / 0.4) inset, 0 0 0 1px oklch(0.5 0.22 38 / 0.65), 0 12px 32px -8px oklch(0.55 0.24 35 / 0.55);
+  color: #fff; cursor: pointer;
+}
+.mais-btn-primary:hover { filter: brightness(1.08); }
+.mais-btn-ghost {
+  border: 1px solid oklch(0.4 0.025 40 / 0.5); color: oklch(0.78 0.015 40);
+  background: oklch(0.2 0.014 40 / 0.4); cursor: pointer;
+}
+.mais-btn-ghost:hover { color: oklch(0.98 0.008 40); border-color: oklch(0.6 0.18 40 / 0.7); }
+
+.mais-mono-tile {
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 14px;
+  background: linear-gradient(180deg, oklch(0.22 0.015 40 / 0.9), oklch(0.14 0.012 40 / 0.9)), radial-gradient(circle at 30% 20%, oklch(0.72 0.2 40 / 0.18), transparent 60%);
+  border: 1px solid oklch(0.4 0.03 40 / 0.5);
+  position: relative; overflow: hidden;
+  transition: transform .35s, border-color .35s, box-shadow .35s;
+}
+.mais-mono-tile::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: linear-gradient(135deg, oklch(0.9 0.01 40 / 0.05), transparent 40%);
+}
+.group:hover .mais-mono-tile,
+.school-card:hover .mais-mono-tile { transform: translateY(-2px); border-color: oklch(0.72 0.2 40 / 0.55); box-shadow: 0 12px 40px -12px oklch(0.65 0.22 40 / 0.35); }
+
+.mais-ico-box {
+  background: linear-gradient(180deg, oklch(0.25 0.04 40 / 0.5), oklch(0.18 0.02 40 / 0.5));
+  box-shadow: inset 0 1px 0 oklch(0.8 0.15 40 / 0.25), 0 0 0 1px oklch(0.5 0.1 40 / 0.3);
+}
+
+.mais-node {
+  background: linear-gradient(180deg, oklch(0.22 0.02 40 / 0.7), oklch(0.16 0.015 40 / 0.7));
+  border: 1px solid oklch(0.35 0.03 40 / 0.5);
+  backdrop-filter: blur(8px);
+}
+
+.mais-dots { background-image: radial-gradient(oklch(0.6 0.1 40 / 0.22) 1px, transparent 1px); background-size: 22px 22px; }
+
+.mais-live-dot { width: 8px; height: 8px; border-radius: 9999px; background: oklch(0.78 0.16 165); box-shadow: 0 0 0 3px oklch(0.78 0.16 165 / 0.2); }
+
+.mais-ln { position: relative; }
+.mais-ln::after { content: ""; position: absolute; left: 0; bottom: -3px; width: 0; height: 1px; background: currentColor; transition: width .3s; }
+.mais-ln:hover::after { width: 100%; }
+
+@keyframes mais-orbit { to { transform: rotate(1turn); } }
+.mais-orbit-ring { animation: mais-orbit 32s linear infinite; transform-origin: 50% 50%; }
+.mais-orbit-ring.rev { animation-direction: reverse; animation-duration: 44s; }
+
+.mais-bento-card {
+  position: relative; border-radius: 20px;
+  border: 1px solid oklch(0.4 0.025 40 / 0.4);
+  background: linear-gradient(180deg, oklch(0.22 0.015 40 / 0.6), oklch(0.17 0.013 40 / 0.45));
+  overflow: hidden; transition: transform .35s, border-color .35s, box-shadow .35s;
+}
+.mais-bento-card:hover { transform: translateY(-3px); border-color: oklch(0.72 0.2 40 / 0.45); box-shadow: 0 20px 60px -20px oklch(0.55 0.24 35 / 0.35); }
+.mais-bento-card .mais-stripe { position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--mais-orange), var(--mais-amber), var(--mais-coral)); opacity: 0; transition: opacity .35s; }
+.mais-bento-card:hover .mais-stripe { opacity: 1; }
+.mais-tech-dot { width: 7px; height: 7px; border-radius: 9999px; background: var(--mais-orange); box-shadow: 0 0 10px var(--mais-orange); }
+
+.mais-quote-card {
+  position: relative; padding: 36px 32px 28px; border-radius: 20px;
+  border: 1px solid oklch(0.4 0.025 40 / 0.4);
+  background: linear-gradient(180deg, oklch(0.22 0.015 40 / 0.55), oklch(0.15 0.013 40 / 0.55));
+  overflow: hidden; transition: transform .35s, border-color .35s;
+}
+.mais-quote-card:hover { transform: translateY(-2px); border-color: oklch(0.72 0.2 40 / 0.45); }
+
+.mais-action-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 10px 12px; border-radius: 10px;
+  border: 1px solid oklch(0.35 0.02 40 / 0.45);
+  background: oklch(0.18 0.014 40 / 0.55);
+  color: oklch(0.78 0.015 40); font-size: 13px;
+  transition: all .2s; cursor: pointer; text-decoration: none; width: 100%; font-family: inherit;
+}
+.mais-action-row:hover { color: #fff; border-color: oklch(0.72 0.2 40 / 0.55); background: oklch(0.22 0.03 40 / 0.6); transform: translateX(2px); }
+.mais-action-row.primary {
+  border-color: oklch(0.72 0.2 40 / 0.4);
+  background: linear-gradient(180deg, oklch(0.32 0.12 42 / 0.35), oklch(0.22 0.08 40 / 0.35));
+  color: oklch(0.95 0.08 60);
+}
+.mais-action-row.primary:hover { color: #fff; border-color: oklch(0.78 0.2 45 / 0.75); background: linear-gradient(180deg, oklch(0.4 0.16 42 / 0.5), oklch(0.28 0.12 40 / 0.5)); }
+
+.mais-cta-conic {
+  background: conic-gradient(from 90deg at 50% 50%, oklch(0.72 0.2 40 / .0) 0%, oklch(0.82 0.17 70 / .8) 20%, oklch(0.72 0.2 40 / .8) 40%, oklch(0.6 0.22 28 / .7) 60%, oklch(0.72 0.2 40 / .0) 80%);
+  filter: blur(36px);
+}
+
+.mais-tl-dot {
+  width: 14px; height: 14px; border-radius: 9999px;
+  background: linear-gradient(180deg, oklch(0.82 0.17 70), oklch(0.6 0.23 32));
+  box-shadow: 0 0 0 4px oklch(0.72 0.2 40 / 0.15), 0 0 18px oklch(0.72 0.2 40 / 0.7);
+  position: relative; z-index: 1; flex-shrink: 0;
+}
+
+@keyframes mais-fadein { from{opacity:0} to{opacity:1} }
+@keyframes mais-pop { from{opacity:0;transform:translateY(20px) scale(.96)} to{opacity:1;transform:none} }
+.mais-modal-backdrop { animation: mais-fadein .25s ease-out; }
+.mais-modal-panel { animation: mais-pop .35s cubic-bezier(.2,.8,.2,1); }
+
+.num-tick { font-variant-numeric: tabular-nums; }

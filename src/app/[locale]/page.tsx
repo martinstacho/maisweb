@@ -1,14 +1,15 @@
 import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
 import { PartnerCard } from '@/components/PartnerCard'
-import { GraduationCap, Shield, Zap, Globe, ArrowRight, CheckCircle, FileText } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { GraduationCap, Shield, Zap, Globe, CheckCircle, FileText } from 'lucide-react'
 import { NumberTicker } from '@/components/ui/number-ticker'
-import { AuroraText } from '@/components/ui/aurora-text'
 import { getTranslations } from 'next-intl/server'
 import { Navbar } from '@/components/Navbar'
 import { FadeIn } from '@/components/FadeIn'
 import { FeatureCard } from '@/components/FeatureCard'
+import { HeroSection } from '@/components/HeroSection'
+import { LogoStrip } from '@/components/LogoStrip'
+import { MaisFooter } from '@/components/MaisFooter'
 
 export const dynamic = 'force-dynamic'
 
@@ -16,41 +17,37 @@ async function getPartners() {
   return prisma.partner.findMany({
     where: { isActive: true },
     orderBy: { displayOrder: 'asc' },
-    take: 6,
+    take: 9,
   })
 }
 
 const stats = [
-  { value: 20, suffix: '+', tKey: 'years', subKey: 'yearsSub' },
-  { value: 8, suffix: '', tKey: 'institutions', subKey: 'institutionsSub' },
-  { value: 50000, suffix: '+', tKey: 'users', subKey: 'usersSub' },
-  { value: 100, suffix: '%', tKey: 'compatible', subKey: 'compatibleSub' },
+  { value: 22, suffix: '', label: 'rokov na trhu', sub: 'od roku 2004' },
+  { value: 9, suffix: '', label: 'inštitúcií', sub: '3 verejné · 3 štátne · 3 súkromné' },
+  { value: 50000, suffix: '+', label: 'aktívnych používateľov', sub: 'každý semester' },
+  { value: 100, suffix: '%', label: 'kompatibilný', sub: 's Bolonským procesom' },
 ] as const
 
-const featureKeys = [
-  { icon: GraduationCap, key: 'studyAgenda', descKey: 'studyAgendaDesc' },
-  { icon: FileText, key: 'eApplication', descKey: 'eApplicationDesc' },
-  { icon: Shield, key: 'security', descKey: 'securityDesc' },
-  { icon: Zap, key: 'performance', descKey: 'performanceDesc' },
-  { icon: Globe, key: 'integrations', descKey: 'integrationsDesc' },
-  { icon: CheckCircle, key: 'modular', descKey: 'modularDesc' },
+const features = [
+  { icon: GraduationCap, title: 'Študijná agenda', desc: 'Kompletná správa štúdia od prijímacieho konania po promociu. Harmonogramy, rozvrhy, zápisné listy.' },
+  { icon: FileText, title: 'E-prihláška', desc: 'Online podanie prihlášky na štúdium. Uchádzači môžu sledovať stav prihlášky v reálnom čase.' },
+  { icon: Shield, title: 'Bezpečnosť a GDPR', desc: 'Splnenie všetkých zákonných požiadaviek. Audit trail, šifrovanie, zálohovanie a obnova dát.' },
+  { icon: Zap, title: 'Výkon a spoľahlivosť', desc: 'Systém zvláda záťažové špičky počas zápisov. SLA 99,9% dostupnosť počas semestra.' },
+  { icon: Globe, title: 'Integrácie', desc: 'Napojenie na SIMUS, CVTI, ISSP, ekonomické a knižničné systémy. Open API pre vlastné integrácie.' },
+  { icon: CheckCircle, title: 'Modularita', desc: 'Nasaďte len to, čo potrebujete. Systém rastie s vašou inštitúciou — žiadne zbytočné funkcie.' },
 ] as const
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
-  const [partners, t, tn, tf, tp, tc, tf2, tfoot] = await Promise.all([
+  const [partners, tn, t, tfoot] = await Promise.all([
     getPartners(),
-    getTranslations('nav'),
     getTranslations('hero'),
-    getTranslations('stats'),
-    getTranslations('partners'),
-    getTranslations('cta'),
-    getTranslations('features'),
+    getTranslations('nav'),
     getTranslations('footer'),
   ])
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
+    <div className="min-h-screen" style={{ background: 'var(--mais-bg)', color: 'var(--mais-fg)' }}>
       <Navbar locale={locale} labels={{
         schools: t('schools'),
         forInstitutions: t('forInstitutions'),
@@ -59,143 +56,108 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         cta: t('cta'),
       }} />
 
-      {/* Hero */}
-      <section className="relative flex min-h-[calc(100vh-65px)] flex-col items-center justify-center overflow-hidden px-6 py-24 text-center">
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{
-            backgroundImage: `linear-gradient(rgba(99,102,241,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,0.06) 1px, transparent 1px)`,
-            backgroundSize: '60px 60px',
-            maskImage: 'radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 100%)',
-          }}
-        />
-        <div className="pointer-events-none absolute left-1/2 top-1/3 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-indigo-600/10 blur-3xl" />
-        <FadeIn className="relative z-10 max-w-4xl">
-          <div className="mb-6 inline-flex items-center rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-1.5 text-sm text-indigo-300">
-            {tn('badge')}
-          </div>
-          <h1 className="mb-6 text-5xl font-black leading-tight tracking-tight md:text-7xl">
-            <AuroraText>{tn('title1')}</AuroraText>
-            <br />
-            <span className="text-slate-100">{tn('title2')}</span>
-          </h1>
-          <p className="mb-10 text-lg text-slate-400 leading-relaxed max-w-2xl mx-auto">
-            {tn('subtitle')}
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href={`/${locale}/skoly`}>
-              <Button size="lg" className="bg-indigo-600 hover:bg-indigo-500 text-white px-8">
-                {tn('ctaPrimary')} <ArrowRight size={16} className="ml-2" />
-              </Button>
-            </Link>
-            <Link href={`/${locale}/pre-institucie`}>
-              <Button size="lg" variant="outline" className="border-slate-700 text-slate-300 hover:bg-slate-800 px-8">
-                {tn('ctaSecondary')}
-              </Button>
-            </Link>
-          </div>
-        </FadeIn>
-      </section>
+      <HeroSection
+        locale={locale}
+        badge={tn('badge')}
+        title1={tn('title1')}
+        title2={tn('title2')}
+        subtitle={tn('subtitle')}
+        ctaPrimary={tn('ctaPrimary')}
+        ctaSecondary={tn('ctaSecondary')}
+      />
+
+      <LogoStrip />
 
       {/* Stats */}
-      <section className="border-y border-slate-800 bg-slate-900/40">
-        <div className="mx-auto max-w-7xl px-6 py-16">
-          <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
-            {stats.map((s, i) => (
-              <FadeIn key={s.tKey} delay={i * 0.1} className="text-center">
-                <div className="text-4xl font-black text-slate-100 mb-1">
-                  <NumberTicker value={s.value} className="text-slate-100" />{s.suffix}
+      <section className="mx-auto max-w-7xl px-6 py-20">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          {stats.map((s, i) => (
+            <FadeIn key={s.label} delay={i * 0.08}>
+              <div className="mais-bento-card p-6 text-center">
+                <div className="mais-stripe" />
+                <div className="font-display text-[44px] leading-none mb-1.5 mais-gradient-text">
+                  <NumberTicker value={s.value} className="mais-gradient-text" />{s.suffix}
                 </div>
-                <div className="text-sm font-medium text-slate-300">{tf(s.tKey)}</div>
-                <div className="text-xs text-slate-500 mt-0.5">{tf(s.subKey)}</div>
-              </FadeIn>
-            ))}
-          </div>
+                <div className="text-[13px] font-medium mb-0.5" style={{ color: 'var(--mais-fg-2)' }}>{s.label}</div>
+                <div className="mono text-[10px] tracking-wider" style={{ color: 'var(--mais-fg-4)' }}>{s.sub}</div>
+              </div>
+            </FadeIn>
+          ))}
         </div>
       </section>
 
       {/* Features */}
-      <section className="mx-auto max-w-7xl px-6 py-24">
-        <FadeIn className="mb-16 text-center">
-          <h2 className="text-3xl font-black tracking-tight md:text-5xl mb-4">{tf2('title')}</h2>
-          <p className="text-slate-400 max-w-xl mx-auto">{tf2('subtitle')}</p>
+      <section className="mx-auto max-w-7xl px-6 pb-24">
+        <FadeIn className="mb-12 text-center">
+          <div className="mais-kicker mb-4">Čo MAIS ponúka</div>
+          <h2 className="font-display text-[36px] md:text-[52px] leading-tight" style={{ color: 'var(--mais-fg)' }}>
+            Komplexná správa<br />
+            <span className="mais-gradient-text">akademickej agendy</span>
+          </h2>
         </FadeIn>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {featureKeys.map((f, i) => (
-            <FadeIn key={f.key} delay={i * 0.08}>
-              <FeatureCard icon={<f.icon size={24} />} title={tf2(f.key)} desc={tf2(f.descKey)} />
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {features.map((f, i) => (
+            <FadeIn key={f.title} delay={i * 0.07}>
+              <FeatureCard icon={<f.icon size={22} />} title={f.title} desc={f.desc} />
             </FadeIn>
           ))}
         </div>
       </section>
 
       {/* Partners */}
-      <section className="border-t border-slate-800 bg-slate-900/30 px-6 py-24">
+      <section className="border-t py-24 px-6" style={{ borderColor: 'var(--mais-line)', background: 'var(--mais-bg-2)' }}>
         <div className="mx-auto max-w-7xl">
           <FadeIn className="mb-12 text-center">
-            <h2 className="text-3xl font-black tracking-tight md:text-5xl mb-4">{tp('title')}</h2>
-            <p className="text-slate-400">{tp('subtitle')}</p>
+            <div className="mais-kicker mb-4">Inštitúcie</div>
+            <h2 className="font-display text-[36px] md:text-[52px] leading-tight" style={{ color: 'var(--mais-fg)' }}>
+              Inštitúcie <span className="mais-gradient-text">používajúce MAIS</span>
+            </h2>
+            <p className="mt-4 text-[15px]" style={{ color: 'var(--mais-fg-3)' }}>
+              Pridajte sa k špičkovým slovenským univerzitám a vysokým školám
+            </p>
           </FadeIn>
           <FadeIn delay={0.1}>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {partners.map((p) => <PartnerCard key={p.id} partner={p} locale={locale} />)}
             </div>
           </FadeIn>
-          {partners.length >= 6 && (
-            <div className="mt-10 text-center">
-              <Link href={`/${locale}/skoly`}>
-                <Button variant="outline" className="border-slate-700 text-slate-300 hover:bg-slate-800">
-                  {tp('showAll')} <ArrowRight size={14} className="ml-2" />
-                </Button>
-              </Link>
-            </div>
-          )}
         </div>
       </section>
 
       {/* CTA */}
       <section className="px-6 py-24">
         <FadeIn>
-          <div className="mx-auto max-w-3xl rounded-2xl border border-indigo-500/20 bg-gradient-to-br from-indigo-950/60 to-purple-950/40 p-12 text-center">
-            <h2 className="mb-4 text-3xl font-black md:text-4xl">{tc('title')}</h2>
-            <p className="mb-8 text-slate-400">{tc('subtitle')}</p>
-            <Link href={`/${locale}/kontakt`}>
-              <Button size="lg" className="bg-indigo-600 hover:bg-indigo-500 text-white px-10">
-                {tc('button')}
-              </Button>
-            </Link>
+          <div className="mx-auto max-w-3xl rounded-3xl p-px" style={{ background: 'linear-gradient(135deg, oklch(0.55 0.22 40 / 0.5), oklch(0.4 0.15 40 / 0.2) 50%, oklch(0.55 0.22 40 / 0.5))' }}>
+            <div className="relative overflow-hidden rounded-3xl p-12 text-center" style={{ background: 'linear-gradient(180deg, oklch(0.22 0.018 40 / 0.95), oklch(0.16 0.014 40 / 0.95))' }}>
+              <div className="mais-cta-conic absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-32 opacity-25 pointer-events-none" />
+              <div className="mais-kicker justify-center mb-6">Záujem o MAIS?</div>
+              <h2 className="font-display text-[32px] md:text-[44px] leading-tight mb-4" style={{ color: 'var(--mais-fg)' }}>
+                Zaujal vás MAIS<br /><span className="mais-gradient-text">pre vašu inštitúciu?</span>
+              </h2>
+              <p className="mb-8 text-[15px]" style={{ color: 'var(--mais-fg-3)' }}>
+                Kontaktujte nás pre demo a individuálnu ponuku nasadenia.
+              </p>
+              <Link href={`/${locale}/kontakt`}
+                className="mais-btn-primary rounded-xl px-8 py-3.5 text-[14px] font-medium inline-flex items-center gap-2">
+                Kontaktovať ITernal
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+                </svg>
+              </Link>
+            </div>
           </div>
         </FadeIn>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-slate-800 px-6 py-12">
-        <div className="mx-auto max-w-7xl grid grid-cols-1 md:grid-cols-3 gap-8 text-sm text-slate-400">
-          <div>
-            <div className="text-lg font-black text-slate-100 mb-2 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent w-fit">MAIS</div>
-            <p>{tfoot('tagline')}</p>
-          </div>
-          <div>
-            <div className="font-semibold text-slate-300 mb-3">{tfoot('navigation')}</div>
-            <div className="flex flex-col gap-2">
-              <Link href={`/${locale}/skoly`} className="hover:text-slate-100">{t('schools')}</Link>
-              <Link href={`/${locale}/pre-institucie`} className="hover:text-slate-100">{t('forInstitutions')}</Link>
-              <Link href={`/${locale}/podpora`} className="hover:text-slate-100">{t('support')}</Link>
-              <Link href={`/${locale}/kontakt`} className="hover:text-slate-100">{t('contact')}</Link>
-            </div>
-          </div>
-          <div>
-            <div className="font-semibold text-slate-300 mb-3">ITernal s.r.o.</div>
-            <p>Sládkovičova 533/20</p>
-            <p>018 41 Dubnica nad Váhom</p>
-            <p className="mt-2"><a href="tel:+421915724757" className="hover:text-slate-100">+421 915 724 757</a></p>
-            <p><a href="mailto:podpora@mais.sk" className="hover:text-slate-100">podpora@mais.sk</a></p>
-          </div>
-        </div>
-        <div className="mx-auto mt-10 max-w-7xl border-t border-slate-800 pt-6 text-center text-xs text-slate-600">
-          © {new Date().getFullYear()} ITernal s.r.o. · {tfoot('rights')}
-        </div>
-      </footer>
+      <MaisFooter locale={locale} labels={{
+        tagline: tfoot('tagline'),
+        navigation: tfoot('navigation'),
+        rights: tfoot('rights'),
+        schools: t('schools'),
+        forInstitutions: t('forInstitutions'),
+        support: t('support'),
+        contact: t('contact'),
+      }} />
     </div>
   )
 }

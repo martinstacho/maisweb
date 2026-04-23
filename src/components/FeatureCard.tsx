@@ -1,6 +1,3 @@
-'use client'
-import { motion } from 'motion/react'
-
 interface FeatureCardProps {
   icon: React.ReactNode
   title: string
@@ -9,13 +6,13 @@ interface FeatureCardProps {
 
 export function FeatureCard({ icon, title, desc }: FeatureCardProps) {
   return (
-    <motion.div
-      whileHover={{ y: -4, transition: { duration: 0.2 } }}
-      className="cursor-pointer rounded-xl border border-slate-800 bg-slate-900/50 p-6 hover:border-slate-700 transition-colors"
-    >
-      <div className="mb-4 text-indigo-400">{icon}</div>
-      <h3 className="mb-2 font-semibold text-slate-100">{title}</h3>
-      <p className="text-sm text-slate-400 leading-relaxed">{desc}</p>
-    </motion.div>
+    <div className="mais-bento-card p-6">
+      <div className="mais-stripe" />
+      <div className="mais-ico-box rounded-xl w-11 h-11 flex items-center justify-center mb-5" style={{ color: 'var(--mais-orange)' }}>
+        {icon}
+      </div>
+      <div className="font-semibold text-[15px] mb-2" style={{ color: 'var(--mais-fg)' }}>{title}</div>
+      <div className="text-[13px] leading-relaxed" style={{ color: 'var(--mais-fg-3)' }}>{desc}</div>
+    </div>
   )
 }
