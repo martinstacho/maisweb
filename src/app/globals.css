@@ -338,6 +338,8 @@ html, body {
   border-color: oklch(0.72 0.2 40 / 0.45);
   box-shadow: 0 20px 60px -20px oklch(0.55 0.24 35 / 0.35);
 }
+.bento-card.big   { padding: 32px; min-height: 260px; }
+.bento-card.small { padding: 22px; min-height: 140px; }
 .bento-card .stripe {
   position: absolute; top: 0; left: 0; right: 0; height: 2px;
   background: linear-gradient(90deg, var(--orange), var(--amber), var(--coral));

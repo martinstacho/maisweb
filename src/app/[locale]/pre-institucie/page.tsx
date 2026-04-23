@@ -91,12 +91,6 @@ const quotes = [
   { text: 'Systém zvládol záťaž zápisného týždňa bez jediného výpadku. 8 000 zápisov za 3 dni.', role: 'Správca systému', school: 'SZU' },
 ]
 
-const steps = [
-  { num: '01', title: 'Analýza potrieb', duration: '1–2 týždne', desc: 'Audit existujúcich systémov, mapovanie požiadaviek, návrh architektúry.' },
-  { num: '02', title: 'Konfigurácia a migrácia', duration: '2–3 týždne', desc: 'Nastavenie modulov, import dát z AIS/Moggis, napojenie na CVTI a SIMUS.' },
-  { num: '03', title: 'Školenie a testovanie', duration: '1–2 týždne', desc: 'Tréning administrátorov a užívateľov, pilotné skúšky, UAT.' },
-  { num: '04', title: 'Spustenie a podpora', duration: 'ongoing', desc: 'Ostré nasadenie, 24/7 monitoring, SLA podpora, kontinuálne updaty.' },
-]
 
 function Navbar({ locale }: { locale: string }) {
   const [scrolled, setScrolled] = useState(false)
@@ -311,6 +305,14 @@ function BentoGrid() {
                     <span className="mono text-[12px]" style={{ color: 'var(--fg-3)' }}>Notifikácia odoslaná</span>
                   </div>
                 </div>
+                <div className="absolute right-6 top-5 opacity-40 pointer-events-none">
+                  <div className="flex flex-col gap-1.5 items-end">
+                    {([80, 64, 44] as number[]).map((w, i) => (
+                      <div key={i} className="h-1.5 rounded-full"
+                        style={{ width: w, background: `oklch(${0.4 + i * 0.1} 0.1 40 / 0.45)` }} />
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </Reveal>
@@ -370,49 +372,6 @@ function References() {
               </Reveal>
             )
           })}
-        </div>
-      </div>
-    </section>
-  )
-}
-
-function Timeline() {
-  return (
-    <section className="relative py-20 md:py-28 border-t" style={{ borderColor: 'var(--line)' }}>
-      <div className="mx-auto max-w-7xl px-6">
-        <Reveal><div className="kicker">Proces nasadenia</div></Reveal>
-        <Reveal delay={80}>
-          <h2 className="font-display text-[36px] md:text-[56px] mt-4 text-white leading-[1] max-w-3xl">Ako prebieha nasadenie</h2>
-        </Reveal>
-        <Reveal delay={140}>
-          <p className="mt-4 text-[15px] max-w-xl" style={{ color: 'var(--fg-2)' }}>
-            Štyri fázy, jasný harmonogram. Priemerné nasadenie trvá 4–8 týždňov.
-          </p>
-        </Reveal>
-        <div className="relative mt-16 grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-6">
-          <div className="hidden md:block absolute top-[18px] left-[5%] right-[5%] h-px"
-            style={{ background: 'linear-gradient(90deg, var(--line-strong), oklch(0.72 0.2 40 / 0.6) 85%, transparent)' }} />
-          {steps.map((s, i) => (
-            <Reveal key={i} delay={i * 120}>
-              <div className="relative flex md:flex-col gap-5 md:gap-0">
-                <div className="relative flex md:justify-center shrink-0" style={{ width: 40 }}>
-                  <div className="tl-dot" style={{ zIndex: 1 }} />
-                  {i < steps.length - 1 && (
-                    <div className="md:hidden absolute left-[7px] top-[14px] bottom-[-60px] w-px"
-                      style={{ background: 'linear-gradient(180deg, oklch(0.72 0.2 40 / 0.5), var(--line))' }} />
-                  )}
-                </div>
-                <div className="flex-1 md:mt-6">
-                  <div className="flex items-baseline gap-3">
-                    <span className="tl-step-num text-[44px] md:text-[56px] leading-none">{s.num}</span>
-                    <span className="mono text-[11px] tracking-[0.2em] uppercase" style={{ color: 'var(--amber)' }}>{s.duration}</span>
-                  </div>
-                  <div className="font-display text-[20px] md:text-[22px] text-white mt-3 leading-tight">{s.title}</div>
-                  <p className="mt-2 text-[13.5px] leading-relaxed max-w-xs" style={{ color: 'var(--fg-2)' }}>{s.desc}</p>
-                </div>
-              </div>
-            </Reveal>
-          ))}
         </div>
       </div>
     </section>
@@ -540,7 +499,6 @@ export default function PreInstituciePage({ params }: { params: { locale: string
       <WhyMAIS />
       <BentoGrid />
       <References />
-      <Timeline />
       <CTA />
       <Footer locale={locale} />
     </div>
