@@ -53,7 +53,10 @@ export function PartnerForm({ initial }: { initial?: Partner }) {
     const fd = new FormData()
     fd.append('file', file)
     const res = await fetch('/api/upload', { method: 'POST', body: fd })
-    const data = await res.json()
+    if (!res.ok) throw new Error('Chyba pri nahrávaní loga')
+    const text = await res.text()
+    if (!text) throw new Error('Prázdna odpoveď pri nahrávaní loga')
+    const data = JSON.parse(text)
     return data.url ?? null
   }
 
@@ -73,7 +76,11 @@ export function PartnerForm({ initial }: { initial?: Partner }) {
       const url = initial?.id ? `/api/partners/${initial.id}` : '/api/partners'
       const method = initial?.id ? 'PUT' : 'POST'
       const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
-      if (!res.ok) throw new Error('Chyba pri ukladaní')
+      if (!res.ok) {
+        const text = await res.text()
+        const json = text ? JSON.parse(text) : {}
+        throw new Error(json.error ?? 'Chyba pri ukladaní')
+      }
       router.push('/admin/partners')
       router.refresh()
     } catch (err: unknown) {
