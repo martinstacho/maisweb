@@ -22,12 +22,6 @@ async function getPartners() {
   })
 }
 
-const stats = [
-  { value: 20,    suffix: '+', label: 'rokov na trhu',          sub: 'od roku 2004',            accent: 'var(--indigo)' },
-  { value: 9,     suffix: '',  label: 'inštitúcií',             sub: '4 univerzity + 5 VŠ',     accent: 'var(--violet)' },
-  { value: 50000, suffix: '+', label: 'aktívnych používateľov', sub: 'každý semester',           accent: 'var(--coral)' },
-  { value: 100,   suffix: '%', label: 'kompatibilný',           sub: 's Bolonským procesom',     accent: 'var(--mint)' },
-] as const
 
 const capSvg = (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
@@ -73,12 +67,20 @@ const features = [
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
-  const [partners, tn, t, tfoot] = await Promise.all([
+  const [partners, tn, t, tfoot, tst] = await Promise.all([
     getPartners(),
     getTranslations('hero'),
     getTranslations('nav'),
     getTranslations('footer'),
+    getTranslations('stats'),
   ])
+
+  const stats = [
+    { value: 20,    suffix: '+', label: tst('years'),       sub: tst('yearsSub'),        accent: 'var(--indigo)' },
+    { value: 9,     suffix: '',  label: tst('institutions'), sub: tst('institutionsSub'), accent: 'var(--violet)' },
+    { value: 50000, suffix: '+', label: tst('users'),        sub: tst('usersSub'),        accent: 'var(--coral)' },
+    { value: 100,   suffix: '%', label: tst('compatible'),   sub: tst('compatibleSub'),   accent: 'var(--mint)' },
+  ]
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg)', color: 'var(--fg)' }}>

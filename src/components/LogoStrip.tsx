@@ -1,4 +1,5 @@
 'use client'
+import { useTranslations } from 'next-intl'
 import { PARTNER_META } from '@/lib/partners-data'
 
 interface PartnerStrip {
@@ -8,6 +9,7 @@ interface PartnerStrip {
 
 export function LogoStrip({ partners }: { partners: PartnerStrip[] }) {
   const track = [...partners, ...partners]
+  const t = useTranslations('hero')
 
   return (
     <section
@@ -26,7 +28,7 @@ export function LogoStrip({ partners }: { partners: PartnerStrip[] }) {
         <div className="mb-6 text-center mono text-[11px] tracking-[0.25em] uppercase" style={{ color: 'var(--fg-4)' }}>
           <span className="inline-flex items-center gap-3">
             <span className="h-px w-10 inline-block" style={{ background: 'var(--line-strong)' }} />
-            Dôverujú nám · 4 univerzity + 5 VŠ · 30 000+ študentov
+            {t('marqueeHeader')}
             <span className="h-px w-10 inline-block" style={{ background: 'var(--line-strong)' }} />
           </span>
         </div>
