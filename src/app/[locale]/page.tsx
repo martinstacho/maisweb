@@ -237,7 +237,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                 <div className="beam always rounded-3xl" />
                 <div className="absolute inset-0 dots opacity-20 pointer-events-none" />
                 <div className="relative">
-                  <div className="kicker justify-center inline-flex">Demo · nezáväzne</div>
+                  <div className="kicker justify-center inline-flex">MAIS na vašej UNI</div>
                   <h2 className="font-display text-[36px] md:text-[56px] mt-6 text-white leading-[1]" style={{ textWrap: 'balance' } as React.CSSProperties}>
                     Zaujal vás MAIS pre vašu inštitúciu?
                   </h2>
