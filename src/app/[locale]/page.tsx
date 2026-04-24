@@ -67,7 +67,7 @@ const features = [
   { icon: shieldSvg, title: 'Bezpečnosť a GDPR',  desc: 'Splnenie všetkých zákonných požiadaviek. Audit trail, šifrovanie, zálohovanie a obnova dát.',           code: '03 / gdpr',        accent: 'var(--mint)',    size: 'md' as const },
   { icon: zapSvg,    title: 'Výkon a spoľahlivosť',desc: 'Systém zvláda záťažové špičky počas zápisov. SLA 99,9% dostupnosť počas semestra.',                    code: '04 / sla',         accent: 'var(--violet)',  size: 'md' as const },
   { icon: globeSvg,  title: 'Integrácie',          desc: 'Napojenie na SIMUS, CVTI, ISSP, ekonomické a knižničné systémy. Open API pre vlastné integrácie.',       code: '05 / api',         accent: 'var(--orange)',  size: 'md' as const },
-  { icon: blocksSvg, title: 'Modularita',          desc: 'Nasaďte len to, čo potrebujete. Systém rastie s vašou inštitúciou — žiadne zbytočné funkcie.',          code: '06 / moduly',      accent: 'var(--amber)',   size: 'lg' as const, tags: ['Študijné','Ubytovanie','Stravovanie','Knižnica','Ekonomika'] },
+  { icon: blocksSvg, title: 'Modularita',          desc: 'Nasaďte len to, čo potrebujete. Systém rastie s vašou inštitúciou — žiadne zbytočné funkcie.',          code: '06 / moduly',      accent: 'var(--amber)',   size: 'lg' as const, tags: ['Administrátor','Pedagóg','Referent','Študent','E-prihláška','Debata','Verejný portál','E-mobility','ECTS'] },
 ]
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
