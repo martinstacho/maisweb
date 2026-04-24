@@ -1,0 +1,121 @@
+{
+  "nav": {
+    "schools": "Intézmények",
+    "forInstitutions": "Intézményeknek",
+    "support": "Támogatás",
+    "contact": "Kapcsolat",
+    "cta": "Érdeklődöm",
+    "features": "Funkciók"
+  },
+  "hero": {
+    "badge": "2004 óta · 4 egyetem + 5 főiskola",
+    "title1": "Az akadémiai információs rendszer,",
+    "title2": "amely a szlovák egyetemeket hajtja",
+    "subtitle": "A MAIS egy átfogó moduláris rendszer az akadémiai adminisztráció kezelésére. Megbízható, biztonságos és teljes mértékben megfelel a szlovák felsőoktatás összes követelményének.",
+    "ctaPrimary": "Keresse meg intézményét",
+    "ctaSecondary": "Intézményeknek"
+  },
+  "stats": {
+    "years": "év a piacon",
+    "yearsSub": "2004 óta",
+    "institutions": "intézmény",
+    "institutionsSub": "3 állami · 3 közösségi · 3 magán",
+    "users": "aktív felhasználó",
+    "usersSub": "minden szemeszterben",
+    "compatible": "kompatibilis",
+    "compatibleSub": "a Bolognai folyamattal"
+  },
+  "features": {
+    "title": "Mit kínál a MAIS",
+    "subtitle": "Átfogó megoldás az akadémiai adminisztráció minden területére",
+    "studyAgenda": "Tanulmányi agenda",
+    "studyAgendaDesc": "Teljes tanulmánykezelés a felvételitől a diplomaátadásig. Ütemtervek, órarendek és beiratkozási lapok.",
+    "eApplication": "E-felvételi",
+    "eApplicationDesc": "Online felvételi kérelem benyújtása. A jelentkezők valós időben követhetik kérelmük állapotát.",
+    "security": "Biztonság és GDPR",
+    "securityDesc": "Minden jogszabályi követelménynek való megfelelés. Audit napló, titkosítás, biztonsági mentés és adatvisszaállítás.",
+    "performance": "Teljesítmény és megbízhatóság",
+    "performanceDesc": "A rendszer kezeli a beiratkozás alatti csúcsterheléseket. SLA 99,9%-os rendelkezésre állás a szemeszter során.",
+    "integrations": "Integrációk",
+    "integrationsDesc": "Csatlakoztatva a SIMUS, CVTI, ISSP, pénzügyi és könyvtári rendszerekhez. Nyílt API egyéni integrációkhoz.",
+    "modular": "Modularitás",
+    "modularDesc": "Csak azt vezesse be, amire szüksége van. A rendszer intézményével együtt növekszik — felesleges funkciók nélkül."
+  },
+  "partners": {
+    "title": "A MAIS-t használó intézmények",
+    "subtitle": "Csatlakozzon a vezető szlovák egyetemekhez és főiskolákhoz",
+    "showAll": "Összes intézmény megtekintése",
+    "website": "Hivatalos weboldal",
+    "login": "Bejelentkezés a MAIS-ba",
+    "application": "Elektronikus felvételi kérelem"
+  },
+  "cta": {
+    "title": "Érdekli a MAIS az intézménye számára?",
+    "subtitle": "Vegye fel velünk a kapcsolatot bemutatóért és személyre szabott ajánlatért.",
+    "button": "Kapcsolatfelvétel az ITernallal"
+  },
+  "footer": {
+    "tagline": "Moduláris akadémiai információs rendszer az ITernal s.r.o.-tól.",
+    "navigation": "Navigáció",
+    "rights": "Minden jog fenntartva"
+  },
+  "schools": {
+    "title": "A MAIS-t használó intézmények",
+    "subtitle": "Keresse meg intézményét és érje el a rendszert",
+    "back": "Vissza a főoldalra"
+  },
+  "support": {
+    "title": "Támogatás",
+    "subtitle": "Ez a szakasz előkészítés alatt áll",
+    "back": "Vissza",
+    "comingSoon": "Hamarosan",
+    "selectSchool": "Válassza ki intézményét",
+    "officialWeb": "Hivatalos weboldal",
+    "loginIssue": "Nem tudok bejelentkezni a MAIS-ba",
+    "eApplication": "Elektronikus felvételi kérelem",
+    "notFoundSchool": "Nem találta intézményét?",
+    "helpdeskBadge": "Helpdesk · 24/7 három szinten",
+    "findSchoolDesc": "Keresse meg intézményét és kapjon segítséget közvetlenül az Ön rendszeréhez. Minden intézménynek saját IT-helpdeske van, amely kapcsolatot biztosít a hallgatók és jelentkezők számára.",
+    "maisSupport": "MAIS Támogatás",
+    "institutionsList": "Intézmények listája",
+    "activeInstitutions": "aktív intézmény",
+    "allHelpdeskOnline": "Minden helpdesk online",
+    "skipToList": "↓ Ugrás a listára",
+    "contactCentral": "Vegye fel a kapcsolatot a MAIS központi támogatásával",
+    "contactCentralDesc": "Ha intézménye bevezetési folyamatban van, vagy általános segítségre van szüksége a rendszerrel kapcsolatban, írjon nekünk."
+  },
+  "institutions": {
+    "title": "Intézményeknek",
+    "subtitle": "Ez a szakasz előkészítés alatt áll",
+    "back": "Vissza",
+    "comingSoon": "Hamarosan",
+    "contactUs": "Kapcsolatfelvétel"
+  },
+  "contact": {
+    "title": "Kapcsolat",
+    "name": "Név",
+    "email": "E-mail",
+    "message": "Üzenet",
+    "send": "Üzenet küldése",
+    "supportLine": "MAIS Támogatási vonal",
+    "supportHours": "munkanapokon 9:00 – 15:00"
+  },
+  "integrations": {
+    "kicker": "Integrációk",
+    "countLabel": "integráció",
+    "heading1": "Csatlakoztatva a",
+    "heading2": "teljes ökoszisztémához",
+    "groups": {
+      "identity": "Identitás és hozzáférés",
+      "finance": "Gazdaság és pénzügy",
+      "study": "Tanulmányok és kutatás",
+      "registry": "Iratkezelés és dokumentumok",
+      "external": "Külső rendszerek",
+      "mobile": "Mobil és értesítések"
+    }
+  },
+  "testimonials": {
+    "kicker": "Referenciák",
+    "title": "Mit mondanak a MAIS-t már használó intézmények"
+  }
+}

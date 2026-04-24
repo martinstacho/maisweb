@@ -68,7 +68,21 @@
     "title": "Support",
     "subtitle": "This section is being prepared",
     "back": "Back",
-    "comingSoon": "Coming soon"
+    "comingSoon": "Coming soon",
+    "selectSchool": "Select your school",
+    "officialWeb": "Official website",
+    "loginIssue": "Unable to log in to MAIS",
+    "eApplication": "Submit e-application",
+    "notFoundSchool": "Didn't find your school?",
+    "helpdeskBadge": "Helpdesk · 24/7 on three levels",
+    "findSchoolDesc": "Find your school and get help directly for your system. Each institution has its own IT helpdesk with contact for students and applicants.",
+    "maisSupport": "MAIS Support",
+    "institutionsList": "List of institutions",
+    "activeInstitutions": "active institutions",
+    "allHelpdeskOnline": "All helpdests online",
+    "skipToList": "↓ Skip to list",
+    "contactCentral": "Contact the central MAIS support",
+    "contactCentralDesc": "If your institution is in the process of deployment, or you need general help with the system, write to us."
   },
   "institutions": {
     "title": "For institutions",
@@ -85,5 +99,23 @@
     "send": "Send message",
     "supportLine": "MAIS Support line",
     "supportHours": "working days 9:00 – 15:00"
+  },
+  "integrations": {
+    "kicker": "Integrations",
+    "countLabel": "integrations",
+    "heading1": "Connected to",
+    "heading2": "the entire ecosystem",
+    "groups": {
+      "identity": "Identity & Access",
+      "finance": "Finance & Economics",
+      "study": "Studies & Research",
+      "registry": "Registry & Documents",
+      "external": "External systems",
+      "mobile": "Mobile & Notifications"
+    }
+  },
+  "testimonials": {
+    "kicker": "References",
+    "title": "What institutions using MAIS say"
   }
 }

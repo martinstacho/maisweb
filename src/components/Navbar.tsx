@@ -71,7 +71,7 @@ export function Navbar({ activePage }: NavbarProps) {
         <div className="flex items-center gap-2">
           {/* Language switcher */}
           <div className="hidden md:flex items-center gap-1 chip-mono">
-            {(['sk', 'en', 'uk'] as const).map((l) => (
+            {(['sk', 'en', 'uk', 'hu'] as const).map((l) => (
               <span key={l} className="flex items-center gap-1">
                 {l === locale && <span className="live-dot" style={{ width: 6, height: 6 }} />}
                 <button
@@ -81,7 +81,7 @@ export function Navbar({ activePage }: NavbarProps) {
                 >
                   {l.toUpperCase()}
                 </button>
-                {l !== 'uk' && <span style={{ color: 'var(--fg-4)' }}>·</span>}
+                {l !== 'hu' && <span style={{ color: 'var(--fg-4)' }}>·</span>}
               </span>
             ))}
           </div>

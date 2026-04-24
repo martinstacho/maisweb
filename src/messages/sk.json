@@ -68,7 +68,21 @@
     "title": "Podpora",
     "subtitle": "Táto sekcia je pripravovaná",
     "back": "Späť",
-    "comingSoon": "Pripravujeme"
+    "comingSoon": "Pripravujeme",
+    "selectSchool": "Vyberte svoju školu",
+    "officialWeb": "Oficiálny web",
+    "loginIssue": "Neviem sa prihlásiť do MAIS",
+    "eApplication": "Podať e-prihlášku",
+    "notFoundSchool": "Nenašli ste svoju školu?",
+    "helpdeskBadge": "Helpdesk · 24/7 na troch úrovniach",
+    "findSchoolDesc": "Nájdite svoju školu a získajte pomoc priamo pre váš systém. Každá inštitúcia má vlastný IT helpdesk s kontaktom pre študentov a uchádzačov.",
+    "maisSupport": "Podpora MAIS",
+    "institutionsList": "Zoznam inštitúcií",
+    "activeInstitutions": "aktívnych inštitúcií",
+    "allHelpdeskOnline": "Všetky helpdesky online",
+    "skipToList": "↓ Preskočiť na zoznam",
+    "contactCentral": "Kontaktujte centrálnu podporu MAIS",
+    "contactCentralDesc": "Ak je vaša inštitúcia v procese nasadenia, alebo potrebujete všeobecnú pomoc so systémom, napíšte nám."
   },
   "institutions": {
     "title": "Pre inštitúcie",
@@ -85,5 +99,23 @@
     "send": "Odoslať správu",
     "supportLine": "MAIS Linka podpory",
     "supportHours": "pracovné dni 9:00 – 15:00"
+  },
+  "integrations": {
+    "kicker": "Integrácie",
+    "countLabel": "integrácií",
+    "heading1": "Napojený na",
+    "heading2": "celý ekosystém",
+    "groups": {
+      "identity": "Identita & Prístup",
+      "finance": "Ekonomika & Financie",
+      "study": "Štúdium & Výskum",
+      "registry": "Registratúra & Dokumenty",
+      "external": "Externé systémy",
+      "mobile": "Mobilné & Notifikácie"
+    }
+  },
+  "testimonials": {
+    "kicker": "Referencie",
+    "title": "Čo hovoria inštitúcie, ktoré už MAIS používajú"
   }
 }

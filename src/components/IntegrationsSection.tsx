@@ -1,12 +1,14 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { motion } from 'motion/react'
+import { useTranslations } from 'next-intl'
 import { NumberTicker } from '@/components/ui/number-ticker'
 import { Reveal } from '@/components/ui/Reveal'
 import type { IntegrationGroup, IntegrationsApiResponse } from '@/lib/integrations'
 
 export function IntegrationsSection() {
   const [data, setData] = useState<IntegrationsApiResponse | null>(null)
+  const t = useTranslations('integrations')
 
   useEffect(() => {
     fetch('/api/integrations')
@@ -17,6 +19,18 @@ export function IntegrationsSection() {
 
   const groups: IntegrationGroup[] = data?.groups ?? []
   const displayCount = data?.displayCount ?? 20
+
+  const groupLabel = (id: string): string => {
+    const map: Record<string, string> = {
+      identity: t('groups.identity'),
+      finance: t('groups.finance'),
+      study: t('groups.study'),
+      registry: t('groups.registry'),
+      external: t('groups.external'),
+      mobile: t('groups.mobile'),
+    }
+    return map[id] ?? id
+  }
 
   return (
     <section
@@ -30,10 +44,10 @@ export function IntegrationsSection() {
 
         <Reveal>
           <div className="mb-16">
-            <div className="kicker">Integrácie</div>
+            <div className="kicker">{t('kicker')}</div>
             <h2 className="font-display text-[40px] md:text-[64px] mt-5 text-white leading-[0.95]">
-              Napojený na{' '}
-              <span className="gradient-text">celý ekosystém</span>
+              {t('heading1')}{' '}
+              <span className="gradient-text">{t('heading2')}</span>
             </h2>
             <div className="flex items-baseline gap-2 mt-6">
               <NumberTicker
@@ -42,7 +56,7 @@ export function IntegrationsSection() {
                 className="font-display text-[72px] text-white leading-none"
               />
               <span className="font-display text-[48px]" style={{ color: 'var(--orange)' }}>+</span>
-              <span className="text-[18px]" style={{ color: 'var(--fg-3)' }}>integrácií</span>
+              <span className="text-[18px]" style={{ color: 'var(--fg-3)' }}>{t('countLabel')}</span>
             </div>
           </div>
         </Reveal>
@@ -60,7 +74,7 @@ export function IntegrationsSection() {
                   className="chip-mono mb-4 self-start"
                   style={{ borderColor: `color-mix(in oklch, ${cat.accent} 50%, transparent)`, color: cat.accent }}
                 >
-                  {cat.label}
+                  {groupLabel(cat.id)}
                 </div>
                 <div className="flex flex-wrap gap-2 mt-4">
                   {cat.chips.map((chip, chipIdx) => (

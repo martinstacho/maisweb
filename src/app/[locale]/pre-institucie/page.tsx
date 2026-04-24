@@ -7,7 +7,7 @@ import { PARTNER_META } from '@/lib/partners-data'
 import { IntegrationsSection } from '@/components/IntegrationsSection'
 import { TestimonialsSection } from '@/components/TestimonialsSection'
 import { useRouter, usePathname } from '@/i18n/navigation'
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 
 const ArrowIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -86,6 +86,7 @@ function Navbar() {
   const router = useRouter()
   const pathname = usePathname()
   const locale = useLocale()
+  const t = useTranslations('nav')
   useEffect(() => {
     const onS = () => setScrolled(window.scrollY > 12)
     onS(); window.addEventListener('scroll', onS, { passive: true })
@@ -103,15 +104,15 @@ function Navbar() {
           <span className="chip-mono hidden sm:inline-flex">v2026</span>
         </Link>
         <div className="hidden md:flex items-center gap-7 text-[13.5px]" style={{ color: 'var(--fg-2)' }}>
-          <a href={`/${locale}#features`} className="ln hover:text-white transition-colors">Funkcie</a>
-          <a href={`/${locale}#schools`} className="ln hover:text-white transition-colors">Školy</a>
-          <Link href={`/${locale}/pre-institucie`} className="ln text-white" aria-current="page">Pre inštitúcie</Link>
-          <Link href={`/${locale}/podpora`} className="ln hover:text-white transition-colors">Podpora</Link>
-          <a href={`/${locale}#contact`} className="ln hover:text-white transition-colors">Kontakt</a>
+          <a href={`/${locale}#features`} className="ln hover:text-white transition-colors">{t('features')}</a>
+          <a href={`/${locale}#schools`} className="ln hover:text-white transition-colors">{t('schools')}</a>
+          <Link href={`/${locale}/pre-institucie`} className="ln text-white" aria-current="page">{t('forInstitutions')}</Link>
+          <Link href={`/${locale}/podpora`} className="ln hover:text-white transition-colors">{t('support')}</Link>
+          <a href={`/${locale}#contact`} className="ln hover:text-white transition-colors">{t('contact')}</a>
         </div>
         <div className="flex items-center gap-2">
           <div className="hidden md:flex items-center gap-1 chip-mono">
-            {(['sk', 'en', 'uk'] as const).map((l) => (
+            {(['sk', 'en', 'uk', 'hu'] as const).map((l) => (
               <span key={l} className="flex items-center gap-1">
                 {l === locale && <span className="live-dot" style={{ width: 6, height: 6 }} />}
                 <button
@@ -119,7 +120,7 @@ function Navbar() {
                   className={`transition-colors cursor-pointer ${l === locale ? 'text-white font-medium' : 'hover:text-white'}`}
                   style={l === locale ? {} : { color: 'var(--fg-3)' }}
                 >{l.toUpperCase()}</button>
-                {l !== 'uk' && <span style={{ color: 'var(--fg-4)' }}>·</span>}
+                {l !== 'hu' && <span style={{ color: 'var(--fg-4)' }}>·</span>}
               </span>
             ))}
           </div>

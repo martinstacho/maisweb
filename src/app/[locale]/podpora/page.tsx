@@ -58,7 +58,13 @@ interface Partner {
   city: string | null
 }
 
-function LoginLink({ loginUrl }: { loginUrl: string }) {
+interface SchoolLabels {
+  website: string
+  loginIssue: string
+  eApplication: string
+}
+
+function LoginLink({ loginUrl, label }: { loginUrl: string; label: string }) {
   const isMail = loginUrl.startsWith('mailto:')
   const isPdf = loginUrl.endsWith('.pdf')
   const icon = isPdf ? <FileIcon /> : isMail ? <MailIcon /> : <LockIcon />
@@ -66,13 +72,13 @@ function LoginLink({ loginUrl }: { loginUrl: string }) {
   const rel = isMail ? undefined : 'noopener noreferrer'
   return (
     <a href={loginUrl} target={target} rel={rel} className="action-row primary w-full text-left">
-      <span className="leading flex items-center gap-2.5">{icon} Neviem sa prihlásiť do MAIS</span>
+      <span className="leading flex items-center gap-2.5">{icon} {label}</span>
       <ArrowIcon />
     </a>
   )
 }
 
-function SchoolCard({ p, i }: { p: Partner; i: number }) {
+function SchoolCard({ p, i, labels }: { p: Partner; i: number; labels: SchoolLabels }) {
   const meta = PARTNER_META[p.shortName]
   const accent = meta?.accent ?? 'var(--orange)'
   const est = meta?.est
@@ -110,13 +116,13 @@ function SchoolCard({ p, i }: { p: Partner; i: number }) {
         <div className="my-5 h-px w-full" style={{ background: `linear-gradient(90deg, transparent, ${accent}40 50%, transparent)` }} />
         <div className="flex flex-col gap-2">
           <a href={p.websiteUrl} target="_blank" rel="noopener noreferrer" className="action-row">
-            <span className="leading flex items-center gap-2.5"><GlobeIcon /> Oficiálny web</span>
+            <span className="leading flex items-center gap-2.5"><GlobeIcon /> {labels.website}</span>
             <ExtLinkIcon />
           </a>
-          {p.loginUrl && <LoginLink loginUrl={p.loginUrl} />}
+          {p.loginUrl && <LoginLink loginUrl={p.loginUrl} label={labels.loginIssue} />}
           {p.applicationUrl && (
             <a href={p.applicationUrl} target="_blank" rel="noopener noreferrer" className="action-row">
-              <span className="leading flex items-center gap-2.5"><FileIcon /> Podať e-prihlášku</span>
+              <span className="leading flex items-center gap-2.5"><FileIcon /> {labels.eApplication}</span>
               <ExtLinkIcon />
             </a>
           )}
@@ -128,11 +134,18 @@ function SchoolCard({ p, i }: { p: Partner; i: number }) {
 
 export default async function PodporaPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
-  const [partners, t, tfoot] = await Promise.all([
+  const [partners, t, tfoot, ts] = await Promise.all([
     prisma.partner.findMany({ where: { isActive: true }, orderBy: { displayOrder: 'asc' } }),
     getTranslations('nav'),
     getTranslations('footer'),
+    getTranslations('support'),
   ])
+
+  const schoolLabels: SchoolLabels = {
+    website: ts('officialWeb'),
+    loginIssue: ts('loginIssue'),
+    eApplication: ts('eApplication'),
+  }
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg)', color: 'var(--fg)' }}>
@@ -149,24 +162,24 @@ export default async function PodporaPage({ params }: { params: Promise<{ locale
         <div className="absolute top-[-80px] right-[-160px] w-[420px] h-[420px] rounded-full blob-b pointer-events-none"
           style={{ background: 'radial-gradient(circle at 70% 70%, oklch(0.58 0.22 25 / 0.35), transparent 60%)' }} />
         <div className="relative mx-auto max-w-7xl px-6 pt-20 pb-14 md:pt-28 md:pb-20">
-          <Reveal><div className="kicker">Helpdesk · 24/7 na troch úrovniach</div></Reveal>
+          <Reveal><div className="kicker">{ts('helpdeskBadge')}</div></Reveal>
           <Reveal delay={80}>
             <h1 className="font-display mt-5 text-[44px] md:text-[72px] leading-[0.95] tracking-tight">
-              Podpora <span className="gradient-text">MAIS</span>
+              {ts('title')} <span className="gradient-text">MAIS</span>
             </h1>
           </Reveal>
           <Reveal delay={160}>
             <p className="mt-5 max-w-2xl text-[16px] md:text-[18px]" style={{ color: 'var(--fg-2)' }}>
-              Nájdite svoju školu a získajte pomoc priamo pre váš systém. Každá inštitúcia má vlastný IT helpdesk s kontaktom pre študentov a uchádzačov.
+              {ts('findSchoolDesc')}
             </p>
           </Reveal>
           <Reveal delay={220}>
             <div className="mt-6 flex items-center gap-3 flex-wrap">
               <div className="chip-mono flex items-center gap-2">
                 <span className="live-dot" style={{ width: 6, height: 6 }} />
-                {partners.length} aktívnych inštitúcií
+                {partners.length} {ts('activeInstitutions')}
               </div>
-              <a href="#schools" className="chip-mono hover:text-white transition-colors">↓ Preskočiť na zoznam</a>
+              <a href="#schools" className="chip-mono hover:text-white transition-colors">{ts('skipToList')}</a>
             </div>
           </Reveal>
         </div>
@@ -178,22 +191,22 @@ export default async function PodporaPage({ params }: { params: Promise<{ locale
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10 md:mb-14">
             <Reveal>
               <div>
-                <div className="kicker">Zoznam inštitúcií · {partners.length}</div>
+                <div className="kicker">{ts('institutionsList')} · {partners.length}</div>
                 <h2 className="font-display text-[32px] md:text-[44px] mt-4 text-white leading-[1] max-w-2xl">
-                  Vyberte svoju školu
+                  {ts('selectSchool')}
                 </h2>
               </div>
             </Reveal>
             <Reveal delay={120}>
               <div className="chip-mono flex items-center gap-2 self-start">
                 <span className="live-dot" style={{ width: 6, height: 6 }} />
-                Všetky helpdesky online
+                {ts('allHelpdeskOnline')}
               </div>
             </Reveal>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {partners.map((p, i) => (
-              <SchoolCard key={p.id} p={p} i={i} />
+              <SchoolCard key={p.id} p={p} i={i} labels={schoolLabels} />
             ))}
           </div>
         </div>
@@ -207,12 +220,12 @@ export default async function PodporaPage({ params }: { params: Promise<{ locale
               <div className="absolute inset-0 banner-glow pointer-events-none" />
               <div className="relative flex flex-col md:flex-row md:items-center gap-6 md:gap-10">
                 <div className="flex-1">
-                  <div className="kicker">Nenašli ste svoju školu?</div>
+                  <div className="kicker">{ts('notFoundSchool')}</div>
                   <div className="font-display text-[24px] md:text-[32px] text-white leading-tight mt-3" style={{ textWrap: 'balance' } as React.CSSProperties}>
-                    Kontaktujte centrálnu podporu MAIS
+                    {ts('contactCentral')}
                   </div>
                   <p className="mt-2 text-[14px] max-w-lg" style={{ color: 'var(--fg-2)' }}>
-                    Ak je vaša inštitúcia v procese nasadenia, alebo potrebujete všeobecnú pomoc so systémom, napíšte nám.
+                    {ts('contactCentralDesc')}
                   </p>
                 </div>
                 <div className="flex flex-col sm:flex-row md:flex-col gap-3 shrink-0">
