@@ -66,6 +66,7 @@
     "modules": "Administrátor,Pedagóg,Referent,Študent,E-prihláška,Debata,Verejný portál,E-mobility,ECTS"
   },
   "partners": {
+    "kicker": "Klienti · {count} aktívnych",
     "title": "Inštitúcie používajúce MAIS",
     "subtitle": "Pridajte sa k špičkovým slovenským univerzitám a vysokým školám",
     "showAll": "Zobraziť všetky školy",

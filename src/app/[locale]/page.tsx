@@ -59,13 +59,14 @@ const blocksSvg = (
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
-  const [partners, tn, t, tfoot, tst, tf] = await Promise.all([
+  const [partners, tn, t, tfoot, tst, tf, tp] = await Promise.all([
     getPartners(),
     getTranslations('hero'),
     getTranslations('nav'),
     getTranslations('footer'),
     getTranslations('stats'),
     getTranslations('features'),
+    getTranslations('partners'),
   ])
 
   const featuresData = [
@@ -169,12 +170,12 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
             <Reveal>
               <div>
-                <div className="kicker">Klienti · 9 aktívnych</div>
+                <div className="kicker">{tp('kicker', { count: partners.length })}</div>
                 <h2 className="font-display text-[40px] md:text-[64px] mt-5 text-white leading-[0.95] max-w-2xl">
-                  Inštitúcie používajúce MAIS
+                  {tp('title')}
                 </h2>
                 <p className="mt-5 text-[16px] max-w-lg" style={{ color: 'var(--fg-2)' }}>
-                  Pridajte sa k špičkovým slovenským univerzitám a vysokým školám
+                  {tp('subtitle')}
                 </p>
               </div>
             </Reveal>
@@ -183,7 +184,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                 href={`/${locale}/podpora`}
                 className="btn-ghost rounded-xl px-5 py-3 text-[13px] inline-flex items-center gap-2 self-start"
               >
-                Zobraziť všetky školy
+                {tp('showAll')}
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
                 </svg>

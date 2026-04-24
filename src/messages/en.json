@@ -66,6 +66,7 @@
     "modules": "Administrator,Lecturer,Registrar,Student,E-application,Discussion,Public portal,E-mobility,ECTS"
   },
   "partners": {
+    "kicker": "Clients · {count} active",
     "title": "Institutions using MAIS",
     "subtitle": "Join the leading Slovak universities and colleges",
     "showAll": "Show all schools",

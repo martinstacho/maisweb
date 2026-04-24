@@ -66,6 +66,7 @@
     "modules": "Adminisztrátor,Oktató,Referens,Hallgató,E-felvételi,Vita,Nyilvános portál,E-mobilitás,ECTS"
   },
   "partners": {
+    "kicker": "Ügyfelek · {count} aktív",
     "title": "A MAIS-t használó intézmények",
     "subtitle": "Csatlakozzon a vezető szlovák egyetemekhez és főiskolákhoz",
     "showAll": "Összes intézmény megtekintése",
