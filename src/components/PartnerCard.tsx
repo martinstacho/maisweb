@@ -1,4 +1,4 @@
-import { getPartnerStatic, monoLetterSize } from '@/lib/partners-data'
+import { PARTNER_META, monoLetterSize } from '@/lib/partners-data'
 import { getTranslations } from 'next-intl/server'
 
 interface Partner {
@@ -17,9 +17,9 @@ interface Partner {
 
 export async function PartnerCard({ partner, index = 0 }: { partner: Partner; locale?: string; index?: number }) {
   const t = await getTranslations('partners')
-  const ps = getPartnerStatic(partner.shortName)
-  const accent = ps?.accent ?? 'var(--orange)'
-  const est = ps?.est
+  const meta = PARTNER_META[partner.shortName]
+  const accent = meta?.accent ?? 'var(--orange)'
+  const est = meta?.est
 
   return (
     <a

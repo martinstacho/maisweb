@@ -1,11 +1,11 @@
-'use client'
-import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { getTranslations } from 'next-intl/server'
+import { prisma } from '@/lib/prisma'
+import { Navbar } from '@/components/Navbar'
+import { MaisFooter } from '@/components/MaisFooter'
 import { Reveal } from '@/components/ui/Reveal'
-import { PARTNERS_STATIC, monoLetterSize, type PartnerStatic } from '@/lib/partners-data'
-import { useRouter, usePathname } from '@/i18n/navigation'
-import { useLocale } from 'next-intl'
+import { PARTNER_META, monoLetterSize } from '@/lib/partners-data'
 
 const PhoneIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
@@ -15,11 +15,6 @@ const PhoneIcon = () => (
 const MailIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
     <rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/>
-  </svg>
-)
-const ClockIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
   </svg>
 )
 const GlobeIcon = () => (
@@ -52,11 +47,16 @@ const PinIcon = () => (
     <path d="M20 10c0 7-8 13-8 13s-8-6-8-13a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/>
   </svg>
 )
-const XIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
-  </svg>
-)
+
+interface Partner {
+  id: string
+  name: string
+  shortName: string
+  websiteUrl: string
+  loginUrl: string | null
+  applicationUrl: string | null
+  city: string | null
+}
 
 function LoginLink({ loginUrl }: { loginUrl: string }) {
   const isMail = loginUrl.startsWith('mailto:')
@@ -72,20 +72,24 @@ function LoginLink({ loginUrl }: { loginUrl: string }) {
   )
 }
 
-function SchoolCard({ p, i }: { p: PartnerStatic; i: number }) {
+function SchoolCard({ p, i }: { p: Partner; i: number }) {
+  const meta = PARTNER_META[p.shortName]
+  const accent = meta?.accent ?? 'var(--orange)'
+  const est = meta?.est
+
   return (
     <Reveal delay={Math.min(i * 40, 240)}>
       <div className="school-card relative glass rounded-2xl p-6 h-full overflow-hidden transition-all duration-300">
         <div className="beam rounded-2xl" />
         <div className="flex items-center justify-between mb-5">
           <span className="chip-mono">/{String(i + 1).padStart(2, '0')}</span>
-          <span className="mono text-[10px] tracking-widest" style={{ color: 'var(--fg-4)' }}>EST {p.est}</span>
+          <span className="mono text-[10px] tracking-widest" style={{ color: 'var(--fg-4)' }}>{est ? `EST ${est}` : ''}</span>
         </div>
         <div className="flex justify-center mb-5">
           <div style={{ width: 104, height: 104 }}>
             <div className="mono-tile">
-              <span className="letters" style={{ fontSize: monoLetterSize(p.mono) }}>{p.mono}</span>
-              <span className="accent-bar" style={{ background: `linear-gradient(90deg, ${p.accent}, var(--amber))` }} />
+              <span className="letters" style={{ fontSize: monoLetterSize(p.shortName) }}>{p.shortName}</span>
+              <span className="accent-bar" style={{ background: `linear-gradient(90deg, ${accent}, var(--amber))` }} />
             </div>
           </div>
         </div>
@@ -94,259 +98,45 @@ function SchoolCard({ p, i }: { p: PartnerStatic; i: number }) {
             {p.name}
           </div>
           <div className="mt-1 mono text-[10.5px] tracking-[0.22em] inline-flex items-center gap-1.5 justify-center" style={{ color: 'var(--fg-3)' }}>
-            <span style={{ color: p.accent }}>●</span> {p.short}
-            <span style={{ color: 'var(--fg-4)' }}>·</span>
-            <span className="inline-flex items-center gap-1"><PinIcon /> {p.city}</span>
+            <span style={{ color: accent }}>●</span> {p.shortName}
+            {p.city && (
+              <>
+                <span style={{ color: 'var(--fg-4)' }}>·</span>
+                <span className="inline-flex items-center gap-1"><PinIcon /> {p.city}</span>
+              </>
+            )}
           </div>
         </div>
-        <div className="my-5 h-px w-full" style={{ background: `linear-gradient(90deg, transparent, ${p.accent}40 50%, transparent)` }} />
+        <div className="my-5 h-px w-full" style={{ background: `linear-gradient(90deg, transparent, ${accent}40 50%, transparent)` }} />
         <div className="flex flex-col gap-2">
-          <a href={p.web} target="_blank" rel="noopener noreferrer" className="action-row">
+          <a href={p.websiteUrl} target="_blank" rel="noopener noreferrer" className="action-row">
             <span className="leading flex items-center gap-2.5"><GlobeIcon /> Oficiálny web</span>
             <ExtLinkIcon />
           </a>
-          <LoginLink loginUrl={p.loginUrl} />
-          <a href={p.apply} target="_blank" rel="noopener noreferrer" className="action-row">
-            <span className="leading flex items-center gap-2.5"><FileIcon /> Podať e-prihlášku</span>
-            <ExtLinkIcon />
-          </a>
+          {p.loginUrl && <LoginLink loginUrl={p.loginUrl} />}
+          {p.applicationUrl && (
+            <a href={p.applicationUrl} target="_blank" rel="noopener noreferrer" className="action-row">
+              <span className="leading flex items-center gap-2.5"><FileIcon /> Podať e-prihlášku</span>
+              <ExtLinkIcon />
+            </a>
+          )}
         </div>
       </div>
     </Reveal>
   )
 }
 
-function SupportModal({ school, onClose }: { school: PartnerStatic | null; onClose: () => void }) {
-  useEffect(() => {
-    if (!school) return
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
-    document.addEventListener('keydown', onKey)
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.removeEventListener('keydown', onKey)
-      document.body.style.overflow = ''
-    }
-  }, [school, onClose])
+export default async function PodporaPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params
+  const [partners, t, tfoot] = await Promise.all([
+    prisma.partner.findMany({ where: { isActive: true }, orderBy: { displayOrder: 'asc' } }),
+    getTranslations('nav'),
+    getTranslations('footer'),
+  ])
 
-  if (!school) return null
-
-  return (
-    <div
-      className="modal-backdrop fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-6"
-      style={{ background: 'oklch(0.08 0.01 40 / 0.72)', backdropFilter: 'blur(8px)' }}
-      onClick={onClose}
-    >
-      <div
-        className="modal-panel relative w-full max-w-lg glass rounded-2xl p-7 md:p-9 overflow-hidden"
-        onClick={e => e.stopPropagation()}
-      >
-        <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: `linear-gradient(90deg, ${school.accent}, var(--amber), ${school.accent})` }} />
-        <div
-          className="absolute -top-28 -right-28 w-64 h-64 rounded-full pointer-events-none opacity-70"
-          style={{ background: `radial-gradient(circle, ${school.accent}33, transparent 70%)`, filter: 'blur(30px)' }}
-        />
-        <button
-          type="button"
-          onClick={onClose}
-          className="absolute top-4 right-4 h-8 w-8 rounded-lg flex items-center justify-center transition-all"
-          style={{ color: 'var(--fg-3)' }}
-          onMouseEnter={e => { e.currentTarget.style.color = '#fff'; e.currentTarget.style.background = 'oklch(0.25 0.02 40 / 0.6)' }}
-          onMouseLeave={e => { e.currentTarget.style.color = 'var(--fg-3)'; e.currentTarget.style.background = '' }}
-        >
-          <XIcon />
-        </button>
-        <div className="flex items-center gap-4 mb-6 pr-8">
-          <div style={{ width: 64, height: 64, flexShrink: 0 }}>
-            <div className="mono-tile">
-              <span className="letters" style={{ fontSize: school.mono.length >= 5 ? '14px' : school.mono.length === 4 ? '18px' : '20px' }}>
-                {school.mono}
-              </span>
-              <span className="accent-bar" style={{ background: `linear-gradient(90deg, ${school.accent}, var(--amber))`, left: 6, right: 6, bottom: 6, height: 2 } as React.CSSProperties} />
-            </div>
-          </div>
-          <div>
-            <div className="kicker">Helpdesk</div>
-            <div className="font-display text-[20px] md:text-[24px] text-white leading-tight mt-1.5" style={{ textWrap: 'balance' } as React.CSSProperties}>
-              Podpora pre {school.short}
-            </div>
-            <div className="text-[13px] mt-0.5" style={{ color: 'var(--fg-3)' }}>{school.name}</div>
-          </div>
-        </div>
-        <div className="space-y-3">
-          <a
-            href={`tel:${school.phone.replace(/\s/g, '')}`}
-            className="flex items-center gap-4 p-4 rounded-xl border transition-all group"
-            style={{ border: '1px solid var(--line)', background: 'oklch(0.18 0.014 40 / 0.5)' }}
-            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'oklch(0.72 0.2 40 / 0.55)'; (e.currentTarget as HTMLElement).style.background = 'oklch(0.22 0.03 40 / 0.5)' }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--line)'; (e.currentTarget as HTMLElement).style.background = 'oklch(0.18 0.014 40 / 0.5)' }}
-          >
-            <div className="w-11 h-11 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'oklch(0.72 0.2 40 / 0.18)', color: 'var(--orange)', border: '1px solid oklch(0.72 0.2 40 / 0.3)' }}>
-              <PhoneIcon />
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="mono text-[10.5px] tracking-[0.2em] uppercase" style={{ color: 'var(--fg-4)' }}>Telefón IT helpdesku</div>
-              <div className="mono text-[15px] text-white mt-0.5">{school.phone}</div>
-            </div>
-            <ArrowIcon />
-          </a>
-          <a
-            href={`mailto:${school.email}`}
-            className="flex items-center gap-4 p-4 rounded-xl border transition-all group"
-            style={{ border: '1px solid var(--line)', background: 'oklch(0.18 0.014 40 / 0.5)' }}
-            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = 'oklch(0.72 0.2 40 / 0.55)'; (e.currentTarget as HTMLElement).style.background = 'oklch(0.22 0.03 40 / 0.5)' }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--line)'; (e.currentTarget as HTMLElement).style.background = 'oklch(0.18 0.014 40 / 0.5)' }}
-          >
-            <div className="w-11 h-11 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'oklch(0.72 0.2 40 / 0.18)', color: 'var(--orange)', border: '1px solid oklch(0.72 0.2 40 / 0.3)' }}>
-              <MailIcon />
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="mono text-[10.5px] tracking-[0.2em] uppercase" style={{ color: 'var(--fg-4)' }}>Email</div>
-              <div className="mono text-[14px] text-white mt-0.5 truncate">{school.email}</div>
-            </div>
-            <ArrowIcon />
-          </a>
-          <div className="flex items-center gap-4 p-4 rounded-xl border" style={{ border: '1px solid var(--line)', background: 'oklch(0.18 0.014 40 / 0.35)' }}>
-            <div className="w-11 h-11 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'oklch(0.78 0.13 145 / 0.18)', color: 'var(--mint)', border: '1px solid oklch(0.78 0.13 145 / 0.3)' }}>
-              <ClockIcon />
-            </div>
-            <div className="flex-1">
-              <div className="mono text-[10.5px] tracking-[0.2em] uppercase" style={{ color: 'var(--fg-4)' }}>Pracovná doba</div>
-              <div className="text-[14px] text-white mt-0.5">Pracovné dni <span className="mono">9:00 – 15:00</span></div>
-            </div>
-          </div>
-        </div>
-        <div className="mt-6 p-4 rounded-xl border border-dashed" style={{ borderColor: 'oklch(0.5 0.1 40 / 0.35)', background: 'oklch(0.2 0.03 40 / 0.3)' }}>
-          <div className="text-[12.5px] leading-relaxed" style={{ color: 'var(--fg-3)' }}>
-            <span className="font-medium" style={{ color: 'var(--orange)' }}>Tip:</span> pred kontaktom helpdesku si pripravte svoje{' '}
-            <span className="mono text-white">AISID</span> alebo <span className="mono text-white">rodné číslo</span>, ktoré ste uviedli pri prihláške.
-          </div>
-        </div>
-        <div className="mt-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-          <a href={school.web} target="_blank" rel="noopener noreferrer" className="text-[12.5px] inline-flex items-center gap-1.5 transition-colors" style={{ color: 'var(--fg-3)' }}
-            onMouseEnter={e => (e.currentTarget.style.color = '#fff')}
-            onMouseLeave={e => (e.currentTarget.style.color = 'var(--fg-3)')}>
-            <GlobeIcon /> Oficiálny web školy <ExtLinkIcon />
-          </a>
-          <button type="button" onClick={onClose} className="btn-ghost rounded-lg px-5 py-2.5 text-[13px] font-medium">Zavrieť</button>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
-  const router = useRouter()
-  const pathname = usePathname()
-  const locale = useLocale()
-  useEffect(() => {
-    const onS = () => setScrolled(window.scrollY > 12)
-    onS(); window.addEventListener('scroll', onS, { passive: true })
-    return () => window.removeEventListener('scroll', onS)
-  }, [])
-  return (
-    <nav
-      className={`sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'border-b backdrop-blur-xl' : 'bg-transparent'}`}
-      style={scrolled ? { borderColor: 'var(--line)', background: 'oklch(0.14 0.012 40 / 0.8)' } : undefined}
-    >
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        <Link href={`/${locale}`} className="flex items-center gap-2.5 group">
-          <div className="relative h-9 w-9 overflow-hidden transition-transform group-hover:scale-[1.04]" style={{ filter: 'drop-shadow(0 6px 20px oklch(0.65 0.22 40 / 0.45))' }}>
-            <Image src="/logo-mais.png" alt="MAIS" width={36} height={36} className="w-full h-full object-contain" />
-          </div>
-          <span className="font-display text-[17px] tracking-tight" style={{ color: 'var(--fg)' }}>MAIS</span>
-          <span className="chip-mono hidden sm:inline-flex">v2026</span>
-        </Link>
-        <div className="hidden md:flex items-center gap-7 text-[13.5px]" style={{ color: 'var(--fg-2)' }}>
-          <a href={`/${locale}#features`} className="ln hover:text-white transition-colors">Funkcie</a>
-          <a href={`/${locale}#schools`} className="ln hover:text-white transition-colors">Školy</a>
-          <Link href={`/${locale}/pre-institucie`} className="ln hover:text-white transition-colors">Pre inštitúcie</Link>
-          <Link href={`/${locale}/podpora`} className="ln text-white" aria-current="page">Podpora</Link>
-          <a href={`/${locale}#contact`} className="ln hover:text-white transition-colors">Kontakt</a>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="hidden md:flex items-center gap-1 chip-mono">
-            {(['sk', 'en', 'uk'] as const).map((l) => (
-              <span key={l} className="flex items-center gap-1">
-                {l === locale && <span className="live-dot" style={{ width: 6, height: 6 }} />}
-                <button
-                  onClick={() => router.replace(pathname, { locale: l })}
-                  className={`transition-colors cursor-pointer ${l === locale ? 'text-white font-medium' : 'hover:text-white'}`}
-                  style={l === locale ? {} : { color: 'var(--fg-3)' }}
-                >{l.toUpperCase()}</button>
-                {l !== 'uk' && <span style={{ color: 'var(--fg-4)' }}>·</span>}
-              </span>
-            ))}
-          </div>
-          <a href={`/${locale}#contact`} className="btn-primary rounded-lg px-4 py-2 text-[13px] font-medium inline-flex items-center gap-1.5">
-            Mám záujem <ArrowIcon />
-          </a>
-        </div>
-      </div>
-    </nav>
-  )
-}
-
-function Footer() {
-  const locale = useLocale()
-  const year = new Date().getFullYear()
-  const build = new Date().toISOString().slice(0, 10).replace(/-/g, '')
-  return (
-    <footer className="border-t relative" style={{ borderColor: 'var(--line)' }}>
-      <div className="relative overflow-hidden border-b" style={{ borderColor: 'var(--line)' }}>
-        <div className="mx-auto max-w-7xl px-6 py-14">
-          <div className="font-display tracking-tighter leading-none text-[14vw] md:text-[11vw] text-center select-none"
-            style={{ background: 'linear-gradient(180deg, oklch(0.35 0.06 40 / 0.5), oklch(0.14 0.012 40 / 0))', WebkitBackgroundClip: 'text', backgroundClip: 'text', WebkitTextFillColor: 'transparent', color: 'transparent' }}>
-            MAIS
-          </div>
-        </div>
-      </div>
-      <div className="mx-auto max-w-7xl px-6 py-14 grid grid-cols-1 md:grid-cols-4 gap-10 text-[13.5px]" style={{ color: 'var(--fg-3)' }}>
-        <div className="md:col-span-2">
-          <div className="flex items-center gap-2.5">
-            <div className="relative h-8 w-8 overflow-hidden" style={{ filter: 'drop-shadow(0 4px 14px oklch(0.65 0.22 40 / 0.4))' }}>
-              <Image src="/logo-mais.png" alt="MAIS" width={32} height={32} className="w-full h-full object-contain" />
-            </div>
-            <span className="font-display text-white text-[17px]">MAIS</span>
-          </div>
-          <p className="mt-4 max-w-sm">Modulárny akademický informačný systém od ITernal s.r.o.</p>
-          <div className="mt-6"><div className="chip-mono inline-flex items-center gap-1.5"><span className="live-dot" style={{ width: 6, height: 6 }} /> Všetky systémy online</div></div>
-        </div>
-        <div>
-          <div className="mono text-[10.5px] tracking-[0.2em] uppercase mb-4" style={{ color: 'var(--fg-4)' }}>Navigácia</div>
-          <div className="flex flex-col gap-2.5">
-            {[
-              { href: `/${locale}#schools`, label: 'Školy' },
-              { href: `/${locale}/pre-institucie`, label: 'Pre inštitúcie' },
-              { href: `/${locale}/podpora`, label: 'Podpora' },
-              { href: `/${locale}#contact`, label: 'Kontakt' },
-            ].map(({ href, label }) => (
-              <Link key={href} href={href} className="hover:text-white transition-colors">{label}</Link>
-            ))}
-          </div>
-        </div>
-        <div>
-          <div className="mono text-[10.5px] tracking-[0.2em] uppercase mb-4" style={{ color: 'var(--fg-4)' }}>ITernal s.r.o.</div>
-          <div className="text-white/90">Sládkovičova 533/20</div>
-          <div>018 41 Dubnica nad Váhom</div>
-          <a href="tel:+421915724757" className="mt-3 block hover:text-white transition-colors mono">+421 915 724 757</a>
-          <a href="mailto:podpora@mais.sk" className="hover:text-white transition-colors mono">podpora@mais.sk</a>
-        </div>
-      </div>
-      <div className="border-t" style={{ borderColor: 'var(--line)' }}>
-        <div className="mx-auto max-w-7xl px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-[12px]" style={{ color: 'var(--fg-4)' }}>
-          <div>© {year} ITernal s.r.o. · Všetky práva vyhradené</div>
-          <div className="flex items-center gap-4 mono"><span>v2026.4.1</span><span>·</span><span>Build {build}</span></div>
-        </div>
-      </div>
-    </footer>
-  )
-}
-
-export default function PodporaPage() {
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg)', color: 'var(--fg)' }}>
-      <Navbar />
+      <Navbar activePage="podpora" />
 
       {/* Hero */}
       <section className="relative overflow-hidden noise">
@@ -374,7 +164,7 @@ export default function PodporaPage() {
             <div className="mt-6 flex items-center gap-3 flex-wrap">
               <div className="chip-mono flex items-center gap-2">
                 <span className="live-dot" style={{ width: 6, height: 6 }} />
-                {PARTNERS_STATIC.length} aktívnych inštitúcií
+                {partners.length} aktívnych inštitúcií
               </div>
               <a href="#schools" className="chip-mono hover:text-white transition-colors">↓ Preskočiť na zoznam</a>
             </div>
@@ -388,7 +178,7 @@ export default function PodporaPage() {
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10 md:mb-14">
             <Reveal>
               <div>
-                <div className="kicker">Zoznam inštitúcií · {PARTNERS_STATIC.length}</div>
+                <div className="kicker">Zoznam inštitúcií · {partners.length}</div>
                 <h2 className="font-display text-[32px] md:text-[44px] mt-4 text-white leading-[1] max-w-2xl">
                   Vyberte svoju školu
                 </h2>
@@ -402,8 +192,8 @@ export default function PodporaPage() {
             </Reveal>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {PARTNERS_STATIC.map((p, i) => (
-              <SchoolCard key={p.short} p={p} i={i} />
+            {partners.map((p, i) => (
+              <SchoolCard key={p.id} p={p} i={i} />
             ))}
           </div>
         </div>
@@ -439,7 +229,15 @@ export default function PodporaPage() {
         </div>
       </section>
 
-      <Footer />
+      <MaisFooter locale={locale} labels={{
+        tagline: tfoot('tagline'),
+        navigation: tfoot('navigation'),
+        rights: tfoot('rights'),
+        schools: t('schools'),
+        forInstitutions: t('forInstitutions'),
+        support: t('support'),
+        contact: t('contact'),
+      }} />
     </div>
   )
 }

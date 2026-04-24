@@ -93,7 +93,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         ctaSecondary={tn('ctaSecondary')}
       />
 
-      <LogoStrip />
+      <LogoStrip partners={partners} />
 
       {/* Stats */}
       <section className="relative">

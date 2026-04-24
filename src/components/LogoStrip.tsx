@@ -1,9 +1,14 @@
 'use client'
-import { PARTNERS_STATIC } from '@/lib/partners-data'
+import { PARTNER_META } from '@/lib/partners-data'
 
-const track = [...PARTNERS_STATIC, ...PARTNERS_STATIC]
+interface PartnerStrip {
+  shortName: string
+  city?: string | null
+}
 
-export function LogoStrip() {
+export function LogoStrip({ partners }: { partners: PartnerStrip[] }) {
+  const track = [...partners, ...partners]
+
   return (
     <section
       className="relative border-y overflow-hidden"
@@ -27,25 +32,28 @@ export function LogoStrip() {
         </div>
         <div className="flex overflow-hidden">
           <div className="marquee-track flex gap-12 shrink-0 pr-12 items-center">
-            {track.map((p, i) => (
-              <div key={i} className="flex items-center gap-3 shrink-0 group cursor-default">
-                <span
-                  className="inline-block w-2.5 h-2.5 rounded-full transition-transform group-hover:scale-125"
-                  style={{ background: p.accent, boxShadow: `0 0 14px ${p.accent}` }}
-                />
-                <span
-                  className="font-display text-[22px] md:text-[26px] tracking-tight whitespace-nowrap transition-colors"
-                  style={{ color: 'oklch(0.68 0.01 40)' }}
-                  onMouseEnter={e => (e.currentTarget.style.color = '#fff')}
-                  onMouseLeave={e => (e.currentTarget.style.color = 'oklch(0.68 0.01 40)')}
-                >
-                  {p.short}
-                </span>
-                <span className="mono text-[10px] tracking-[0.18em] uppercase whitespace-nowrap" style={{ color: 'var(--fg-4)' }}>
-                  {p.city}
-                </span>
-              </div>
-            ))}
+            {track.map((p, i) => {
+              const accent = PARTNER_META[p.shortName]?.accent ?? 'var(--orange)'
+              return (
+                <div key={i} className="flex items-center gap-3 shrink-0 group cursor-default">
+                  <span
+                    className="inline-block w-2.5 h-2.5 rounded-full transition-transform group-hover:scale-125"
+                    style={{ background: accent, boxShadow: `0 0 14px ${accent}` }}
+                  />
+                  <span
+                    className="font-display text-[22px] md:text-[26px] tracking-tight whitespace-nowrap transition-colors"
+                    style={{ color: 'oklch(0.68 0.01 40)' }}
+                    onMouseEnter={e => (e.currentTarget.style.color = '#fff')}
+                    onMouseLeave={e => (e.currentTarget.style.color = 'oklch(0.68 0.01 40)')}
+                  >
+                    {p.shortName}
+                  </span>
+                  <span className="mono text-[10px] tracking-[0.18em] uppercase whitespace-nowrap" style={{ color: 'var(--fg-4)' }}>
+                    {p.city ?? ''}
+                  </span>
+                </div>
+              )
+            })}
           </div>
         </div>
       </div>

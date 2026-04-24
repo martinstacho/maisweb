@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Reveal } from '@/components/ui/Reveal'
-import { PARTNERS_STATIC } from '@/lib/partners-data'
+import { PARTNER_META } from '@/lib/partners-data'
 import { useRouter, usePathname } from '@/i18n/navigation'
 import { useLocale } from 'next-intl'
 
@@ -192,16 +192,16 @@ function Hero() {
             <div className="mono text-[11px] tracking-[0.22em] uppercase" style={{ color: 'var(--fg-4)' }}>Dôverujú nám</div>
             <div className="flex items-center gap-2 flex-wrap">
               {featured.map(s => {
-                const p = PARTNERS_STATIC.find(x => x.short === s)
-                if (!p) return null
+                const meta = PARTNER_META[s]
+                if (!meta) return null
                 return (
                   <span key={s} className="inline-flex items-center gap-1.5 chip-mono" style={{ paddingTop: 4, paddingBottom: 4 }}>
-                    <span className="inline-block w-1.5 h-1.5 rounded-full" style={{ background: p.accent, boxShadow: `0 0 10px ${p.accent}` }} />
-                    <span className="text-white">{p.short}</span>
+                    <span className="inline-block w-1.5 h-1.5 rounded-full" style={{ background: meta.accent, boxShadow: `0 0 10px ${meta.accent}` }} />
+                    <span className="text-white">{s}</span>
                   </span>
                 )
               })}
-              <span className="text-[12.5px] mono" style={{ color: 'var(--fg-3)' }}>· a {PARTNERS_STATIC.length - featured.length} ďalších</span>
+              <span className="text-[12.5px] mono" style={{ color: 'var(--fg-3)' }}>· a {Object.keys(PARTNER_META).length - featured.length} ďalších</span>
             </div>
           </div>
         </Reveal>
@@ -362,7 +362,7 @@ function References() {
         </Reveal>
         <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-5">
           {quotes.map((q, i) => {
-            const p = PARTNERS_STATIC.find(x => x.short === q.school)
+            const p = PARTNER_META[q.school] ? { ...PARTNER_META[q.school], short: q.school } : null
             return (
               <Reveal key={i} delay={i * 100}>
                 <div className="quote-card h-full">
