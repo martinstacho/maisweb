@@ -56,24 +56,26 @@ const blocksSvg = (
   </svg>
 )
 
-const features = [
-  { icon: capSvg,    title: 'Študijná agenda',    desc: 'Kompletná správa štúdia od prijímacieho konania po promociu. Harmonogramy, rozvrhy, zápisné listy.', code: '01 / agenda',      accent: 'var(--orange)',  size: 'lg' as const, tags: ['Harmonogramy','Rozvrhy','Zápisné listy','Štátnice','Promócie'] },
-  { icon: fileSvg,   title: 'E-prihláška',        desc: 'Online podanie prihlášky na štúdium. Uchádzači môžu sledovať stav prihlášky v reálnom čase.',          code: '02 / e-prihláška', accent: 'var(--amber)',   size: 'md' as const },
-  { icon: shieldSvg, title: 'Bezpečnosť a GDPR',  desc: 'Splnenie všetkých zákonných požiadaviek. Audit trail, šifrovanie, zálohovanie a obnova dát.',           code: '03 / gdpr',        accent: 'var(--mint)',    size: 'md' as const },
-  { icon: zapSvg,    title: 'Výkon a spoľahlivosť',desc: 'Systém zvláda záťažové špičky počas zápisov. SLA 99,9% dostupnosť počas semestra.',                    code: '04 / sla',         accent: 'var(--violet)',  size: 'md' as const },
-  { icon: globeSvg,  title: 'Integrácie',          desc: 'Napojenie na SIMUS, CVTI, ISSP, ekonomické a knižničné systémy. Open API pre vlastné integrácie.',       code: '05 / api',         accent: 'var(--orange)',  size: 'md' as const },
-  { icon: blocksSvg, title: 'Modularita',          desc: 'Nasaďte len to, čo potrebujete. Systém rastie s vašou inštitúciou — žiadne zbytočné funkcie.',          code: '06 / moduly',      accent: 'var(--amber)',   size: 'lg' as const, tags: ['Administrátor','Pedagóg','Referent','Študent','E-prihláška','Debata','Verejný portál','E-mobility','ECTS'] },
-]
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
-  const [partners, tn, t, tfoot, tst] = await Promise.all([
+  const [partners, tn, t, tfoot, tst, tf] = await Promise.all([
     getPartners(),
     getTranslations('hero'),
     getTranslations('nav'),
     getTranslations('footer'),
     getTranslations('stats'),
+    getTranslations('features'),
   ])
+
+  const featuresData = [
+    { icon: capSvg,    title: tf('studyAgenda'),  desc: tf('studyAgendaDesc'),  code: tf('card1Code'), accent: 'var(--orange)', size: 'lg' as const, tags: tf('card1Tags').split(',') },
+    { icon: fileSvg,   title: tf('eApplication'), desc: tf('eApplicationDesc'), code: tf('card2Code'), accent: 'var(--amber)',  size: 'md' as const },
+    { icon: shieldSvg, title: tf('security'),      desc: tf('securityDesc'),     code: tf('card3Code'), accent: 'var(--mint)',   size: 'md' as const },
+    { icon: zapSvg,    title: tf('performance'),   desc: tf('performanceDesc'),  code: tf('card4Code'), accent: 'var(--violet)', size: 'md' as const },
+    { icon: globeSvg,  title: tf('integrations'),  desc: tf('integrationsDesc'), code: tf('card5Code'), accent: 'var(--orange)', size: 'md' as const },
+    { icon: blocksSvg, title: tf('modular'),        desc: tf('modularDesc'),      code: tf('card6Code'), accent: 'var(--amber)',  size: 'lg' as const, tags: tf('card6Tags').split(',') },
+  ]
 
   const stats = [
     { value: 20,    suffix: '+', label: tst('years'),       sub: tst('yearsSub'),        accent: 'var(--indigo)' },
@@ -130,17 +132,17 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         <div className="mx-auto max-w-7xl px-6">
           <Reveal>
             <div className="flex flex-col items-center text-center mb-16">
-              <div className="kicker">Modules · v2026.4</div>
+              <div className="kicker">{tf('kicker')}</div>
               <h2 className="font-display text-[40px] md:text-[64px] mt-5 text-white leading-[0.95]">
-                Čo{' '}<span className="gradient-text">MAIS ponúka</span>
+                {tf('titlePre')}{' '}<span className="gradient-text">{tf('titleGrad')}</span>
               </h2>
               <p className="mt-6 text-[17px] max-w-xl" style={{ color: 'var(--fg-2)' }}>
-                Komplexné riešenie pre všetky oblasti akademickej správy
+                {tf('subtitle')}
               </p>
             </div>
           </Reveal>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {features.map((f, i) => (
+            {featuresData.map((f, i) => (
               <Reveal key={f.title} delay={i * 60} className={f.size === 'lg' ? 'md:col-span-2' : ''}>
                 <FeatureCard
                   icon={f.icon}

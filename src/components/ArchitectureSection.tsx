@@ -1,31 +1,29 @@
 'use client'
+import { useTranslations } from 'next-intl'
 import { Reveal } from '@/components/ui/Reveal'
-
-const techCards = [
-  { label: 'Single sign-on', value: 'LDAP / OAuth2' },
-  { label: 'Databáza', value: 'PostgreSQL' },
-  { label: 'Integrácie', value: 'SIMUS · CVTI · ISSP' },
-  { label: 'Zálohy', value: 'incremental · daily' },
-]
-
-const satellites = [
-  { label: 'Administrátor',  angle: 0 },
-  { label: 'Pedagóg',        angle: 40 },
-  { label: 'Referent',       angle: 80 },
-  { label: 'Študent',        angle: 120 },
-  { label: 'E-prihláška',    angle: 160 },
-  { label: 'Debata',         angle: 200 },
-  { label: 'Verejný portál', angle: 240 },
-  { label: 'E-mobility',     angle: 280 },
-  { label: 'ECTS',           angle: 320 },
-]
 
 function polarToPercent(angleDeg: number, r: number) {
   const rad = (angleDeg * Math.PI) / 180
   return { left: 50 + r * Math.cos(rad), top: 50 + r * Math.sin(rad) }
 }
 
+const SATELLITE_ANGLES = [0, 40, 80, 120, 160, 200, 240, 280, 320]
+
 export function ArchitectureSection() {
+  const t = useTranslations('arch')
+
+  const techCards = [
+    { label: t('techSSO'), value: 'LDAP / OAuth2' },
+    { label: t('techDB'),  value: 'PostgreSQL' },
+    { label: t('techInt'), value: 'SIMUS · CVTI · ISSP' },
+    { label: t('techBak'), value: 'incremental · daily' },
+  ]
+
+  const satellites = t('modules').split(',').map((label, i) => ({
+    label: label.trim(),
+    angle: SATELLITE_ANGLES[i] ?? i * 40,
+  }))
+
   return (
     <section className="relative py-28 overflow-hidden">
       <div className="absolute inset-0 dots opacity-40 pointer-events-none" />
@@ -34,14 +32,14 @@ export function ArchitectureSection() {
 
           <Reveal>
             <div>
-              <div className="kicker">Architektúra</div>
+              <div className="kicker">{t('kicker')}</div>
               <h2 className="font-display text-[40px] md:text-[56px] mt-5 text-white leading-[0.98]">
-                Jedno jadro.<br />
-                <span className="gradient-text">Deväť modulov.</span><br />
-                Nekonečné možnosti.
+                {t('line1')}<br />
+                <span className="gradient-text">{t('line2')}</span><br />
+                {t('line3')}
               </h2>
               <p className="mt-6 text-[16px] leading-relaxed max-w-lg" style={{ color: 'var(--fg-2)' }}>
-                MAIS je postavený modulárne — každá inštitúcia si vyberá len funkcie, ktoré reálne potrebuje. Systém rastie s vami, bez technického dlhu a bez zbytočného kódu.
+                {t('desc')}
               </p>
               <div className="mt-8 grid grid-cols-2 gap-3 max-w-md">
                 {techCards.map(({ label, value }) => (
