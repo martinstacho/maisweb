@@ -10,6 +10,7 @@ import { HeroSection } from '@/components/HeroSection'
 import { LogoStrip } from '@/components/LogoStrip'
 import { MaisFooter } from '@/components/MaisFooter'
 import { ArchitectureSection } from '@/components/ArchitectureSection'
+import { IntegrationsSection } from '@/components/IntegrationsSection'
 
 export const dynamic = 'force-dynamic'
 
@@ -155,6 +156,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       </section>
 
       <ArchitectureSection />
+
+      <IntegrationsSection />
 
       {/* Partners */}
       <section id="schools" className="relative py-28 border-t" style={{ borderColor: 'var(--line)' }}>
