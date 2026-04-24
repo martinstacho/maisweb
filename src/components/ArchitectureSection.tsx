@@ -9,14 +9,15 @@ const techCards = [
 ]
 
 const satellites = [
-  { label: 'Štúdium', angle: 0 },
-  { label: 'E-prihláška', angle: 45 },
-  { label: 'Ubytovanie', angle: 90 },
-  { label: 'Stravovanie', angle: 135 },
-  { label: 'Knižnica', angle: 180 },
-  { label: 'Ekonomika', angle: 225 },
-  { label: 'Rozvrhy', angle: 270 },
-  { label: 'Integrácie', angle: 315 },
+  { label: 'Administrátor',  angle: 0 },
+  { label: 'Pedagóg',        angle: 40 },
+  { label: 'Referent',       angle: 80 },
+  { label: 'Študent',        angle: 120 },
+  { label: 'E-prihláška',    angle: 160 },
+  { label: 'Debata',         angle: 200 },
+  { label: 'Verejný portál', angle: 240 },
+  { label: 'E-mobility',     angle: 280 },
+  { label: 'ECTS',           angle: 320 },
 ]
 
 function polarToPercent(angleDeg: number, r: number) {
@@ -36,7 +37,7 @@ export function ArchitectureSection() {
               <div className="kicker">Architektúra</div>
               <h2 className="font-display text-[40px] md:text-[56px] mt-5 text-white leading-[0.98]">
                 Jedno jadro.<br />
-                <span className="gradient-text">Osem modulov.</span><br />
+                <span className="gradient-text">Deväť modulov.</span><br />
                 Nekonečné možnosti.
               </h2>
               <p className="mt-6 text-[16px] leading-relaxed max-w-lg" style={{ color: 'var(--fg-2)' }}>
