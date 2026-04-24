@@ -59,7 +59,7 @@ const blocksSvg = (
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
-  const [partners, tn, t, tfoot, tst, tf, tp] = await Promise.all([
+  const [partners, tn, t, tfoot, tst, tf, tp, tc] = await Promise.all([
     getPartners(),
     getTranslations('hero'),
     getTranslations('nav'),
@@ -67,6 +67,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     getTranslations('stats'),
     getTranslations('features'),
     getTranslations('partners'),
+    getTranslations('cta'),
   ])
 
   const featuresData = [
@@ -245,19 +246,19 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                 <div className="beam always rounded-3xl" />
                 <div className="absolute inset-0 dots opacity-20 pointer-events-none" />
                 <div className="relative">
-                  <div className="kicker justify-center inline-flex">MAIS na vašej UNI</div>
+                  <div className="kicker justify-center inline-flex">{tc('kicker')}</div>
                   <h2 className="font-display text-[36px] md:text-[56px] mt-6 text-white leading-[1]" style={{ textWrap: 'balance' } as React.CSSProperties}>
-                    Zaujal vás MAIS pre vašu inštitúciu?
+                    {tc('title')}
                   </h2>
                   <p className="mt-6 text-[16px] md:text-[18px] max-w-xl mx-auto" style={{ color: 'var(--fg-2)' }}>
-                    Kontaktujte nás pre demo a individuálnu ponuku nasadenia.
+                    {tc('subtitle')}
                   </p>
                   <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
                     <a
                       href="mailto:podpora@mais.sk"
                       className="btn-primary rounded-xl px-7 py-4 text-[14px] font-medium inline-flex items-center gap-2 group"
                     >
-                      Kontaktovať ITernal
+                      {tc('button')}
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-hover:translate-x-0.5">
                         <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
                       </svg>

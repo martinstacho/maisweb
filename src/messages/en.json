@@ -75,9 +75,10 @@
     "application": "Apply online"
   },
   "cta": {
+    "kicker": "MAIS at your institution",
     "title": "Interested in MAIS for your institution?",
     "subtitle": "Contact us for a demo and a personalised deployment offer.",
-    "button": "Contact ITernal"
+    "button": "Write to us"
   },
   "footer": {
     "tagline": "Modular academic information system by ITernal s.r.o.",

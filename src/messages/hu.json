@@ -75,9 +75,10 @@
     "application": "Elektronikus felvételi kérelem"
   },
   "cta": {
+    "kicker": "MAIS az Ön intézményében",
     "title": "Érdekli a MAIS az intézménye számára?",
     "subtitle": "Vegye fel velünk a kapcsolatot bemutatóért és személyre szabott ajánlatért.",
-    "button": "Kapcsolatfelvétel az ITernallal"
+    "button": "Írjon nekünk"
   },
   "footer": {
     "tagline": "Moduláris akadémiai információs rendszer az ITernal s.r.o.-tól.",

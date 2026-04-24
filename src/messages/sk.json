@@ -75,9 +75,10 @@
     "application": "Podať e-prihlášku"
   },
   "cta": {
+    "kicker": "MAIS na vašej UNI",
     "title": "Zaujal vás MAIS pre vašu inštitúciu?",
     "subtitle": "Kontaktujte nás pre demo a individuálnu ponuku nasadenia.",
-    "button": "Kontaktovať ITernal"
+    "button": "Napísať nám"
   },
   "footer": {
     "tagline": "Modulárny akademický informačný systém od ITernal s.r.o.",
