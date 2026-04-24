@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Reveal } from '@/components/ui/Reveal'
 import { PARTNER_META } from '@/lib/partners-data'
+import { IntegrationsSection } from '@/components/IntegrationsSection'
 import { useRouter, usePathname } from '@/i18n/navigation'
 import { useLocale } from 'next-intl'
 
@@ -66,7 +67,7 @@ const whyPoints = [
     icon: <PuzzleIcon />,
     title: 'Modulárny prístup',
     desc: 'Nasaďte len moduly ktoré potrebujete. Systém rozširujete podľa rastu školy.',
-    stat: '12 modulov', statLabel: 'nezávisle nasaditeľných',
+    stat: '9 rozhraní', statLabel: 'nezávisle nasaditeľných',
     accent: 'var(--amber)',
   },
   {
@@ -76,15 +77,6 @@ const whyPoints = [
     stat: '100%', statLabel: 'kompatibilita s MŠVVaŠ SR',
     accent: 'var(--mint)',
   },
-]
-
-const bentoSmall = [
-  { title: 'SIMUS integrácia', hint: 'Centrálny register študijných programov' },
-  { title: 'CVTI reporting', hint: 'Automatické dávky, výkazy, exporty' },
-  { title: 'Knižničné systémy', hint: 'Napojenie na Dawinci / Aleph' },
-  { title: 'Ekonomické systémy', hint: 'SAP, Kros, iSpin' },
-  { title: 'LDAP / OAuth2', hint: 'SSO, Active Directory, eduID.sk' },
-  { title: 'PostgreSQL databáza', hint: 'Open-source, enterprise výkon' },
 ]
 
 const quotes = [
@@ -330,20 +322,6 @@ function BentoGrid() {
               </div>
             </div>
           </Reveal>
-          {bentoSmall.map((s, i) => (
-            <Reveal key={i} delay={160 + i * 60} className="md:col-span-2">
-              <div className="bento-card small h-full">
-                <div className="stripe" />
-                <div className="relative h-full flex flex-col justify-between">
-                  <div className="flex items-center gap-2.5">
-                    <span className="tech-dot" />
-                    <div className="font-display text-[16px] text-white tracking-tight">{s.title}</div>
-                  </div>
-                  <div className="mt-3 text-[12.5px] leading-relaxed" style={{ color: 'var(--fg-3)' }}>{s.hint}</div>
-                </div>
-              </div>
-            </Reveal>
-          ))}
         </div>
       </div>
     </section>
@@ -512,6 +490,7 @@ export default function PreInstituciePage() {
       <Hero />
       <WhyMAIS />
       <BentoGrid />
+      <IntegrationsSection />
       <References />
       <CTA />
       <Footer />
