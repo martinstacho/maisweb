@@ -2,17 +2,18 @@ import { auth } from '@/auth'
 import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
 import { signOut } from '@/auth'
-import { Users, Building2, Plus, UserPlus, Plug } from 'lucide-react'
+import { Users, Building2, Plus, UserPlus, Plug, MessageSquareQuote } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 export const dynamic = 'force-dynamic'
 
 export default async function AdminDashboard() {
   const session = await auth()
-  const [partnerCount, userCount, integrationCount] = await Promise.all([
+  const [partnerCount, userCount, integrationCount, testimonialCount] = await Promise.all([
     prisma.partner.count(),
     prisma.user.count(),
     prisma.integration.count(),
+    prisma.testimonial.count(),
   ])
 
   return (
@@ -24,6 +25,7 @@ export default async function AdminDashboard() {
             <div className="hidden sm:flex items-center gap-4 text-sm">
               <Link href="/admin/partners" className="text-slate-400 hover:text-slate-100 transition-colors">Partneri</Link>
               <Link href="/admin/integrations" className="text-slate-400 hover:text-slate-100 transition-colors">Integrácie</Link>
+              <Link href="/admin/testimonials" className="text-slate-400 hover:text-slate-100 transition-colors">Referencie</Link>
               <Link href="/admin/users" className="text-slate-400 hover:text-slate-100 transition-colors">Správcovia</Link>
             </div>
           </div>
@@ -56,6 +58,13 @@ export default async function AdminDashboard() {
             </div>
             <div className="text-4xl font-black text-slate-100">{integrationCount}</div>
           </Link>
+          <Link href="/admin/testimonials" className="rounded-xl border border-slate-800 bg-slate-900/50 p-6 hover:border-slate-700 transition-colors block">
+            <div className="flex items-center gap-3 mb-4">
+              <MessageSquareQuote size={20} className="text-indigo-400" />
+              <span className="text-sm text-slate-400 font-medium">Referencie</span>
+            </div>
+            <div className="text-4xl font-black text-slate-100">{testimonialCount}</div>
+          </Link>
           <Link href="/admin/users" className="rounded-xl border border-slate-800 bg-slate-900/50 p-6 hover:border-slate-700 transition-colors block">
             <div className="flex items-center gap-3 mb-4">
               <Users size={20} className="text-indigo-400" />
@@ -85,6 +94,16 @@ export default async function AdminDashboard() {
           <Link href="/admin/integrations/new">
             <Button className="bg-indigo-600 hover:bg-indigo-500 text-white">
               <Plus size={16} className="mr-2" /> Pridať integráciu
+            </Button>
+          </Link>
+          <Link href="/admin/testimonials">
+            <Button className="bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-700">
+              <MessageSquareQuote size={16} className="mr-2" /> Spravovať referencie
+            </Button>
+          </Link>
+          <Link href="/admin/testimonials/new">
+            <Button className="bg-indigo-600 hover:bg-indigo-500 text-white">
+              <Plus size={16} className="mr-2" /> Pridať referenciu
             </Button>
           </Link>
           <Link href="/admin/users">

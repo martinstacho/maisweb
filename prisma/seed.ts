@@ -181,6 +181,39 @@ async function main() {
     })
   }
   console.log(`✓ ${integrations.length} integrations seeded`)
+
+  const testimonials = [
+    {
+      id: 'test-tuke',
+      title: 'Digitalizácia prijímacieho konania',
+      text: 'MAIS nám umožnil digitalizovať celé prijímacie konanie. Počet papierových prihlášok klesol na nulu.',
+      author: 'IT oddelenie',
+      partnerId: 'tuke',
+    },
+    {
+      id: 'test-truni',
+      title: 'Hladká implementácia',
+      text: 'Implementácia prebehla hladko, podpora ITernalu bola výborná počas celého procesu.',
+      author: 'Kvestorát',
+      partnerId: 'truni',
+    },
+    {
+      id: 'test-szu',
+      title: 'Výkon počas zápisného týždňa',
+      text: 'Systém zvládol záťaž zápisného týždňa bez jediného výpadku. 8 000 zápisov za 3 dni.',
+      author: 'Správca systému',
+      partnerId: 'szu',
+    },
+  ]
+
+  for (const t of testimonials) {
+    await prisma.testimonial.upsert({
+      where: { id: t.id },
+      update: { title: t.title, text: t.text, author: t.author, partnerId: t.partnerId },
+      create: { ...t, isActive: true },
+    })
+  }
+  console.log(`✓ ${testimonials.length} testimonials seeded`)
 }
 
 main()

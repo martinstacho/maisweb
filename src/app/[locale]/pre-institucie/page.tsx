@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { Reveal } from '@/components/ui/Reveal'
 import { PARTNER_META } from '@/lib/partners-data'
 import { IntegrationsSection } from '@/components/IntegrationsSection'
+import { TestimonialsSection } from '@/components/TestimonialsSection'
 import { useRouter, usePathname } from '@/i18n/navigation'
 import { useLocale } from 'next-intl'
 
@@ -77,12 +78,6 @@ const whyPoints = [
     stat: '100%', statLabel: 'kompatibilita s MŠVVaŠ SR',
     accent: 'var(--mint)',
   },
-]
-
-const quotes = [
-  { text: 'MAIS nám umožnil digitalizovať celé prijímacie konanie. Počet papierových prihlášok klesol na nulu.', role: 'IT oddelenie', school: 'TUKE' },
-  { text: 'Implementácia prebehla hladko, podpora ITernalu bola výborná počas celého procesu.', role: 'Kvestorát', school: 'TRUNI' },
-  { text: 'Systém zvládol záťaž zápisného týždňa bez jediného výpadku. 8 000 zápisov za 3 dni.', role: 'Správca systému', school: 'SZU' },
 ]
 
 
@@ -328,47 +323,6 @@ function BentoGrid() {
   )
 }
 
-function References() {
-  return (
-    <section className="relative py-20 md:py-28 border-t" style={{ borderColor: 'var(--line)' }}>
-      <div className="mx-auto max-w-7xl px-6">
-        <Reveal><div className="kicker">Referencie</div></Reveal>
-        <Reveal delay={80}>
-          <h2 className="font-display text-[36px] md:text-[56px] mt-4 text-white leading-[1] max-w-3xl">
-            Čo hovoria inštitúcie, ktoré už MAIS používajú
-          </h2>
-        </Reveal>
-        <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-5">
-          {quotes.map((q, i) => {
-            const p = PARTNER_META[q.school] ? { ...PARTNER_META[q.school], short: q.school } : null
-            return (
-              <Reveal key={i} delay={i * 100}>
-                <div className="quote-card h-full">
-                  <span className="quote-mark">"</span>
-                  <div className="relative">
-                    <p className="text-[15.5px] md:text-[16px] leading-relaxed" style={{ color: 'var(--fg)' }}>{q.text}</p>
-                    <div className="mt-7 pt-6 border-t flex items-center gap-3" style={{ borderColor: 'var(--line)' }}>
-                      {p && (
-                        <div className="h-10 w-10 rounded-lg flex items-center justify-center shrink-0"
-                          style={{ background: 'linear-gradient(180deg, oklch(0.22 0.015 40 / 0.9), oklch(0.14 0.012 40 / 0.9))', border: `1px solid ${p.accent}50` }}>
-                          <span className="font-display text-[11px] text-white tracking-tight">{p.short}</span>
-                        </div>
-                      )}
-                      <div className="flex flex-col">
-                        <span className="text-[13px] text-white">{q.role}</span>
-                        <span className="mono text-[11px] tracking-wider" style={{ color: 'var(--fg-3)' }}>{p ? p.name : q.school}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Reveal>
-            )
-          })}
-        </div>
-      </div>
-    </section>
-  )
-}
 
 function CTA() {
   return (
@@ -491,7 +445,7 @@ export default function PreInstituciePage() {
       <WhyMAIS />
       <BentoGrid />
       <IntegrationsSection />
-      <References />
+      <TestimonialsSection />
       <CTA />
       <Footer />
     </div>
