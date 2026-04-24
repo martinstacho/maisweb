@@ -140,6 +140,47 @@ async function main() {
     })
   }
   console.log(`✓ ${partners.length} partners seeded`)
+
+  const integrations = [
+    { id: 'ldap',       name: 'LDAP',              category: 'identity', displayOrder: 1 },
+    { id: 'idm',        name: 'IDM',               category: 'identity', displayOrder: 2 },
+    { id: 'oauth2',     name: 'OAuth2',            category: 'identity', displayOrder: 3 },
+    { id: 'sso',        name: 'Single Sign-On',    category: 'identity', displayOrder: 4 },
+    { id: 'sap',        name: 'SAP',               category: 'finance',  displayOrder: 1 },
+    { id: 'statpok',    name: 'Štátna pokladnica', category: 'finance',  displayOrder: 2 },
+    { id: 'omega',      name: 'Omega',             category: 'finance',  displayOrder: 3 },
+    { id: 'emstud',     name: 'EM Študent',        category: 'finance',  displayOrder: 4 },
+    { id: 'transcard',  name: 'TransCard',         category: 'finance',  displayOrder: 5 },
+    { id: 'crs',        name: 'CRŠ',              category: 'study',    displayOrder: 1 },
+    { id: 'cvti',       name: 'UIPŠ / CVTI',      category: 'study',    displayOrder: 2 },
+    { id: 'ezp',        name: 'EZP',              category: 'study',    displayOrder: 3 },
+    { id: 'crzp',       name: 'CRZP',             category: 'study',    displayOrder: 4 },
+    { id: 'plagoff',    name: 'PLAGOFF',          category: 'study',    displayOrder: 5 },
+    { id: 'isois',      name: 'ISOIS',            category: 'study',    displayOrder: 6 },
+    { id: 'memphis',    name: 'MEMPHIS',          category: 'registry', displayOrder: 1 },
+    { id: 'admis',      name: 'ADMIS',            category: 'registry', displayOrder: 2 },
+    { id: 'espis',      name: 'ESPIS',            category: 'registry', displayOrder: 3 },
+    { id: 'autogram',   name: 'Autogram',         category: 'registry', displayOrder: 4 },
+    { id: 'podpisuj',   name: 'Podpisuj',         category: 'registry', displayOrder: 5 },
+    { id: 'prihlaskavs',name: 'PrihláškaVŠ',      category: 'external', displayOrder: 1 },
+    { id: 'asc',        name: 'aSc Rozvrhy',      category: 'external', displayOrder: 2 },
+    { id: 'elearning',  name: 'E-learning / LMS', category: 'external', displayOrder: 3 },
+    { id: 'aleph',      name: 'Aleph',            category: 'external', displayOrder: 4 },
+    { id: 'davinci',    name: 'DaVinci',          category: 'external', displayOrder: 5 },
+    { id: 'android',    name: 'Android App',      category: 'mobile',   displayOrder: 1 },
+    { id: 'ios',        name: 'iOS App',          category: 'mobile',   displayOrder: 2 },
+    { id: 'banner',     name: 'Banner systém',    category: 'mobile',   displayOrder: 3 },
+    { id: 'push',       name: 'Push notifikácie', category: 'mobile',   displayOrder: 4 },
+  ]
+
+  for (const item of integrations) {
+    await prisma.integration.upsert({
+      where: { id: item.id },
+      update: { name: item.name, category: item.category, displayOrder: item.displayOrder },
+      create: { ...item, isActive: true },
+    })
+  }
+  console.log(`✓ ${integrations.length} integrations seeded`)
 }
 
 main()

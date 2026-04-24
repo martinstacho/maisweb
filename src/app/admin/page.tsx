@@ -2,16 +2,17 @@ import { auth } from '@/auth'
 import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
 import { signOut } from '@/auth'
-import { Users, Building2, Plus, UserPlus } from 'lucide-react'
+import { Users, Building2, Plus, UserPlus, Plug } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 export const dynamic = 'force-dynamic'
 
 export default async function AdminDashboard() {
   const session = await auth()
-  const [partnerCount, userCount] = await Promise.all([
+  const [partnerCount, userCount, integrationCount] = await Promise.all([
     prisma.partner.count(),
     prisma.user.count(),
+    prisma.integration.count(),
   ])
 
   return (
@@ -22,6 +23,7 @@ export default async function AdminDashboard() {
             <span className="text-xl font-black bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">MAIS</span>
             <div className="hidden sm:flex items-center gap-4 text-sm">
               <Link href="/admin/partners" className="text-slate-400 hover:text-slate-100 transition-colors">Partneri</Link>
+              <Link href="/admin/integrations" className="text-slate-400 hover:text-slate-100 transition-colors">Integrácie</Link>
               <Link href="/admin/users" className="text-slate-400 hover:text-slate-100 transition-colors">Správcovia</Link>
             </div>
           </div>
@@ -47,6 +49,13 @@ export default async function AdminDashboard() {
             </div>
             <div className="text-4xl font-black text-slate-100">{partnerCount}</div>
           </Link>
+          <Link href="/admin/integrations" className="rounded-xl border border-slate-800 bg-slate-900/50 p-6 hover:border-slate-700 transition-colors block">
+            <div className="flex items-center gap-3 mb-4">
+              <Plug size={20} className="text-indigo-400" />
+              <span className="text-sm text-slate-400 font-medium">Integrácie</span>
+            </div>
+            <div className="text-4xl font-black text-slate-100">{integrationCount}</div>
+          </Link>
           <Link href="/admin/users" className="rounded-xl border border-slate-800 bg-slate-900/50 p-6 hover:border-slate-700 transition-colors block">
             <div className="flex items-center gap-3 mb-4">
               <Users size={20} className="text-indigo-400" />
@@ -66,6 +75,16 @@ export default async function AdminDashboard() {
           <Link href="/admin/partners/new">
             <Button className="bg-indigo-600 hover:bg-indigo-500 text-white">
               <Plus size={16} className="mr-2" /> Pridať partnera
+            </Button>
+          </Link>
+          <Link href="/admin/integrations">
+            <Button className="bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-700">
+              <Plug size={16} className="mr-2" /> Spravovať integrácie
+            </Button>
+          </Link>
+          <Link href="/admin/integrations/new">
+            <Button className="bg-indigo-600 hover:bg-indigo-500 text-white">
+              <Plus size={16} className="mr-2" /> Pridať integráciu
             </Button>
           </Link>
           <Link href="/admin/users">

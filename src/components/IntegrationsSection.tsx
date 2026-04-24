@@ -1,42 +1,23 @@
 'use client'
+import { useEffect, useState } from 'react'
 import { motion } from 'motion/react'
 import { NumberTicker } from '@/components/ui/number-ticker'
 import { Reveal } from '@/components/ui/Reveal'
-
-const categories = [
-  {
-    name: 'Identita & Prístup',
-    accent: 'var(--indigo)',
-    chips: ['LDAP', 'IDM', 'OAuth2', 'Single Sign-On'],
-  },
-  {
-    name: 'Ekonomika & Financie',
-    accent: 'var(--amber)',
-    chips: ['SAP', 'Štátna pokladnica', 'Omega', 'EM Študent', 'TransCard'],
-  },
-  {
-    name: 'Štúdium & Výskum',
-    accent: 'var(--mint)',
-    chips: ['CRŠ', 'UIPŠ / CVTI', 'EZP', 'CRZP', 'PLAGOFF', 'ISOIS'],
-  },
-  {
-    name: 'Registratúra & Dokumenty',
-    accent: 'var(--coral)',
-    chips: ['MEMPHIS', 'ADMIS', 'ESPIS', 'Autogram', 'Podpisuj'],
-  },
-  {
-    name: 'Externé systémy',
-    accent: 'var(--orange)',
-    chips: ['PrihláškaVŠ', 'aSc Rozvrhy', 'E-learning / LMS', 'Aleph', 'DaVinci'],
-  },
-  {
-    name: 'Mobilné & Notifikácie',
-    accent: 'var(--violet)',
-    chips: ['Android App', 'iOS App', 'Banner systém', 'Push notifikácie'],
-  },
-]
+import type { IntegrationGroup, IntegrationsApiResponse } from '@/lib/integrations'
 
 export function IntegrationsSection() {
+  const [data, setData] = useState<IntegrationsApiResponse | null>(null)
+
+  useEffect(() => {
+    fetch('/api/integrations')
+      .then(r => r.json())
+      .then(setData)
+      .catch(console.error)
+  }, [])
+
+  const groups: IntegrationGroup[] = data?.groups ?? []
+  const displayCount = data?.displayCount ?? 20
+
   return (
     <section
       id="integrations"
@@ -56,7 +37,8 @@ export function IntegrationsSection() {
             </h2>
             <div className="flex items-baseline gap-2 mt-6">
               <NumberTicker
-                value={20}
+                key={displayCount}
+                value={displayCount}
                 className="font-display text-[72px] text-white leading-none"
               />
               <span className="font-display text-[48px]" style={{ color: 'var(--orange)' }}>+</span>
@@ -66,8 +48,8 @@ export function IntegrationsSection() {
         </Reveal>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {categories.map((cat, catIdx) => (
-            <Reveal key={cat.name} delay={catIdx * 70}>
+          {groups.map((cat, catIdx) => (
+            <Reveal key={cat.id} delay={catIdx * 70}>
               <div className="glass rounded-2xl p-6 relative overflow-hidden group h-full">
                 <div className="beam rounded-2xl" />
                 <div
@@ -78,7 +60,7 @@ export function IntegrationsSection() {
                   className="chip-mono mb-4 self-start"
                   style={{ borderColor: `color-mix(in oklch, ${cat.accent} 50%, transparent)`, color: cat.accent }}
                 >
-                  {cat.name}
+                  {cat.label}
                 </div>
                 <div className="flex flex-wrap gap-2 mt-4">
                   {cat.chips.map((chip, chipIdx) => (
