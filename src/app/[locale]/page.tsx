@@ -59,7 +59,7 @@ const blocksSvg = (
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
-  const [partners, tn, t, tfoot, tst, tf, tp, tc] = await Promise.all([
+  const [partners, tn, t, tfoot, tst, tf, tp, tc, ts] = await Promise.all([
     getPartners(),
     getTranslations('hero'),
     getTranslations('nav'),
@@ -68,6 +68,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     getTranslations('features'),
     getTranslations('partners'),
     getTranslations('cta'),
+    getTranslations('schools'),
   ])
 
   const featuresData = [
@@ -211,21 +212,21 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
               <div className="relative glass rounded-2xl px-6 md:px-10 py-7 md:py-8 flex flex-col md:flex-row md:items-center gap-6 md:gap-10">
                 <div className="flex-1">
                   <div className="flex items-center gap-2.5 mb-2">
-                    <span className="mono text-[11px] uppercase tracking-[0.18em]" style={{ color: 'var(--orange-2)' }}>Pre študentov</span>
+                    <span className="mono text-[11px] uppercase tracking-[0.18em]" style={{ color: 'var(--orange-2)' }}>{ts('studentBadge')}</span>
                     <span className="h-px flex-1 max-w-[60px]" style={{ background: 'linear-gradient(90deg, oklch(0.78 0.2 45 / 0.4), transparent)' }} />
                   </div>
                   <div className="font-display text-white text-[22px] md:text-[26px] leading-[1.15]" style={{ textWrap: 'balance' } as React.CSSProperties}>
-                    Nevieš sa prihlásiť alebo hľadáš e-prihlášku?
+                    {ts('studentTitle')}
                   </div>
                   <div className="mt-2 text-[13.5px]" style={{ color: 'var(--fg-2)' }}>
-                    Kompletný zoznam inštitúcií s priamymi kontaktmi na študijné oddelenia a linky na e-prihlášky.
+                    {ts('studentDesc')}
                   </div>
                 </div>
                 <Link
                   href={`/${locale}/podpora`}
                   className="btn-primary rounded-xl px-6 py-3.5 text-[14px] font-medium inline-flex items-center gap-2 group self-start md:self-auto shrink-0"
                 >
-                  Prejsť na podporu
+                  {ts('studentCta')}
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-hover:translate-x-0.5">
                     <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
                   </svg>

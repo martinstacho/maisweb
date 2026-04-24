@@ -88,7 +88,11 @@
   "schools": {
     "title": "Schools using MAIS",
     "subtitle": "Find your institution and access the system",
-    "back": "Back to homepage"
+    "back": "Back to homepage",
+    "studentBadge": "For students",
+    "studentTitle": "Can't log in or looking for your e-application?",
+    "studentDesc": "Complete list of institutions with direct contacts to study departments and links to e-applications.",
+    "studentCta": "Go to support"
   },
   "support": {
     "title": "Support",

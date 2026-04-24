@@ -88,7 +88,11 @@
   "schools": {
     "title": "A MAIS-t használó intézmények",
     "subtitle": "Keresse meg intézményét és érje el a rendszert",
-    "back": "Vissza a főoldalra"
+    "back": "Vissza a főoldalra",
+    "studentBadge": "Hallgatóknak",
+    "studentTitle": "Nem tud bejelentkezni, vagy az elektronikus felvételit keresi?",
+    "studentDesc": "Teljes intézménylista a tanulmányi osztályok közvetlen elérhetőségeivel és az elektronikus felvételi linkekkel.",
+    "studentCta": "Ugrás a támogatáshoz"
   },
   "support": {
     "title": "Támogatás",
