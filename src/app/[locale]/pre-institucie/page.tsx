@@ -56,31 +56,6 @@ const FlagIcon = () => (
   </svg>
 )
 
-const whyPoints = [
-  {
-    icon: <PuzzleIcon />,
-    title: 'Systém šitý na mieru',
-    desc: 'Nepredávame krabicové riešenie. MAIS prispôsobujeme konkrétnym potrebám každej inštitúcie – od procesov prijímacieho konania až po integráciu s vašimi existujúcimi systémami.',
-    tags: ['Vlastné procesy', 'Individuálna konfigurácia', 'Lokálna legislatíva', 'Priama komunikácia'],
-    accent: 'var(--orange)',
-  },
-  {
-    icon: <PuzzleIcon />,
-    title: 'Modulárny prístup',
-    desc: 'Nasaďte len moduly ktoré potrebujete. Systém rozširujete podľa rastu školy.',
-    stat: '9 rozhraní', statLabel: 'nezávisle nasaditeľných',
-    accent: 'var(--amber)',
-  },
-  {
-    icon: <FlagIcon />,
-    title: 'Slovenská legislatíva',
-    desc: 'Plná kompatibilita s požiadavkami MŠVVaŠ SR, Bolonský proces, GDPR.',
-    stat: '100%', statLabel: 'kompatibilita s MŠVVaŠ SR',
-    accent: 'var(--mint)',
-  },
-]
-
-
 function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const router = useRouter()
@@ -134,6 +109,7 @@ function Navbar() {
 }
 
 function Hero() {
+  const ti = useTranslations('institutions')
   const heroRef = useRef<HTMLElement>(null)
   useEffect(() => {
     const el = heroRef.current; if (!el) return
@@ -153,31 +129,31 @@ function Hero() {
       <div className="absolute top-[-120px] left-[-140px] w-[560px] h-[560px] rounded-full blob-a blob-gradient-a pointer-events-none" />
       <div className="absolute bottom-[-160px] right-[-140px] w-[520px] h-[520px] rounded-full blob-b blob-gradient-b pointer-events-none" />
       <div className="relative mx-auto max-w-7xl px-6 pt-20 pb-20 md:pt-28 md:pb-28 w-full">
-        <Reveal><div className="kicker">Pre rektorov, kvestorov a IT riaditeľov</div></Reveal>
+        <Reveal><div className="kicker">{ti('heroKicker')}</div></Reveal>
         <Reveal delay={80}>
           <h1 className="font-display mt-5 text-[48px] md:text-[88px] leading-[0.92] tracking-tight max-w-5xl">
-            Modernizujte správu <br className="hidden md:block" />
-            <span className="gradient-text">vašej univerzity</span>
+            {ti('heroTitle1')} <br className="hidden md:block" />
+            <span className="gradient-text">{ti('heroTitle2')}</span>
           </h1>
         </Reveal>
         <Reveal delay={160}>
           <p className="mt-6 max-w-2xl text-[17px] md:text-[19px] leading-relaxed" style={{ color: 'var(--fg-2)' }}>
-            Modulárny systém, ktorý rastie s vašou inštitúciou.
+            {ti('heroSubtitle')}
           </p>
         </Reveal>
         <Reveal delay={220}>
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <a href="mailto:iternal@iternal.sk?subject=Žiadosť o prezentáciu MAIS" className="btn-primary rounded-xl px-6 py-3.5 text-[14px] font-medium inline-flex items-center gap-2">
-              Požiadať o prezentáciu <ArrowIcon />
+              {ti('ctaDemo')} <ArrowIcon />
             </a>
             <a href="#brochure" className="btn-ghost rounded-xl px-6 py-3.5 text-[14px] font-medium inline-flex items-center gap-2">
-              <DownloadIcon /> Stiahnuť brožúru
+              <DownloadIcon /> {ti('ctaBrochure')}
             </a>
           </div>
         </Reveal>
         <Reveal delay={300}>
           <div className="mt-10 flex flex-wrap items-center gap-3">
-            <div className="mono text-[11px] tracking-[0.22em] uppercase" style={{ color: 'var(--fg-4)' }}>Dôverujú nám</div>
+            <div className="mono text-[11px] tracking-[0.22em] uppercase" style={{ color: 'var(--fg-4)' }}>{ti('trustedBy')}</div>
             <div className="flex items-center gap-2 flex-wrap">
               {featured.map(s => {
                 const meta = PARTNER_META[s]
@@ -189,7 +165,7 @@ function Hero() {
                   </span>
                 )
               })}
-              <span className="text-[12.5px] mono" style={{ color: 'var(--fg-3)' }}>· a {Object.keys(PARTNER_META).length - featured.length} ďalších</span>
+              <span className="text-[12.5px] mono" style={{ color: 'var(--fg-3)' }}>{ti('andMore', { count: Object.keys(PARTNER_META).length - featured.length })}</span>
             </div>
           </div>
         </Reveal>
@@ -199,13 +175,39 @@ function Hero() {
 }
 
 function WhyMAIS() {
+  const ti = useTranslations('institutions')
+  const whyPoints = [
+    {
+      icon: <PuzzleIcon />,
+      title: ti('reason1Title'),
+      desc: ti('reason1Desc'),
+      tags: ti('reason1Tags').split(','),
+      accent: 'var(--orange)',
+    },
+    {
+      icon: <PuzzleIcon />,
+      title: ti('reason2Title'),
+      desc: ti('reason2Desc'),
+      stat: ti('reason2Stat'),
+      statLabel: ti('reason2StatLabel'),
+      accent: 'var(--amber)',
+    },
+    {
+      icon: <FlagIcon />,
+      title: ti('reason3Title'),
+      desc: ti('reason3Desc'),
+      stat: ti('reason3Stat'),
+      statLabel: ti('reason3StatLabel'),
+      accent: 'var(--mint)',
+    },
+  ]
   return (
     <section className="relative py-20 md:py-28 border-t" style={{ borderColor: 'var(--line)' }}>
       <div className="mx-auto max-w-7xl px-6">
-        <Reveal><div className="kicker">Prečo MAIS</div></Reveal>
+        <Reveal><div className="kicker">{ti('whyKicker')}</div></Reveal>
         <Reveal delay={80}>
           <h2 className="font-display text-[36px] md:text-[56px] mt-4 text-white leading-[1] max-w-3xl">
-            Tri dôvody, prečo si vás MAIS získa
+            {ti('whyTitle')}
           </h2>
         </Reveal>
         <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -223,8 +225,8 @@ function WhyMAIS() {
                   <p className="mt-3 text-[14.5px] leading-relaxed" style={{ color: 'var(--fg-2)' }}>{w.desc}</p>
                   {w.tags ? (
                     <div className="mt-6 pt-5 border-t flex flex-wrap gap-2" style={{ borderColor: 'var(--line)' }}>
-                      {w.tags.map(t => (
-                        <span key={t} className="chip-mono" style={{ borderColor: `${w.accent}40` }}>{t}</span>
+                      {w.tags.map(tag => (
+                        <span key={tag} className="chip-mono" style={{ borderColor: `${w.accent}40` }}>{tag}</span>
                       ))}
                     </div>
                   ) : (
@@ -244,21 +246,22 @@ function WhyMAIS() {
 }
 
 function BentoGrid() {
+  const ti = useTranslations('institutions')
   return (
     <section className="relative py-20 md:py-28 border-t" style={{ borderColor: 'var(--line)' }}>
       <div className="mx-auto max-w-7xl px-6">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
           <Reveal>
             <div>
-              <div className="kicker">Čo získate</div>
+              <div className="kicker">{ti('bentoKicker')}</div>
               <h2 className="font-display text-[36px] md:text-[56px] mt-4 text-white leading-[1] max-w-2xl">
-                Kompletný ekosystém pre akademickú agendu
+                {ti('bentoTitle')}
               </h2>
             </div>
           </Reveal>
           <Reveal delay={120}>
             <p className="mt-2 text-[15px] max-w-sm" style={{ color: 'var(--fg-2)' }}>
-              Od prijímacieho konania cez štúdium až po archiváciu — v jednom systéme.
+              {ti('bentoSubtitle')}
             </p>
           </Reveal>
         </div>
@@ -268,13 +271,13 @@ function BentoGrid() {
               <div className="stripe" />
               <div className="relative h-full flex flex-col">
                 <div className="ico-box inline-flex h-12 w-12 items-center justify-center rounded-xl mb-5 self-start" style={{ color: 'var(--orange)' }}><CapIcon /></div>
-                <div className="font-display text-[26px] md:text-[30px] text-white leading-tight">Kompletná akademická agenda</div>
+                <div className="font-display text-[26px] md:text-[30px] text-white leading-tight">{ti('agenda')}</div>
                 <p className="mt-3 text-[14.5px] max-w-md leading-relaxed" style={{ color: 'var(--fg-2)' }}>
-                  Štúdium, rozvrhy, skúšky, zápisné listy, harmonogramy. Všetko, čo potrebuje študijné oddelenie.
+                  {ti('agendaDesc')}
                 </p>
                 <div className="mt-auto pt-6 flex flex-wrap gap-2">
-                  {['Rozvrhy', 'Skúšky', 'Zápisy', 'Harmonogramy', 'Štátnice', 'Promócie'].map(t => (
-                    <span key={t} className="chip-mono">{t}</span>
+                  {ti('agendaChips').split(',').map(chip => (
+                    <span key={chip} className="chip-mono">{chip}</span>
                   ))}
                 </div>
                 <div className="absolute right-5 top-5 w-28 h-28 pointer-events-none opacity-40">
@@ -293,18 +296,18 @@ function BentoGrid() {
               <div className="stripe" />
               <div className="relative h-full flex flex-col">
                 <div className="ico-box inline-flex h-12 w-12 items-center justify-center rounded-xl mb-5 self-start" style={{ color: 'var(--amber)' }}><FileIcon /></div>
-                <div className="font-display text-[26px] md:text-[30px] text-white leading-tight">E-prihláška a prijímacie konanie</div>
+                <div className="font-display text-[26px] md:text-[30px] text-white leading-tight">{ti('eapp')}</div>
                 <p className="mt-3 text-[14.5px] max-w-md leading-relaxed" style={{ color: 'var(--fg-2)' }}>
-                  Online prihlášky, sledovanie stavu, automatické notifikácie. Uchádzač vidí všetko v reálnom čase.
+                  {ti('eappDesc')}
                 </p>
                 <div className="mt-auto pt-6 flex flex-wrap items-center gap-3">
                   <div className="flex items-center gap-2">
                     <div className="live-dot" style={{ width: 6, height: 6 }} />
-                    <span className="mono text-[12px]" style={{ color: 'var(--fg-2)' }}>Stav: Prijatý</span>
+                    <span className="mono text-[12px]" style={{ color: 'var(--fg-2)' }}>{ti('eappStatus')}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="inline-block w-1.5 h-1.5 rounded-full" style={{ background: 'var(--amber)' }} />
-                    <span className="mono text-[12px]" style={{ color: 'var(--fg-3)' }}>Notifikácia odoslaná</span>
+                    <span className="mono text-[12px]" style={{ color: 'var(--fg-3)' }}>{ti('eappNotif')}</span>
                   </div>
                 </div>
                 <div className="absolute right-6 top-5 opacity-40 pointer-events-none">
@@ -326,30 +329,31 @@ function BentoGrid() {
 
 
 function CTA() {
+  const ti = useTranslations('institutions')
   return (
     <section id="contact" className="relative py-24 md:py-32 border-t overflow-hidden" style={{ borderColor: 'var(--line)' }}>
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <div className="w-[900px] h-[900px] cta-conic opacity-70 rounded-full" />
       </div>
       <div className="relative mx-auto max-w-4xl px-6 text-center">
-        <Reveal><div className="kicker justify-center">Bezplatná konzultácia</div></Reveal>
+        <Reveal><div className="kicker justify-center">{ti('ctaKicker')}</div></Reveal>
         <Reveal delay={80}>
           <h2 className="font-display text-[40px] md:text-[68px] mt-5 text-white leading-[0.95]" style={{ textWrap: 'balance' } as React.CSSProperties}>
-            Pripravení <span className="gradient-text">modernizovať</span> vašu inštitúciu?
+            {ti('ctaTitle1')} <span className="gradient-text">{ti('ctaTitle2')}</span> {ti('ctaTitle3')}
           </h2>
         </Reveal>
         <Reveal delay={160}>
           <p className="mt-6 text-[16px] md:text-[18px] max-w-2xl mx-auto" style={{ color: 'var(--fg-2)' }}>
-            Kontaktujte nás pre bezplatnú konzultáciu a prezentáciu systému. Odpovedáme do 24 hodín.
+            {ti('ctaDesc')}
           </p>
         </Reveal>
         <Reveal delay={240}>
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
             <a href="mailto:iternal@iternal.sk?subject=Žiadosť o prezentáciu MAIS" className="btn-primary rounded-xl px-6 py-3.5 text-[14px] font-medium inline-flex items-center gap-2">
-              Požiadať o prezentáciu <ArrowIcon />
+              {ti('ctaDemo')} <ArrowIcon />
             </a>
             <a href="#brochure" className="btn-ghost rounded-xl px-6 py-3.5 text-[14px] font-medium inline-flex items-center gap-2">
-              <DownloadIcon /> Stiahnuť brožúru
+              <DownloadIcon /> {ti('ctaBrochure')}
             </a>
           </div>
         </Reveal>
@@ -361,7 +365,7 @@ function CTA() {
                 <PhoneIcon />
               </div>
               <div className="text-left">
-                <div className="mono text-[10px] tracking-[0.2em] uppercase" style={{ color: 'var(--fg-4)' }}>Telefón</div>
+                <div className="mono text-[10px] tracking-[0.2em] uppercase" style={{ color: 'var(--fg-4)' }}>{ti('phone')}</div>
                 <div className="mono text-[14px]">+421 915 724 757</div>
               </div>
             </a>
@@ -371,7 +375,7 @@ function CTA() {
                 <MailIcon />
               </div>
               <div className="text-left">
-                <div className="mono text-[10px] tracking-[0.2em] uppercase" style={{ color: 'var(--fg-4)' }}>Email</div>
+                <div className="mono text-[10px] tracking-[0.2em] uppercase" style={{ color: 'var(--fg-4)' }}>{ti('emailLabel')}</div>
                 <div className="mono text-[14px]">mais@mais.sk</div>
               </div>
             </a>
@@ -384,6 +388,9 @@ function CTA() {
 
 function Footer() {
   const locale = useLocale()
+  const ti = useTranslations('institutions')
+  const tfoot = useTranslations('footer')
+  const tnav = useTranslations('nav')
   const year = new Date().getFullYear()
   const build = new Date().toISOString().slice(0, 10).replace(/-/g, '')
   return (
@@ -404,17 +411,17 @@ function Footer() {
             </div>
             <span className="font-display text-white text-[17px]">MAIS</span>
           </div>
-          <p className="mt-4 max-w-sm">Modulárny akademický informačný systém od ITernal s.r.o.</p>
-          <div className="mt-6"><div className="chip-mono inline-flex items-center gap-1.5"><span className="live-dot" style={{ width: 6, height: 6 }} /> Všetky systémy online</div></div>
+          <p className="mt-4 max-w-sm">{tfoot('tagline')}</p>
+          <div className="mt-6"><div className="chip-mono inline-flex items-center gap-1.5"><span className="live-dot" style={{ width: 6, height: 6 }} /> {ti('allSystemsOnline')}</div></div>
         </div>
         <div>
-          <div className="mono text-[10.5px] tracking-[0.2em] uppercase mb-4" style={{ color: 'var(--fg-4)' }}>Navigácia</div>
+          <div className="mono text-[10.5px] tracking-[0.2em] uppercase mb-4" style={{ color: 'var(--fg-4)' }}>{tfoot('navigation')}</div>
           <div className="flex flex-col gap-2.5">
             {[
-              { href: `/${locale}#schools`, label: 'Školy' },
-              { href: `/${locale}/pre-institucie`, label: 'Pre inštitúcie' },
-              { href: `/${locale}/podpora`, label: 'Podpora' },
-              { href: '#contact', label: 'Kontakt' },
+              { href: `/${locale}#schools`, label: tnav('schools') },
+              { href: `/${locale}/pre-institucie`, label: tnav('forInstitutions') },
+              { href: `/${locale}/podpora`, label: tnav('support') },
+              { href: '#contact', label: tnav('contact') },
             ].map(({ href, label }) => (
               <Link key={href} href={href} className="hover:text-white transition-colors">{label}</Link>
             ))}
@@ -430,7 +437,7 @@ function Footer() {
       </div>
       <div className="border-t" style={{ borderColor: 'var(--line)' }}>
         <div className="mx-auto max-w-7xl px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-[12px]" style={{ color: 'var(--fg-4)' }}>
-          <div>© {year} ITernal s.r.o. · Všetky práva vyhradené</div>
+          <div>© {year} ITernal s.r.o. · {tfoot('rights')}</div>
           <div className="flex items-center gap-4 mono"><span>v2026.4.1</span><span>·</span><span>Build {build}</span></div>
         </div>
       </div>
