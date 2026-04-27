@@ -48,6 +48,18 @@ model Integration {
   updatedAt    DateTime @updatedAt
 }
 
+model SiteContent {
+  id        String   @id @default(cuid())
+  key       String
+  locale    String
+  value     String   @db.Text
+  updatedAt DateTime @updatedAt
+  updatedBy String?
+
+  @@unique([key, locale])
+  @@index([key])
+}
+
 model User {
   id           String   @id @default(cuid())
   email        String   @unique
