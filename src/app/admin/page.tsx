@@ -2,7 +2,7 @@ import { auth } from '@/auth'
 import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
 import { signOut } from '@/auth'
-import { Users, Building2, Plus, UserPlus, Plug, MessageSquareQuote } from 'lucide-react'
+import { Users, Building2, Plus, UserPlus, Plug, MessageSquareQuote, FileText } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 export const dynamic = 'force-dynamic'
@@ -28,6 +28,7 @@ export default async function AdminDashboard() {
               <Link href="/admin/partners" className="text-slate-400 hover:text-slate-100 transition-colors">Partneri</Link>
               <Link href="/admin/integrations" className="text-slate-400 hover:text-slate-100 transition-colors">Integrácie</Link>
               <Link href="/admin/testimonials" className="text-slate-400 hover:text-slate-100 transition-colors">Referencie</Link>
+              <Link href="/admin/sections" className="text-slate-400 hover:text-slate-100 transition-colors">Sekcie</Link>
               {isRoot && (
                 <Link href="/admin/users" className="text-slate-400 hover:text-slate-100 transition-colors">Správcovia</Link>
               )}
@@ -68,6 +69,13 @@ export default async function AdminDashboard() {
               <span className="text-sm text-slate-400 font-medium">Referencie</span>
             </div>
             <div className="text-4xl font-black text-slate-100">{testimonialCount}</div>
+          </Link>
+          <Link href="/admin/sections" className="rounded-xl border border-slate-800 bg-slate-900/50 p-6 hover:border-slate-700 transition-colors block">
+            <div className="flex items-center gap-3 mb-4">
+              <FileText size={20} className="text-indigo-400" />
+              <span className="text-sm text-slate-400 font-medium">Sekcie webu</span>
+            </div>
+            <div className="text-sm text-slate-300">Edituj texty na webe</div>
           </Link>
           {isRoot && (
             <Link href="/admin/users" className="rounded-xl border border-slate-800 bg-slate-900/50 p-6 hover:border-slate-700 transition-colors block">
@@ -110,6 +118,11 @@ export default async function AdminDashboard() {
           <Link href="/admin/testimonials/new">
             <Button className="bg-indigo-600 hover:bg-indigo-500 text-white">
               <Plus size={16} className="mr-2" /> Pridať referenciu
+            </Button>
+          </Link>
+          <Link href="/admin/sections">
+            <Button className="bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-700">
+              <FileText size={16} className="mr-2" /> Editovať sekcie
             </Button>
           </Link>
           {isRoot && (
