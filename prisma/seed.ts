@@ -12,6 +12,19 @@ async function main() {
   })
   console.log('✓ Admin user: admin@mais.sk / admin123')
 
+  const rootHash = await bcrypt.hash('changeme123', 10)
+  await prisma.user.upsert({
+    where: { email: 'martin.stacho@gmail.com' },
+    update: { isRoot: true },
+    create: {
+      email: 'martin.stacho@gmail.com',
+      name: 'Martin Stacho',
+      passwordHash: rootHash,
+      isRoot: true,
+    },
+  })
+  console.log('✓ Root admin: martin.stacho@gmail.com / changeme123')
+
   const partners = [
     {
       id: 'tuke',

@@ -10,15 +10,17 @@ interface UserData {
   email?: string
   name?: string | null
   isSelf?: boolean
+  isRoot?: boolean
 }
 
-export function UserForm({ initial }: { initial?: UserData }) {
+export function UserForm({ initial, canSetRoot }: { initial?: UserData; canSetRoot?: boolean }) {
   const router = useRouter()
   const isEdit = !!initial?.id
   const [name, setName] = useState(initial?.name ?? '')
   const [email, setEmail] = useState(initial?.email ?? '')
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
+  const [isRoot, setIsRoot] = useState(initial?.isRoot ?? false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
@@ -41,7 +43,7 @@ export function UserForm({ initial }: { initial?: UserData }) {
 
     setLoading(true)
     try {
-      const body: Record<string, unknown> = { name }
+      const body: Record<string, unknown> = { name, isRoot }
       if (!isEdit) {
         body.email = email
         body.password = password
@@ -127,6 +129,28 @@ export function UserForm({ initial }: { initial?: UserData }) {
           />
         </div>
       </div>
+
+      {canSetRoot && (
+        <div className="flex items-start gap-3 rounded-lg border border-slate-700 bg-slate-800/50 p-4">
+          <input
+            type="checkbox"
+            id="isRoot"
+            checked={isRoot}
+            onChange={e => setIsRoot(e.target.checked)}
+            disabled={isEdit && initial?.isSelf}
+            className="mt-0.5 h-4 w-4 cursor-pointer accent-indigo-500 disabled:cursor-not-allowed disabled:opacity-50"
+          />
+          <div>
+            <Label htmlFor="isRoot" className={`text-slate-200 cursor-pointer font-medium ${isEdit && initial?.isSelf ? 'opacity-50 cursor-not-allowed' : ''}`}>
+              Root administrátor
+            </Label>
+            <p className="text-xs text-slate-500 mt-0.5">
+              Root admini môžu spravovať ďalších správcov a nastavovať ich oprávnenia.
+              {isEdit && initial?.isSelf && <span className="block text-amber-500">Vlastný root status nie je možné zmeniť.</span>}
+            </p>
+          </div>
+        </div>
+      )}
 
       {error && <p className="text-sm text-red-400">{error}</p>}
 

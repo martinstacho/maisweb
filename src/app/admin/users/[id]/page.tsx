@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import { prisma } from '@/lib/prisma'
 import { auth } from '@/auth'
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import { UserForm } from '@/components/UserForm'
 
 export const dynamic = 'force-dynamic'
@@ -10,13 +10,15 @@ export const dynamic = 'force-dynamic'
 export default async function EditUserPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const session = await auth()
-  const sessionId = (session?.user as { id?: string })?.id
+  if (!session?.user?.isRoot) redirect('/admin')
 
   const user = await prisma.user.findUnique({
     where: { id },
-    select: { id: true, email: true, name: true },
+    select: { id: true, email: true, name: true, isRoot: true },
   })
   if (!user) return notFound()
+
+  const isSelf = session.user.id === user.id
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
@@ -32,7 +34,7 @@ export default async function EditUserPage({ params }: { params: Promise<{ id: s
       <main className="mx-auto max-w-3xl px-6 py-12">
         <h1 className="text-3xl font-black mb-10">Editovať správcu</h1>
         <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-8">
-          <UserForm initial={{ ...user, isSelf: user.id === sessionId }} />
+          <UserForm initial={{ ...user, isSelf }} canSetRoot />
         </div>
       </main>
     </div>

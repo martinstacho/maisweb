@@ -11,7 +11,7 @@ export async function GET(_: Request, { params }: Params) {
   const { id } = await params
   const user = await prisma.user.findUnique({
     where: { id },
-    select: { id: true, email: true, name: true, createdAt: true, updatedAt: true },
+    select: { id: true, email: true, name: true, isRoot: true, createdAt: true, updatedAt: true },
   })
   if (!user) return NextResponse.json({ error: 'Not found' }, { status: 404 })
   return NextResponse.json(user)
@@ -20,17 +20,16 @@ export async function GET(_: Request, { params }: Params) {
 export async function PATCH(req: Request, { params }: Params) {
   const session = await auth()
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  if (!session.user.isRoot) return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+
   const { id } = await params
-  const { name, email, password } = await req.json()
+  const { name, email, password, isRoot } = await req.json()
 
-  const isSelf = (session.user as { id?: string })?.id === id
-
+  const isSelf = session.user.id === id
   const data: Record<string, unknown> = { name: name || null }
 
-  // Email change blocked for self
-  if (!isSelf && email) {
-    data.email = email
-  }
+  if (!isSelf && email) data.email = email
+  if (!isSelf && typeof isRoot === 'boolean') data.isRoot = isRoot
 
   if (password) {
     if (password.length < 8) {
@@ -43,7 +42,7 @@ export async function PATCH(req: Request, { params }: Params) {
     const user = await prisma.user.update({
       where: { id },
       data,
-      select: { id: true, email: true, name: true, updatedAt: true },
+      select: { id: true, email: true, name: true, isRoot: true, updatedAt: true },
     })
     return NextResponse.json(user)
   } catch (e: unknown) {
@@ -58,14 +57,26 @@ export async function PATCH(req: Request, { params }: Params) {
 export async function DELETE(req: Request, { params }: Params) {
   const session = await auth()
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  if (!session.user.isRoot) return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+
   const { id } = await params
 
-  if ((session.user as { id?: string })?.id === id) {
+  if (session.user.id === id) {
     return NextResponse.json({ error: 'Nemôžete vymazať samého seba.' }, { status: 400 })
   }
 
-  const count = await prisma.user.count()
-  if (count <= 1) {
+  const target = await prisma.user.findUnique({ where: { id }, select: { isRoot: true } })
+  if (!target) return NextResponse.json({ error: 'Not found' }, { status: 404 })
+
+  if (target.isRoot) {
+    const rootCount = await prisma.user.count({ where: { isRoot: true } })
+    if (rootCount <= 1) {
+      return NextResponse.json({ error: 'Nemôžete vymazať posledného root správcu.' }, { status: 400 })
+    }
+  }
+
+  const total = await prisma.user.count()
+  if (total <= 1) {
     return NextResponse.json({ error: 'Nemôžete vymazať posledného správcu.' }, { status: 400 })
   }
 

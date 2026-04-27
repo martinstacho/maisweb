@@ -1,7 +1,8 @@
 import { prisma } from '@/lib/prisma'
 import { auth, signOut } from '@/auth'
 import Link from 'next/link'
-import { Plus, Pencil, ArrowLeft } from 'lucide-react'
+import { redirect } from 'next/navigation'
+import { Plus, Pencil, ArrowLeft, ShieldCheck } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
@@ -11,9 +12,11 @@ export const dynamic = 'force-dynamic'
 
 export default async function UsersAdminPage() {
   const session = await auth()
-  const sessionId = (session?.user as { id?: string })?.id
+  if (!session?.user?.isRoot) redirect('/admin')
+
+  const sessionId = session.user.id
   const users = await prisma.user.findMany({
-    select: { id: true, email: true, name: true, createdAt: true },
+    select: { id: true, email: true, name: true, isRoot: true, createdAt: true },
     orderBy: { createdAt: 'asc' },
   })
 
@@ -62,9 +65,14 @@ export default async function UsersAdminPage() {
                 return (
                   <TableRow key={u.id} className="border-slate-800 hover:bg-slate-900/50">
                     <TableCell className="font-medium text-slate-200">
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 flex-wrap">
                         {u.name || <span className="text-slate-500 italic">—</span>}
                         {isSelf && <Badge className="bg-indigo-900/50 text-indigo-400 border-indigo-800 text-xs">vy</Badge>}
+                        {u.isRoot && (
+                          <Badge className="bg-amber-900/40 text-amber-400 border-amber-800 text-xs flex items-center gap-1">
+                            <ShieldCheck size={11} /> root
+                          </Badge>
+                        )}
                       </div>
                     </TableCell>
                     <TableCell className="text-slate-400">{u.email}</TableCell>
