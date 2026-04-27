@@ -14,7 +14,7 @@ export default function ChangePasswordPage() {
   const [loading, setLoading] = useState(false)
 
   const rules = [
-    { label: 'Aspoň 12 znakov', ok: form.newPassword.length >= 12 },
+    { label: 'Aspoň 8 znakov', ok: form.newPassword.length >= 8 },
     { label: 'Veľké písmeno', ok: /[A-Z]/.test(form.newPassword) },
     { label: 'Malé písmeno', ok: /[a-z]/.test(form.newPassword) },
     { label: 'Číslo', ok: /[0-9]/.test(form.newPassword) },
