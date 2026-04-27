@@ -21,69 +21,43 @@ function getNestedValue(obj: Messages, path: string): string | undefined {
   return typeof val === 'string' ? val : undefined
 }
 
-// Per-request in-memory cache (module-level, reset on server restart / cold start)
-const dbCache: Record<string, Map<string, string>> = {}
-
-export async function loadContent(locale: string): Promise<Map<string, string>> {
-  if (dbCache[locale]) return dbCache[locale]
-
+async function fetchDBMap(locale: string): Promise<Record<string, string>> {
   const records = await prisma.siteContent.findMany({ where: { locale } })
-  const map = new Map<string, string>()
-  records.forEach(r => map.set(r.key, r.value))
-  dbCache[locale] = map
+  const map: Record<string, string> = {}
+  records.forEach(r => { map[r.key] = r.value })
   return map
 }
 
-export function invalidateContentCache(locale?: string) {
-  if (locale) {
-    delete dbCache[locale]
-  } else {
-    for (const k of Object.keys(dbCache)) delete dbCache[k]
-  }
-}
+// no-op kept so existing API routes compile without changes
+export function invalidateContentCache(_locale?: string) {}
 
 export async function getContent(key: string, locale: string): Promise<string> {
-  const dbMap = await loadContent(locale)
-
-  const dbValue = dbMap.get(key)
-  if (dbValue !== undefined) return dbValue
-
+  const dbMap = await fetchDBMap(locale)
+  if (key in dbMap) return dbMap[key]
   const messages = fallbackMessages[locale] ?? fallbackMessages.sk
-  const fallback = getNestedValue(messages, key)
-  if (fallback !== undefined) return fallback
-
-  return key
+  return getNestedValue(messages, key) ?? key
 }
 
 export async function getContentBatch(keys: string[], locale: string): Promise<Record<string, string>> {
-  const dbMap = await loadContent(locale)
+  const dbMap = await fetchDBMap(locale)
   const messages = fallbackMessages[locale] ?? fallbackMessages.sk
   const result: Record<string, string> = {}
-
   for (const key of keys) {
-    const dbValue = dbMap.get(key)
-    if (dbValue !== undefined) {
-      result[key] = dbValue
-    } else {
-      result[key] = getNestedValue(messages, key) ?? key
-    }
+    result[key] = key in dbMap ? dbMap[key] : (getNestedValue(messages, key) ?? key)
   }
   return result
 }
 
 export async function getAllContentForLocale(locale: string): Promise<Record<string, string>> {
-  const dbMap = await loadContent(locale)
+  const dbMap = await fetchDBMap(locale)
   const result: Record<string, string> = {}
-
   const messages = fallbackMessages[locale] ?? fallbackMessages.sk
   flattenObject(messages, '', result)
-
-  dbMap.forEach((value, key) => { result[key] = value })
-
+  Object.assign(result, dbMap)
   return result
 }
 
-function flattenObject(obj: unknown, prefix: string, result: Record<string, string>) {
+export function flattenObject(obj: unknown, prefix: string, result: Record<string, string>) {
   if (!obj || typeof obj !== 'object' || Array.isArray(obj)) return
   for (const [k, v] of Object.entries(obj as Record<string, unknown>)) {
     const fullKey = prefix ? `${prefix}.${k}` : k

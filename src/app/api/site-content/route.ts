@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server'
-import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/prisma'
 import { auth } from '@/auth'
 import { getAllContentForLocale, invalidateContentCache } from '@/lib/content'
@@ -42,7 +41,6 @@ export async function PUT(req: Request) {
     create: { key, locale, value, updatedBy: session.user.email ?? null },
   })
 
-  invalidateContentCache(locale)
-  revalidatePath('/', 'layout')
+  invalidateContentCache()
   return NextResponse.json(record)
 }

@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server'
-import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/prisma'
 import { auth } from '@/auth'
 import { invalidateContentCache } from '@/lib/content'
@@ -46,7 +45,6 @@ export async function DELETE(req: Request, { params }: Params) {
     where: { key: decodedKey, locale },
   })
 
-  invalidateContentCache(locale)
-  revalidatePath('/', 'layout')
+  invalidateContentCache()
   return NextResponse.json({ success: true })
 }
