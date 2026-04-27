@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono, JetBrains_Mono } from 'next/font/google'
 import { ThemeProvider } from '@/components/ThemeProvider'
+import { GoogleAnalytics } from '@/components/GoogleAnalytics'
 import './globals.css'
 
 const geist = Geist({ variable: '--font-geist', subsets: ['latin'], weight: ['300', '400', '500', '600', '700', '800', '900'] })
@@ -23,6 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         className="min-h-full antialiased"
         style={{ fontFamily: "var(--font-geist, 'Geist'), ui-sans-serif, system-ui, sans-serif" }}
       >
+        <GoogleAnalytics />
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           {children}
         </ThemeProvider>
