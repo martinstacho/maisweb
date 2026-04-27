@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { auth } from '@/auth'
 import { invalidateContentCache } from '@/lib/content'
+import { logAudit } from '@/lib/audit'
+import { getClientIp } from '@/lib/rate-limit'
 
 const LOCALES = ['sk', 'en', 'uk', 'hu']
 
@@ -46,5 +48,12 @@ export async function DELETE(req: Request, { params }: Params) {
   })
 
   invalidateContentCache()
+  logAudit({
+    userId: session.user.id,
+    userEmail: session.user.email ?? undefined,
+    action: 'content.reset',
+    resource: `content/${decodedKey}/${locale}`,
+    ip: getClientIp(req),
+  })
   return NextResponse.json({ success: true })
 }

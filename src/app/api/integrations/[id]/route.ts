@@ -1,8 +1,12 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { auth } from '@/auth'
+import { logAudit } from '@/lib/audit'
+import { getClientIp } from '@/lib/rate-limit'
 
-export async function GET(_: Request, { params }: { params: Promise<{ id: string }> }) {
+type Params = { params: Promise<{ id: string }> }
+
+export async function GET(_: Request, { params }: Params) {
   try {
     const { id } = await params
     const integration = await prisma.integration.findUnique({ where: { id } })
@@ -14,7 +18,7 @@ export async function GET(_: Request, { params }: { params: Promise<{ id: string
   }
 }
 
-export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function PUT(req: Request, { params }: Params) {
   try {
     const session = await auth()
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -22,6 +26,13 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     const data = await req.json()
     const { id: _id, createdAt: _c, updatedAt: _u, ...updateData } = data
     const integration = await prisma.integration.update({ where: { id }, data: updateData })
+    logAudit({
+      userId: session.user.id,
+      userEmail: session.user.email ?? undefined,
+      action: 'integration.updated',
+      resource: `integration/${id}`,
+      ip: getClientIp(req),
+    })
     return NextResponse.json(integration)
   } catch (e) {
     console.error(e)
@@ -29,12 +40,19 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
   }
 }
 
-export async function DELETE(_: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(req: Request, { params }: Params) {
   try {
     const session = await auth()
     if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const { id } = await params
     await prisma.integration.delete({ where: { id } })
+    logAudit({
+      userId: session.user.id,
+      userEmail: session.user.email ?? undefined,
+      action: 'integration.deleted',
+      resource: `integration/${id}`,
+      ip: getClientIp(req),
+    })
     return NextResponse.json({ success: true })
   } catch (e) {
     console.error(e)

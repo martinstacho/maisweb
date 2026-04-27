@@ -12,12 +12,16 @@ export default async function middleware(req: NextRequest) {
 
   if (pathname.startsWith('/admin')) {
     const isLoginPage = pathname === '/admin/login'
+    const isChangePasswordPage = pathname === '/admin/change-password'
     const session = await auth()
     if (!isLoginPage && !session) {
       return NextResponse.redirect(new URL('/admin/login', req.url))
     }
     if (isLoginPage && session) {
       return NextResponse.redirect(new URL('/admin', req.url))
+    }
+    if (session?.user?.mustChangePassword && !isChangePasswordPage) {
+      return NextResponse.redirect(new URL('/admin/change-password', req.url))
     }
     return NextResponse.next()
   }

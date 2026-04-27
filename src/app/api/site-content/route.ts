@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { auth } from '@/auth'
 import { getAllContentForLocale, invalidateContentCache } from '@/lib/content'
+import { logAudit } from '@/lib/audit'
+import { getClientIp } from '@/lib/rate-limit'
 
 const LOCALES = ['sk', 'en', 'uk', 'hu']
 
@@ -42,5 +44,12 @@ export async function PUT(req: Request) {
   })
 
   invalidateContentCache()
+  logAudit({
+    userId: session.user.id,
+    userEmail: session.user.email ?? undefined,
+    action: 'content.updated',
+    resource: `content/${key}/${locale}`,
+    ip: getClientIp(req),
+  })
   return NextResponse.json(record)
 }

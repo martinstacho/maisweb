@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { auth } from '@/auth'
 import bcrypt from 'bcryptjs'
+import { validatePassword } from '@/lib/password'
+import { logAudit } from '@/lib/audit'
+import { getClientIp } from '@/lib/rate-limit'
 
 type Params = { params: Promise<{ id: string }> }
 
@@ -11,7 +14,7 @@ export async function GET(_: Request, { params }: Params) {
   const { id } = await params
   const user = await prisma.user.findUnique({
     where: { id },
-    select: { id: true, email: true, name: true, isRoot: true, createdAt: true, updatedAt: true },
+    select: { id: true, email: true, name: true, isRoot: true, mustChangePassword: true, createdAt: true, updatedAt: true },
   })
   if (!user) return NextResponse.json({ error: 'Not found' }, { status: 404 })
   return NextResponse.json(user)
@@ -32,10 +35,12 @@ export async function PATCH(req: Request, { params }: Params) {
   if (!isSelf && typeof isRoot === 'boolean') data.isRoot = isRoot
 
   if (password) {
-    if (password.length < 8) {
-      return NextResponse.json({ error: 'Heslo musí mať minimálne 8 znakov.' }, { status: 400 })
+    const { valid, errors } = validatePassword(password)
+    if (!valid) {
+      return NextResponse.json({ error: errors[0] }, { status: 400 })
     }
     data.passwordHash = await bcrypt.hash(password, 12)
+    data.mustChangePassword = false
   }
 
   try {
@@ -43,6 +48,13 @@ export async function PATCH(req: Request, { params }: Params) {
       where: { id },
       data,
       select: { id: true, email: true, name: true, isRoot: true, updatedAt: true },
+    })
+    logAudit({
+      userId: session.user.id,
+      userEmail: session.user.email ?? undefined,
+      action: 'user.updated',
+      resource: `user/${id}`,
+      ip: getClientIp(req),
     })
     return NextResponse.json(user)
   } catch (e: unknown) {
@@ -65,7 +77,7 @@ export async function DELETE(req: Request, { params }: Params) {
     return NextResponse.json({ error: 'Nemôžete vymazať samého seba.' }, { status: 400 })
   }
 
-  const target = await prisma.user.findUnique({ where: { id }, select: { isRoot: true } })
+  const target = await prisma.user.findUnique({ where: { id }, select: { isRoot: true, email: true } })
   if (!target) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
   if (target.isRoot) {
@@ -81,5 +93,13 @@ export async function DELETE(req: Request, { params }: Params) {
   }
 
   await prisma.user.delete({ where: { id } })
+  logAudit({
+    userId: session.user.id,
+    userEmail: session.user.email ?? undefined,
+    action: 'user.deleted',
+    resource: `user/${id}`,
+    ip: getClientIp(req),
+    details: { targetEmail: target.email },
+  })
   return NextResponse.json({ success: true })
 }

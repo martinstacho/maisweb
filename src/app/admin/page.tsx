@@ -2,7 +2,7 @@ import { auth } from '@/auth'
 import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
 import { signOut } from '@/auth'
-import { Users, Building2, Plus, UserPlus, Plug, MessageSquareQuote, FileText } from 'lucide-react'
+import { Users, Building2, Plus, UserPlus, Plug, MessageSquareQuote, FileText, ShieldAlert } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 export const dynamic = 'force-dynamic'
@@ -135,6 +135,11 @@ export default async function AdminDashboard() {
               <Link href="/admin/users/new">
                 <Button variant="outline" className="border-slate-700 text-slate-400 hover:bg-slate-800">
                   <UserPlus size={16} className="mr-2" /> Pridať správcu
+                </Button>
+              </Link>
+              <Link href="/admin/audit">
+                <Button variant="outline" className="border-slate-700 text-slate-400 hover:bg-slate-800">
+                  <ShieldAlert size={16} className="mr-2" /> Audit log
                 </Button>
               </Link>
             </>
