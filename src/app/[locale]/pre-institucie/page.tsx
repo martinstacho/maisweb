@@ -7,7 +7,8 @@ import { PARTNER_META } from '@/lib/partners-data'
 import { IntegrationsSection } from '@/components/IntegrationsSection'
 import { TestimonialsSection } from '@/components/TestimonialsSection'
 import { useRouter, usePathname } from '@/i18n/navigation'
-import { useLocale, useTranslations } from 'next-intl'
+import { useLocale } from 'next-intl'
+import { useContent } from '@/lib/content-client'
 
 const ArrowIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -29,12 +30,6 @@ const MailIcon = () => (
     <rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/>
   </svg>
 )
-const CheckIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M20 6 9 17l-5-5"/>
-  </svg>
-)
-
 const CapIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
     <path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/>
@@ -61,7 +56,7 @@ function Navbar() {
   const router = useRouter()
   const pathname = usePathname()
   const locale = useLocale()
-  const t = useTranslations('nav')
+  const c = useContent()
   useEffect(() => {
     const onS = () => setScrolled(window.scrollY > 12)
     onS(); window.addEventListener('scroll', onS, { passive: true })
@@ -79,11 +74,11 @@ function Navbar() {
           <span className="chip-mono hidden sm:inline-flex">v2026</span>
         </Link>
         <div className="hidden md:flex items-center gap-7 text-[13.5px]" style={{ color: 'var(--fg-2)' }}>
-          <a href={`/${locale}#features`} className="ln hover:text-white transition-colors">{t('features')}</a>
-          <a href={`/${locale}#schools`} className="ln hover:text-white transition-colors">{t('schools')}</a>
-          <Link href={`/${locale}/pre-institucie`} className="ln text-white" aria-current="page">{t('forInstitutions')}</Link>
-          <Link href={`/${locale}/podpora`} className="ln hover:text-white transition-colors">{t('support')}</Link>
-          <a href={`/${locale}#contact`} className="ln hover:text-white transition-colors">{t('contact')}</a>
+          <a href={`/${locale}#features`} className="ln hover:text-white transition-colors">{c('nav.features')}</a>
+          <a href={`/${locale}#schools`} className="ln hover:text-white transition-colors">{c('nav.schools')}</a>
+          <Link href={`/${locale}/pre-institucie`} className="ln text-white" aria-current="page">{c('nav.forInstitutions')}</Link>
+          <Link href={`/${locale}/podpora`} className="ln hover:text-white transition-colors">{c('nav.support')}</Link>
+          <a href={`/${locale}#contact`} className="ln hover:text-white transition-colors">{c('nav.contact')}</a>
         </div>
         <div className="flex items-center gap-2">
           <div className="hidden md:flex items-center gap-1 chip-mono">
@@ -100,7 +95,7 @@ function Navbar() {
             ))}
           </div>
           <a href="mailto:iternal@iternal.sk?subject=Žiadosť o prezentáciu MAIS" className="btn-primary rounded-lg px-4 py-2 text-[13px] font-medium inline-flex items-center gap-1.5">
-            Prezentácia <ArrowIcon />
+            {c('nav.cta')} <ArrowIcon />
           </a>
         </div>
       </div>
@@ -109,7 +104,8 @@ function Navbar() {
 }
 
 function Hero() {
-  const ti = useTranslations('institutions')
+  const c = useContent()
+  const locale = useLocale()
   const heroRef = useRef<HTMLElement>(null)
   useEffect(() => {
     const el = heroRef.current; if (!el) return
@@ -122,6 +118,7 @@ function Hero() {
     return () => el.removeEventListener('mousemove', mv)
   }, [])
   const featured = ['TUKE', 'TRUNI', 'SZU', 'UNIPO']
+  const andMoreCount = Object.keys(PARTNER_META).length - featured.length
   return (
     <section ref={heroRef} className="relative overflow-hidden noise min-h-[88vh] flex items-center">
       <div className="absolute inset-0 hero-grid pointer-events-none" />
@@ -129,31 +126,31 @@ function Hero() {
       <div className="absolute top-[-120px] left-[-140px] w-[560px] h-[560px] rounded-full blob-a blob-gradient-a pointer-events-none" />
       <div className="absolute bottom-[-160px] right-[-140px] w-[520px] h-[520px] rounded-full blob-b blob-gradient-b pointer-events-none" />
       <div className="relative mx-auto max-w-7xl px-6 pt-20 pb-20 md:pt-28 md:pb-28 w-full">
-        <Reveal><div className="kicker">{ti('heroKicker')}</div></Reveal>
+        <Reveal><div className="kicker">{c('institutions.heroKicker')}</div></Reveal>
         <Reveal delay={80}>
           <h1 className="font-display mt-5 text-[48px] md:text-[88px] leading-[0.92] tracking-tight max-w-5xl">
-            {ti('heroTitle1')} <br className="hidden md:block" />
-            <span className="gradient-text">{ti('heroTitle2')}</span>
+            {c('institutions.heroTitle1')} <br className="hidden md:block" />
+            <span className="gradient-text">{c('institutions.heroTitle2')}</span>
           </h1>
         </Reveal>
         <Reveal delay={160}>
           <p className="mt-6 max-w-2xl text-[17px] md:text-[19px] leading-relaxed" style={{ color: 'var(--fg-2)' }}>
-            {ti('heroSubtitle')}
+            {c('institutions.heroSubtitle')}
           </p>
         </Reveal>
         <Reveal delay={220}>
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <a href="mailto:iternal@iternal.sk?subject=Žiadosť o prezentáciu MAIS" className="btn-primary rounded-xl px-6 py-3.5 text-[14px] font-medium inline-flex items-center gap-2">
-              {ti('ctaDemo')} <ArrowIcon />
+              {c('institutions.ctaDemo')} <ArrowIcon />
             </a>
             <a href="#brochure" className="btn-ghost rounded-xl px-6 py-3.5 text-[14px] font-medium inline-flex items-center gap-2">
-              <DownloadIcon /> {ti('ctaBrochure')}
+              <DownloadIcon /> {c('institutions.ctaBrochure')}
             </a>
           </div>
         </Reveal>
         <Reveal delay={300}>
           <div className="mt-10 flex flex-wrap items-center gap-3">
-            <div className="mono text-[11px] tracking-[0.22em] uppercase" style={{ color: 'var(--fg-4)' }}>{ti('trustedBy')}</div>
+            <div className="mono text-[11px] tracking-[0.22em] uppercase" style={{ color: 'var(--fg-4)' }}>{c('institutions.trustedBy')}</div>
             <div className="flex items-center gap-2 flex-wrap">
               {featured.map(s => {
                 const meta = PARTNER_META[s]
@@ -165,7 +162,9 @@ function Hero() {
                   </span>
                 )
               })}
-              <span className="text-[12.5px] mono" style={{ color: 'var(--fg-3)' }}>{ti('andMore', { count: Object.keys(PARTNER_META).length - featured.length })}</span>
+              <span className="text-[12.5px] mono" style={{ color: 'var(--fg-3)' }}>
+                {c('institutions.andMore').replace('{count}', String(andMoreCount))}
+              </span>
             </div>
           </div>
         </Reveal>
@@ -175,39 +174,39 @@ function Hero() {
 }
 
 function WhyMAIS() {
-  const ti = useTranslations('institutions')
+  const c = useContent()
   const whyPoints = [
     {
       icon: <PuzzleIcon />,
-      title: ti('reason1Title'),
-      desc: ti('reason1Desc'),
-      tags: ti('reason1Tags').split(','),
+      title: c('institutions.reason1Title'),
+      desc: c('institutions.reason1Desc'),
+      tags: c('institutions.reason1Tags').split(','),
       accent: 'var(--orange)',
     },
     {
       icon: <PuzzleIcon />,
-      title: ti('reason2Title'),
-      desc: ti('reason2Desc'),
-      stat: ti('reason2Stat'),
-      statLabel: ti('reason2StatLabel'),
+      title: c('institutions.reason2Title'),
+      desc: c('institutions.reason2Desc'),
+      stat: c('institutions.reason2Stat'),
+      statLabel: c('institutions.reason2StatLabel'),
       accent: 'var(--amber)',
     },
     {
       icon: <FlagIcon />,
-      title: ti('reason3Title'),
-      desc: ti('reason3Desc'),
-      stat: ti('reason3Stat'),
-      statLabel: ti('reason3StatLabel'),
+      title: c('institutions.reason3Title'),
+      desc: c('institutions.reason3Desc'),
+      stat: c('institutions.reason3Stat'),
+      statLabel: c('institutions.reason3StatLabel'),
       accent: 'var(--mint)',
     },
   ]
   return (
     <section className="relative py-20 md:py-28 border-t" style={{ borderColor: 'var(--line)' }}>
       <div className="mx-auto max-w-7xl px-6">
-        <Reveal><div className="kicker">{ti('whyKicker')}</div></Reveal>
+        <Reveal><div className="kicker">{c('institutions.whyKicker')}</div></Reveal>
         <Reveal delay={80}>
           <h2 className="font-display text-[36px] md:text-[56px] mt-4 text-white leading-[1] max-w-3xl">
-            {ti('whyTitle')}
+            {c('institutions.whyTitle')}
           </h2>
         </Reveal>
         <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -246,22 +245,22 @@ function WhyMAIS() {
 }
 
 function BentoGrid() {
-  const ti = useTranslations('institutions')
+  const c = useContent()
   return (
     <section className="relative py-20 md:py-28 border-t" style={{ borderColor: 'var(--line)' }}>
       <div className="mx-auto max-w-7xl px-6">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
           <Reveal>
             <div>
-              <div className="kicker">{ti('bentoKicker')}</div>
+              <div className="kicker">{c('institutions.bentoKicker')}</div>
               <h2 className="font-display text-[36px] md:text-[56px] mt-4 text-white leading-[1] max-w-2xl">
-                {ti('bentoTitle')}
+                {c('institutions.bentoTitle')}
               </h2>
             </div>
           </Reveal>
           <Reveal delay={120}>
             <p className="mt-2 text-[15px] max-w-sm" style={{ color: 'var(--fg-2)' }}>
-              {ti('bentoSubtitle')}
+              {c('institutions.bentoSubtitle')}
             </p>
           </Reveal>
         </div>
@@ -271,20 +270,20 @@ function BentoGrid() {
               <div className="stripe" />
               <div className="relative h-full flex flex-col">
                 <div className="ico-box inline-flex h-12 w-12 items-center justify-center rounded-xl mb-5 self-start" style={{ color: 'var(--orange)' }}><CapIcon /></div>
-                <div className="font-display text-[26px] md:text-[30px] text-white leading-tight">{ti('agenda')}</div>
+                <div className="font-display text-[26px] md:text-[30px] text-white leading-tight">{c('institutions.agenda')}</div>
                 <p className="mt-3 text-[14.5px] max-w-md leading-relaxed" style={{ color: 'var(--fg-2)' }}>
-                  {ti('agendaDesc')}
+                  {c('institutions.agendaDesc')}
                 </p>
                 <div className="mt-auto pt-6 flex flex-wrap gap-2">
-                  {ti('agendaChips').split(',').map(chip => (
-                    <span key={chip} className="chip-mono">{chip}</span>
+                  {c('institutions.agendaChips').split(',').map(chip => (
+                    <span key={chip} className="chip-mono">{chip.trim()}</span>
                   ))}
                 </div>
                 <div className="absolute right-5 top-5 w-28 h-28 pointer-events-none opacity-40">
                   <svg viewBox="0 0 100 100" className="w-full h-full">
-                    {Array.from({ length: 5 }).map((_, r) => Array.from({ length: 5 }).map((_, c) => (
-                      <rect key={`${r}-${c}`} x={c * 20 + 2} y={r * 20 + 2} width="16" height="16" rx="2"
-                        fill={r === 2 && c === 2 ? 'oklch(0.72 0.2 40 / 0.6)' : 'oklch(0.4 0.03 40 / 0.25)'} />
+                    {Array.from({ length: 5 }).map((_, r) => Array.from({ length: 5 }).map((_, col) => (
+                      <rect key={`${r}-${col}`} x={col * 20 + 2} y={r * 20 + 2} width="16" height="16" rx="2"
+                        fill={r === 2 && col === 2 ? 'oklch(0.72 0.2 40 / 0.6)' : 'oklch(0.4 0.03 40 / 0.25)'} />
                     )))}
                   </svg>
                 </div>
@@ -296,18 +295,18 @@ function BentoGrid() {
               <div className="stripe" />
               <div className="relative h-full flex flex-col">
                 <div className="ico-box inline-flex h-12 w-12 items-center justify-center rounded-xl mb-5 self-start" style={{ color: 'var(--amber)' }}><FileIcon /></div>
-                <div className="font-display text-[26px] md:text-[30px] text-white leading-tight">{ti('eapp')}</div>
+                <div className="font-display text-[26px] md:text-[30px] text-white leading-tight">{c('institutions.eapp')}</div>
                 <p className="mt-3 text-[14.5px] max-w-md leading-relaxed" style={{ color: 'var(--fg-2)' }}>
-                  {ti('eappDesc')}
+                  {c('institutions.eappDesc')}
                 </p>
                 <div className="mt-auto pt-6 flex flex-wrap items-center gap-3">
                   <div className="flex items-center gap-2">
                     <div className="live-dot" style={{ width: 6, height: 6 }} />
-                    <span className="mono text-[12px]" style={{ color: 'var(--fg-2)' }}>{ti('eappStatus')}</span>
+                    <span className="mono text-[12px]" style={{ color: 'var(--fg-2)' }}>{c('institutions.eappStatus')}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="inline-block w-1.5 h-1.5 rounded-full" style={{ background: 'var(--amber)' }} />
-                    <span className="mono text-[12px]" style={{ color: 'var(--fg-3)' }}>{ti('eappNotif')}</span>
+                    <span className="mono text-[12px]" style={{ color: 'var(--fg-3)' }}>{c('institutions.eappNotif')}</span>
                   </div>
                 </div>
                 <div className="absolute right-6 top-5 opacity-40 pointer-events-none">
@@ -327,33 +326,32 @@ function BentoGrid() {
   )
 }
 
-
 function CTA() {
-  const ti = useTranslations('institutions')
+  const c = useContent()
   return (
     <section id="contact" className="relative py-24 md:py-32 border-t overflow-hidden" style={{ borderColor: 'var(--line)' }}>
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <div className="w-[900px] h-[900px] cta-conic opacity-70 rounded-full" />
       </div>
       <div className="relative mx-auto max-w-4xl px-6 text-center">
-        <Reveal><div className="kicker justify-center">{ti('ctaKicker')}</div></Reveal>
+        <Reveal><div className="kicker justify-center">{c('institutions.ctaKicker')}</div></Reveal>
         <Reveal delay={80}>
           <h2 className="font-display text-[40px] md:text-[68px] mt-5 text-white leading-[0.95]" style={{ textWrap: 'balance' } as React.CSSProperties}>
-            {ti('ctaTitle1')} <span className="gradient-text">{ti('ctaTitle2')}</span> {ti('ctaTitle3')}
+            {c('institutions.ctaTitle1')} <span className="gradient-text">{c('institutions.ctaTitle2')}</span> {c('institutions.ctaTitle3')}
           </h2>
         </Reveal>
         <Reveal delay={160}>
           <p className="mt-6 text-[16px] md:text-[18px] max-w-2xl mx-auto" style={{ color: 'var(--fg-2)' }}>
-            {ti('ctaDesc')}
+            {c('institutions.ctaDesc')}
           </p>
         </Reveal>
         <Reveal delay={240}>
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
             <a href="mailto:iternal@iternal.sk?subject=Žiadosť o prezentáciu MAIS" className="btn-primary rounded-xl px-6 py-3.5 text-[14px] font-medium inline-flex items-center gap-2">
-              {ti('ctaDemo')} <ArrowIcon />
+              {c('institutions.ctaDemo')} <ArrowIcon />
             </a>
             <a href="#brochure" className="btn-ghost rounded-xl px-6 py-3.5 text-[14px] font-medium inline-flex items-center gap-2">
-              <DownloadIcon /> {ti('ctaBrochure')}
+              <DownloadIcon /> {c('institutions.ctaBrochure')}
             </a>
           </div>
         </Reveal>
@@ -365,7 +363,7 @@ function CTA() {
                 <PhoneIcon />
               </div>
               <div className="text-left">
-                <div className="mono text-[10px] tracking-[0.2em] uppercase" style={{ color: 'var(--fg-4)' }}>{ti('phone')}</div>
+                <div className="mono text-[10px] tracking-[0.2em] uppercase" style={{ color: 'var(--fg-4)' }}>{c('institutions.phone')}</div>
                 <div className="mono text-[14px]">+421 915 724 757</div>
               </div>
             </a>
@@ -375,7 +373,7 @@ function CTA() {
                 <MailIcon />
               </div>
               <div className="text-left">
-                <div className="mono text-[10px] tracking-[0.2em] uppercase" style={{ color: 'var(--fg-4)' }}>{ti('emailLabel')}</div>
+                <div className="mono text-[10px] tracking-[0.2em] uppercase" style={{ color: 'var(--fg-4)' }}>{c('institutions.emailLabel')}</div>
                 <div className="mono text-[14px]">mais@mais.sk</div>
               </div>
             </a>
@@ -388,9 +386,7 @@ function CTA() {
 
 function Footer() {
   const locale = useLocale()
-  const ti = useTranslations('institutions')
-  const tfoot = useTranslations('footer')
-  const tnav = useTranslations('nav')
+  const c = useContent()
   const year = new Date().getFullYear()
   const build = new Date().toISOString().slice(0, 10).replace(/-/g, '')
   return (
@@ -411,17 +407,17 @@ function Footer() {
             </div>
             <span className="font-display text-white text-[17px]">MAIS</span>
           </div>
-          <p className="mt-4 max-w-sm">{tfoot('tagline')}</p>
-          <div className="mt-6"><div className="chip-mono inline-flex items-center gap-1.5"><span className="live-dot" style={{ width: 6, height: 6 }} /> {ti('allSystemsOnline')}</div></div>
+          <p className="mt-4 max-w-sm">{c('footer.tagline')}</p>
+          <div className="mt-6"><div className="chip-mono inline-flex items-center gap-1.5"><span className="live-dot" style={{ width: 6, height: 6 }} /> {c('institutions.allSystemsOnline')}</div></div>
         </div>
         <div>
-          <div className="mono text-[10.5px] tracking-[0.2em] uppercase mb-4" style={{ color: 'var(--fg-4)' }}>{tfoot('navigation')}</div>
+          <div className="mono text-[10.5px] tracking-[0.2em] uppercase mb-4" style={{ color: 'var(--fg-4)' }}>{c('footer.navigation')}</div>
           <div className="flex flex-col gap-2.5">
             {[
-              { href: `/${locale}#schools`, label: tnav('schools') },
-              { href: `/${locale}/pre-institucie`, label: tnav('forInstitutions') },
-              { href: `/${locale}/podpora`, label: tnav('support') },
-              { href: '#contact', label: tnav('contact') },
+              { href: `/${locale}#schools`, label: c('nav.schools') },
+              { href: `/${locale}/pre-institucie`, label: c('nav.forInstitutions') },
+              { href: `/${locale}/podpora`, label: c('nav.support') },
+              { href: '#contact', label: c('nav.contact') },
             ].map(({ href, label }) => (
               <Link key={href} href={href} className="hover:text-white transition-colors">{label}</Link>
             ))}
@@ -437,7 +433,7 @@ function Footer() {
       </div>
       <div className="border-t" style={{ borderColor: 'var(--line)' }}>
         <div className="mx-auto max-w-7xl px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-[12px]" style={{ color: 'var(--fg-4)' }}>
-          <div>© {year} ITernal s.r.o. · {tfoot('rights')}</div>
+          <div>© {year} ITernal s.r.o. · {c('footer.rights')}</div>
           <div className="flex items-center gap-4 mono"><span>v2026.4.1</span><span>·</span><span>Build {build}</span></div>
         </div>
       </div>

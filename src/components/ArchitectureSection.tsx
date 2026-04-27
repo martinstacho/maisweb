@@ -1,6 +1,6 @@
 'use client'
-import { useTranslations } from 'next-intl'
 import { Reveal } from '@/components/ui/Reveal'
+import { useContent } from '@/lib/content-client'
 
 function polarToPercent(angleDeg: number, r: number) {
   const rad = (angleDeg * Math.PI) / 180
@@ -10,16 +10,16 @@ function polarToPercent(angleDeg: number, r: number) {
 const SATELLITE_ANGLES = [0, 40, 80, 120, 160, 200, 240, 280, 320]
 
 export function ArchitectureSection() {
-  const t = useTranslations('arch')
+  const c = useContent()
 
   const techCards = [
-    { label: t('techSSO'), value: 'LDAP / OAuth2' },
-    { label: t('techDB'),  value: 'PostgreSQL' },
-    { label: t('techInt'), value: 'SIMUS · CVTI · ISSP' },
-    { label: t('techBak'), value: 'incremental · daily' },
+    { label: c('arch.techSSO'), value: 'LDAP / OAuth2' },
+    { label: c('arch.techDB'),  value: 'PostgreSQL' },
+    { label: c('arch.techInt'), value: 'SIMUS · CVTI · ISSP' },
+    { label: c('arch.techBak'), value: 'incremental · daily' },
   ]
 
-  const satellites = t('modules').split(',').map((label, i) => ({
+  const satellites = c('arch.modules').split(',').map((label, i) => ({
     label: label.trim(),
     angle: SATELLITE_ANGLES[i] ?? i * 40,
   }))
@@ -32,14 +32,14 @@ export function ArchitectureSection() {
 
           <Reveal>
             <div>
-              <div className="kicker">{t('kicker')}</div>
+              <div className="kicker">{c('arch.kicker')}</div>
               <h2 className="font-display text-[40px] md:text-[56px] mt-5 text-white leading-[0.98]">
-                {t('line1')}<br />
-                <span className="gradient-text">{t('line2')}</span><br />
-                {t('line3')}
+                {c('arch.line1')}<br />
+                <span className="gradient-text">{c('arch.line2')}</span><br />
+                {c('arch.line3')}
               </h2>
               <p className="mt-6 text-[16px] leading-relaxed max-w-lg" style={{ color: 'var(--fg-2)' }}>
-                {t('desc')}
+                {c('arch.desc')}
               </p>
               <div className="mt-8 grid grid-cols-2 gap-3 max-w-md">
                 {techCards.map(({ label, value }) => (

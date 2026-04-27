@@ -2,8 +2,9 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useLocale, useTranslations } from 'next-intl'
+import { useLocale } from 'next-intl'
 import { useRouter, usePathname } from '@/i18n/navigation'
+import { useContent } from '@/lib/content-client'
 
 interface NavbarProps {
   activePage?: string
@@ -12,9 +13,9 @@ interface NavbarProps {
 export function Navbar({ activePage }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false)
   const router = useRouter()
-  const pathname = usePathname()   // locale-agnostic: '/' | '/podpora' | '/pre-institucie'
-  const locale = useLocale()       // 'sk' | 'en' | 'uk'
-  const t = useTranslations('nav')
+  const pathname = usePathname()
+  const locale = useLocale()
+  const c = useContent()
 
   const isHome = pathname === '/'
 
@@ -46,30 +47,29 @@ export function Navbar({ activePage }: NavbarProps) {
 
         <div className="hidden md:flex items-center gap-7 text-[13.5px]" style={{ color: 'var(--fg-2)' }}>
           <a href={isHome ? '#features' : `/${locale}#features`} className="ln hover:text-white transition-colors">
-            {t('features')}
+            {c('nav.features')}
           </a>
           <a href={isHome ? '#schools' : `/${locale}#schools`} className="ln hover:text-white transition-colors">
-            {t('schools')}
+            {c('nav.schools')}
           </a>
           <Link
             href={`/${locale}/pre-institucie`}
             className={`ln hover:text-white transition-colors ${activePage === 'pre-institucie' ? 'text-white' : ''}`}
           >
-            {t('forInstitutions')}
+            {c('nav.forInstitutions')}
           </Link>
           <Link
             href={`/${locale}/podpora`}
             className={`ln hover:text-white transition-colors ${activePage === 'podpora' ? 'text-white' : ''}`}
           >
-            {t('support')}
+            {c('nav.support')}
           </Link>
           <a href={isHome ? '#contact' : `/${locale}#contact`} className="ln hover:text-white transition-colors">
-            {t('contact')}
+            {c('nav.contact')}
           </a>
         </div>
 
         <div className="flex items-center gap-2">
-          {/* Language switcher */}
           <div className="hidden md:flex items-center gap-1 chip-mono">
             {(['sk', 'en', 'uk', 'hu'] as const).map((l) => (
               <span key={l} className="flex items-center gap-1">
@@ -90,7 +90,7 @@ export function Navbar({ activePage }: NavbarProps) {
             href={isHome ? '#contact' : `/${locale}#contact`}
             className="btn-primary rounded-lg px-4 py-2 text-[13px] font-medium inline-flex items-center gap-1.5"
           >
-            {t('cta')}
+            {c('nav.cta')}
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
             </svg>

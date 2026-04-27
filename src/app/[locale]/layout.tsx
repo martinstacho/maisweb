@@ -2,6 +2,8 @@ import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import { routing } from '@/i18n/routing'
+import { getAllContentForLocale } from '@/lib/content'
+import { ContentProvider } from '@/lib/content-client'
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }))
@@ -18,10 +20,15 @@ export default async function LocaleLayout({
   if (!routing.locales.includes(locale as (typeof routing.locales)[number])) {
     notFound()
   }
-  const messages = await getMessages()
+  const [messages, content] = await Promise.all([
+    getMessages(),
+    getAllContentForLocale(locale),
+  ])
   return (
     <NextIntlClientProvider messages={messages}>
-      {children}
+      <ContentProvider content={content}>
+        {children}
+      </ContentProvider>
     </NextIntlClientProvider>
   )
 }

@@ -1,14 +1,14 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { motion } from 'motion/react'
-import { useTranslations } from 'next-intl'
 import { NumberTicker } from '@/components/ui/number-ticker'
 import { Reveal } from '@/components/ui/Reveal'
+import { useContent } from '@/lib/content-client'
 import type { IntegrationGroup, IntegrationsApiResponse } from '@/lib/integrations'
 
 export function IntegrationsSection() {
   const [data, setData] = useState<IntegrationsApiResponse | null>(null)
-  const t = useTranslations('integrations')
+  const c = useContent()
 
   useEffect(() => {
     fetch('/api/integrations')
@@ -22,12 +22,12 @@ export function IntegrationsSection() {
 
   const groupLabel = (id: string): string => {
     const map: Record<string, string> = {
-      identity: t('groups.identity'),
-      finance: t('groups.finance'),
-      study: t('groups.study'),
-      registry: t('groups.registry'),
-      external: t('groups.external'),
-      mobile: t('groups.mobile'),
+      identity: c('integrations.groups.identity'),
+      finance:  c('integrations.groups.finance'),
+      study:    c('integrations.groups.study'),
+      registry: c('integrations.groups.registry'),
+      external: c('integrations.groups.external'),
+      mobile:   c('integrations.groups.mobile'),
     }
     return map[id] ?? id
   }
@@ -44,10 +44,10 @@ export function IntegrationsSection() {
 
         <Reveal>
           <div className="mb-16">
-            <div className="kicker">{t('kicker')}</div>
+            <div className="kicker">{c('integrations.kicker')}</div>
             <h2 className="font-display text-[40px] md:text-[64px] mt-5 text-white leading-[0.95]">
-              {t('heading1')}{' '}
-              <span className="gradient-text">{t('heading2')}</span>
+              {c('integrations.heading1')}{' '}
+              <span className="gradient-text">{c('integrations.heading2')}</span>
             </h2>
             <div className="flex items-baseline gap-2 mt-6">
               <NumberTicker
@@ -56,7 +56,7 @@ export function IntegrationsSection() {
                 className="font-display text-[72px] text-white leading-none"
               />
               <span className="font-display text-[48px]" style={{ color: 'var(--orange)' }}>+</span>
-              <span className="text-[18px]" style={{ color: 'var(--fg-3)' }}>{t('countLabel')}</span>
+              <span className="text-[18px]" style={{ color: 'var(--fg-3)' }}>{c('integrations.countLabel')}</span>
             </div>
           </div>
         </Reveal>

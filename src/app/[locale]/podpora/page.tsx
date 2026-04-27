@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { getTranslations } from 'next-intl/server'
+import { getContentBatch } from '@/lib/content'
 import { prisma } from '@/lib/prisma'
 import { Navbar } from '@/components/Navbar'
 import { MaisFooter } from '@/components/MaisFooter'
@@ -134,17 +134,24 @@ function SchoolCard({ p, i, labels }: { p: Partner; i: number; labels: SchoolLab
 
 export default async function PodporaPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
-  const [partners, t, tfoot, ts] = await Promise.all([
+
+  const [partners, c] = await Promise.all([
     prisma.partner.findMany({ where: { isActive: true }, orderBy: { displayOrder: 'asc' } }),
-    getTranslations('nav'),
-    getTranslations('footer'),
-    getTranslations('support'),
+    getContentBatch([
+      'support.helpdeskBadge', 'support.title', 'support.findSchoolDesc',
+      'support.activeInstitutions', 'support.skipToList',
+      'support.institutionsList', 'support.selectSchool', 'support.allHelpdeskOnline',
+      'support.notFoundSchool', 'support.contactCentral', 'support.contactCentralDesc',
+      'support.officialWeb', 'support.loginIssue', 'support.eApplication',
+      'footer.tagline', 'footer.navigation', 'footer.rights',
+      'nav.schools', 'nav.forInstitutions', 'nav.support', 'nav.contact',
+    ], locale),
   ])
 
   const schoolLabels: SchoolLabels = {
-    website: ts('officialWeb'),
-    loginIssue: ts('loginIssue'),
-    eApplication: ts('eApplication'),
+    website: c['support.officialWeb'],
+    loginIssue: c['support.loginIssue'],
+    eApplication: c['support.eApplication'],
   }
 
   return (
@@ -162,24 +169,24 @@ export default async function PodporaPage({ params }: { params: Promise<{ locale
         <div className="absolute top-[-80px] right-[-160px] w-[420px] h-[420px] rounded-full blob-b pointer-events-none"
           style={{ background: 'radial-gradient(circle at 70% 70%, oklch(0.58 0.22 25 / 0.35), transparent 60%)' }} />
         <div className="relative mx-auto max-w-7xl px-6 pt-20 pb-14 md:pt-28 md:pb-20">
-          <Reveal><div className="kicker">{ts('helpdeskBadge')}</div></Reveal>
+          <Reveal><div className="kicker">{c['support.helpdeskBadge']}</div></Reveal>
           <Reveal delay={80}>
             <h1 className="font-display mt-5 text-[44px] md:text-[72px] leading-[0.95] tracking-tight">
-              {ts('title')} <span className="gradient-text">MAIS</span>
+              {c['support.title']} <span className="gradient-text">MAIS</span>
             </h1>
           </Reveal>
           <Reveal delay={160}>
             <p className="mt-5 max-w-2xl text-[16px] md:text-[18px]" style={{ color: 'var(--fg-2)' }}>
-              {ts('findSchoolDesc')}
+              {c['support.findSchoolDesc']}
             </p>
           </Reveal>
           <Reveal delay={220}>
             <div className="mt-6 flex items-center gap-3 flex-wrap">
               <div className="chip-mono flex items-center gap-2">
                 <span className="live-dot" style={{ width: 6, height: 6 }} />
-                {partners.length} {ts('activeInstitutions')}
+                {partners.length} {c['support.activeInstitutions']}
               </div>
-              <a href="#schools" className="chip-mono hover:text-white transition-colors">{ts('skipToList')}</a>
+              <a href="#schools" className="chip-mono hover:text-white transition-colors">{c['support.skipToList']}</a>
             </div>
           </Reveal>
         </div>
@@ -191,16 +198,16 @@ export default async function PodporaPage({ params }: { params: Promise<{ locale
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10 md:mb-14">
             <Reveal>
               <div>
-                <div className="kicker">{ts('institutionsList')} · {partners.length}</div>
+                <div className="kicker">{c['support.institutionsList']} · {partners.length}</div>
                 <h2 className="font-display text-[32px] md:text-[44px] mt-4 text-white leading-[1] max-w-2xl">
-                  {ts('selectSchool')}
+                  {c['support.selectSchool']}
                 </h2>
               </div>
             </Reveal>
             <Reveal delay={120}>
               <div className="chip-mono flex items-center gap-2 self-start">
                 <span className="live-dot" style={{ width: 6, height: 6 }} />
-                {ts('allHelpdeskOnline')}
+                {c['support.allHelpdeskOnline']}
               </div>
             </Reveal>
           </div>
@@ -220,12 +227,12 @@ export default async function PodporaPage({ params }: { params: Promise<{ locale
               <div className="absolute inset-0 banner-glow pointer-events-none" />
               <div className="relative flex flex-col md:flex-row md:items-center gap-6 md:gap-10">
                 <div className="flex-1">
-                  <div className="kicker">{ts('notFoundSchool')}</div>
+                  <div className="kicker">{c['support.notFoundSchool']}</div>
                   <div className="font-display text-[24px] md:text-[32px] text-white leading-tight mt-3" style={{ textWrap: 'balance' } as React.CSSProperties}>
-                    {ts('contactCentral')}
+                    {c['support.contactCentral']}
                   </div>
                   <p className="mt-2 text-[14px] max-w-lg" style={{ color: 'var(--fg-2)' }}>
-                    {ts('contactCentralDesc')}
+                    {c['support.contactCentralDesc']}
                   </p>
                 </div>
                 <div className="flex flex-col sm:flex-row md:flex-col gap-3 shrink-0">
@@ -243,13 +250,13 @@ export default async function PodporaPage({ params }: { params: Promise<{ locale
       </section>
 
       <MaisFooter locale={locale} labels={{
-        tagline: tfoot('tagline'),
-        navigation: tfoot('navigation'),
-        rights: tfoot('rights'),
-        schools: t('schools'),
-        forInstitutions: t('forInstitutions'),
-        support: t('support'),
-        contact: t('contact'),
+        tagline: c['footer.tagline'],
+        navigation: c['footer.navigation'],
+        rights: c['footer.rights'],
+        schools: c['nav.schools'],
+        forInstitutions: c['nav.forInstitutions'],
+        support: c['nav.support'],
+        contact: c['nav.contact'],
       }} />
     </div>
   )

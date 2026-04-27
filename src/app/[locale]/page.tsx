@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
 import { PartnerCard } from '@/components/PartnerCard'
 import { FeatureCard } from '@/components/FeatureCard'
-import { getTranslations } from 'next-intl/server'
+import { getContentBatch } from '@/lib/content'
 import { Navbar } from '@/components/Navbar'
 import { Reveal } from '@/components/ui/Reveal'
 import { Counter } from '@/components/ui/Counter'
@@ -21,7 +21,6 @@ async function getPartners() {
     take: 9,
   })
 }
-
 
 const capSvg = (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
@@ -56,36 +55,47 @@ const blocksSvg = (
   </svg>
 )
 
-
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
-  const [partners, tn, t, tfoot, tst, tf, tp, tc, ts] = await Promise.all([
+
+  const [partners, c] = await Promise.all([
     getPartners(),
-    getTranslations('hero'),
-    getTranslations('nav'),
-    getTranslations('footer'),
-    getTranslations('stats'),
-    getTranslations('features'),
-    getTranslations('partners'),
-    getTranslations('cta'),
-    getTranslations('schools'),
+    getContentBatch([
+      'hero.badge', 'hero.title1', 'hero.title2', 'hero.subtitle', 'hero.ctaPrimary', 'hero.ctaSecondary',
+      'stats.years', 'stats.yearsSub', 'stats.institutions', 'stats.institutionsSub',
+      'stats.users', 'stats.usersSub', 'stats.compatible', 'stats.compatibleSub',
+      'features.kicker', 'features.titlePre', 'features.titleGrad', 'features.subtitle',
+      'features.studyAgenda', 'features.studyAgendaDesc', 'features.card1Code', 'features.card1Tags',
+      'features.eApplication', 'features.eApplicationDesc', 'features.card2Code',
+      'features.security', 'features.securityDesc', 'features.card3Code',
+      'features.performance', 'features.performanceDesc', 'features.card4Code',
+      'features.integrations', 'features.integrationsDesc', 'features.card5Code',
+      'features.modular', 'features.modularDesc', 'features.card6Tags', 'features.card6Code',
+      'partners.kicker', 'partners.title', 'partners.subtitle', 'partners.showAll',
+      'schools.studentBadge', 'schools.studentTitle', 'schools.studentDesc', 'schools.studentCta',
+      'cta.kicker', 'cta.title', 'cta.subtitle', 'cta.button',
+      'footer.tagline', 'footer.navigation', 'footer.rights',
+      'nav.schools', 'nav.forInstitutions', 'nav.support', 'nav.contact',
+    ], locale),
   ])
 
   const featuresData = [
-    { icon: capSvg,    title: tf('studyAgenda'),  desc: tf('studyAgendaDesc'),  code: tf('card1Code'), accent: 'var(--orange)', size: 'lg' as const, tags: tf('card1Tags').split(',') },
-    { icon: fileSvg,   title: tf('eApplication'), desc: tf('eApplicationDesc'), code: tf('card2Code'), accent: 'var(--amber)',  size: 'md' as const },
-    { icon: shieldSvg, title: tf('security'),      desc: tf('securityDesc'),     code: tf('card3Code'), accent: 'var(--mint)',   size: 'md' as const },
-    { icon: zapSvg,    title: tf('performance'),   desc: tf('performanceDesc'),  code: tf('card4Code'), accent: 'var(--violet)', size: 'md' as const },
-    { icon: globeSvg,  title: tf('integrations'),  desc: tf('integrationsDesc'), code: tf('card5Code'), accent: 'var(--orange)', size: 'md' as const },
-    { icon: blocksSvg, title: tf('modular'),        desc: tf('modularDesc'),      code: tf('card6Code'), accent: 'var(--amber)',  size: 'lg' as const, tags: tf('card6Tags').split(',') },
+    { icon: capSvg,    title: c['features.studyAgenda'],  desc: c['features.studyAgendaDesc'],  code: c['features.card1Code'], accent: 'var(--orange)', size: 'lg' as const, tags: c['features.card1Tags'].split(',') },
+    { icon: fileSvg,   title: c['features.eApplication'], desc: c['features.eApplicationDesc'], code: c['features.card2Code'], accent: 'var(--amber)',  size: 'md' as const },
+    { icon: shieldSvg, title: c['features.security'],      desc: c['features.securityDesc'],     code: c['features.card3Code'], accent: 'var(--mint)',   size: 'md' as const },
+    { icon: zapSvg,    title: c['features.performance'],   desc: c['features.performanceDesc'],  code: c['features.card4Code'], accent: 'var(--violet)', size: 'md' as const },
+    { icon: globeSvg,  title: c['features.integrations'],  desc: c['features.integrationsDesc'], code: c['features.card5Code'], accent: 'var(--orange)', size: 'md' as const },
+    { icon: blocksSvg, title: c['features.modular'],       desc: c['features.modularDesc'],      code: c['features.card6Code'], accent: 'var(--amber)',  size: 'lg' as const, tags: c['features.card6Tags'].split(',') },
   ]
 
   const stats = [
-    { value: 20,    suffix: '+', label: tst('years'),       sub: tst('yearsSub'),        accent: 'var(--indigo)' },
-    { value: 9,     suffix: '',  label: tst('institutions'), sub: tst('institutionsSub'), accent: 'var(--violet)' },
-    { value: 50000, suffix: '+', label: tst('users'),        sub: tst('usersSub'),        accent: 'var(--coral)' },
-    { value: 100,   suffix: '%', label: tst('compatible'),   sub: tst('compatibleSub'),   accent: 'var(--mint)' },
+    { value: 20,    suffix: '+', label: c['stats.years'],       sub: c['stats.yearsSub'],        accent: 'var(--indigo)' },
+    { value: 9,     suffix: '',  label: c['stats.institutions'], sub: c['stats.institutionsSub'], accent: 'var(--violet)' },
+    { value: 50000, suffix: '+', label: c['stats.users'],        sub: c['stats.usersSub'],        accent: 'var(--coral)' },
+    { value: 100,   suffix: '%', label: c['stats.compatible'],   sub: c['stats.compatibleSub'],   accent: 'var(--mint)' },
   ]
+
+  const partnersKicker = c['partners.kicker'].replace('{count}', String(partners.length))
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg)', color: 'var(--fg)' }}>
@@ -93,12 +103,12 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
       <HeroSection
         locale={locale}
-        badge={tn('badge')}
-        title1={tn('title1')}
-        title2={tn('title2')}
-        subtitle={tn('subtitle')}
-        ctaPrimary={tn('ctaPrimary')}
-        ctaSecondary={tn('ctaSecondary')}
+        badge={c['hero.badge']}
+        title1={c['hero.title1']}
+        title2={c['hero.title2']}
+        subtitle={c['hero.subtitle']}
+        ctaPrimary={c['hero.ctaPrimary']}
+        ctaSecondary={c['hero.ctaSecondary']}
       />
 
       <LogoStrip partners={partners} />
@@ -135,12 +145,12 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         <div className="mx-auto max-w-7xl px-6">
           <Reveal>
             <div className="flex flex-col items-center text-center mb-16">
-              <div className="kicker">{tf('kicker')}</div>
+              <div className="kicker">{c['features.kicker']}</div>
               <h2 className="font-display text-[40px] md:text-[64px] mt-5 text-white leading-[0.95]">
-                {tf('titlePre')}{' '}<span className="gradient-text">{tf('titleGrad')}</span>
+                {c['features.titlePre']}{' '}<span className="gradient-text">{c['features.titleGrad']}</span>
               </h2>
               <p className="mt-6 text-[17px] max-w-xl" style={{ color: 'var(--fg-2)' }}>
-                {tf('subtitle')}
+                {c['features.subtitle']}
               </p>
             </div>
           </Reveal>
@@ -172,12 +182,12 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
             <Reveal>
               <div>
-                <div className="kicker">{tp('kicker', { count: partners.length })}</div>
+                <div className="kicker">{partnersKicker}</div>
                 <h2 className="font-display text-[40px] md:text-[64px] mt-5 text-white leading-[0.95] max-w-2xl">
-                  {tp('title')}
+                  {c['partners.title']}
                 </h2>
                 <p className="mt-5 text-[16px] max-w-lg" style={{ color: 'var(--fg-2)' }}>
-                  {tp('subtitle')}
+                  {c['partners.subtitle']}
                 </p>
               </div>
             </Reveal>
@@ -186,7 +196,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                 href={`/${locale}/podpora`}
                 className="btn-ghost rounded-xl px-5 py-3 text-[13px] inline-flex items-center gap-2 self-start"
               >
-                {tp('showAll')}
+                {c['partners.showAll']}
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
                 </svg>
@@ -212,21 +222,21 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
               <div className="relative glass rounded-2xl px-6 md:px-10 py-7 md:py-8 flex flex-col md:flex-row md:items-center gap-6 md:gap-10">
                 <div className="flex-1">
                   <div className="flex items-center gap-2.5 mb-2">
-                    <span className="mono text-[11px] uppercase tracking-[0.18em]" style={{ color: 'var(--orange-2)' }}>{ts('studentBadge')}</span>
+                    <span className="mono text-[11px] uppercase tracking-[0.18em]" style={{ color: 'var(--orange-2)' }}>{c['schools.studentBadge']}</span>
                     <span className="h-px flex-1 max-w-[60px]" style={{ background: 'linear-gradient(90deg, oklch(0.78 0.2 45 / 0.4), transparent)' }} />
                   </div>
                   <div className="font-display text-white text-[22px] md:text-[26px] leading-[1.15]" style={{ textWrap: 'balance' } as React.CSSProperties}>
-                    {ts('studentTitle')}
+                    {c['schools.studentTitle']}
                   </div>
                   <div className="mt-2 text-[13.5px]" style={{ color: 'var(--fg-2)' }}>
-                    {ts('studentDesc')}
+                    {c['schools.studentDesc']}
                   </div>
                 </div>
                 <Link
                   href={`/${locale}/podpora`}
                   className="btn-primary rounded-xl px-6 py-3.5 text-[14px] font-medium inline-flex items-center gap-2 group self-start md:self-auto shrink-0"
                 >
-                  {ts('studentCta')}
+                  {c['schools.studentCta']}
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-hover:translate-x-0.5">
                     <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
                   </svg>
@@ -247,19 +257,19 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                 <div className="beam always rounded-3xl" />
                 <div className="absolute inset-0 dots opacity-20 pointer-events-none" />
                 <div className="relative">
-                  <div className="kicker justify-center inline-flex">{tc('kicker')}</div>
+                  <div className="kicker justify-center inline-flex">{c['cta.kicker']}</div>
                   <h2 className="font-display text-[36px] md:text-[56px] mt-6 text-white leading-[1]" style={{ textWrap: 'balance' } as React.CSSProperties}>
-                    {tc('title')}
+                    {c['cta.title']}
                   </h2>
                   <p className="mt-6 text-[16px] md:text-[18px] max-w-xl mx-auto" style={{ color: 'var(--fg-2)' }}>
-                    {tc('subtitle')}
+                    {c['cta.subtitle']}
                   </p>
                   <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
                     <a
                       href="mailto:podpora@mais.sk"
                       className="btn-primary rounded-xl px-7 py-4 text-[14px] font-medium inline-flex items-center gap-2 group"
                     >
-                      {tc('button')}
+                      {c['cta.button']}
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-hover:translate-x-0.5">
                         <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
                       </svg>
@@ -287,13 +297,13 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       </section>
 
       <MaisFooter locale={locale} labels={{
-        tagline: tfoot('tagline'),
-        navigation: tfoot('navigation'),
-        rights: tfoot('rights'),
-        schools: t('schools'),
-        forInstitutions: t('forInstitutions'),
-        support: t('support'),
-        contact: t('contact'),
+        tagline: c['footer.tagline'],
+        navigation: c['footer.navigation'],
+        rights: c['footer.rights'],
+        schools: c['nav.schools'],
+        forInstitutions: c['nav.forInstitutions'],
+        support: c['nav.support'],
+        contact: c['nav.contact'],
       }} />
     </div>
   )

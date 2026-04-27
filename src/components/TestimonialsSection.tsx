@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { useTranslations } from 'next-intl'
 import { Reveal } from '@/components/ui/Reveal'
+import { useContent } from '@/lib/content-client'
 import { monoLetterSize } from '@/lib/partners-data'
 
 interface TestimonialPartner {
@@ -21,7 +21,7 @@ interface Testimonial {
 
 export function TestimonialsSection() {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([])
-  const t = useTranslations('testimonials')
+  const c = useContent()
 
   useEffect(() => {
     fetch('/api/testimonials')
@@ -35,10 +35,10 @@ export function TestimonialsSection() {
   return (
     <section className="relative py-20 md:py-28 border-t" style={{ borderColor: 'var(--line)' }}>
       <div className="mx-auto max-w-7xl px-6">
-        <Reveal><div className="kicker">{t('kicker')}</div></Reveal>
+        <Reveal><div className="kicker">{c('testimonials.kicker')}</div></Reveal>
         <Reveal delay={80}>
           <h2 className="font-display text-[36px] md:text-[56px] mt-4 text-white leading-[1] max-w-3xl">
-            {t('title')}
+            {c('testimonials.title')}
           </h2>
         </Reveal>
         <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-5">
